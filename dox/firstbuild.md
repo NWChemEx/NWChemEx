@@ -75,8 +75,8 @@ make
 make install
 ctest 
 ```
-**Note:** Don't do this step if you included the last -D option in the first cmake command!)
-
+**Note:** Don't do this last step if you included the last -D option in the first cmake command!)
+```
 cd $HOME/NWChemEx/UtilitiesEx
 cmake –H. –B$HOME/NWChemEx/UtilitiesEx/build –DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
 cd build
