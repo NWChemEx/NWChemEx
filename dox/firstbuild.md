@@ -115,6 +115,7 @@ doxygen dox/Doxyfile
 The documentation will then be in the doc/html or doc/latex directories in that repo.
 Note that you should also look at the [README](https://github.com/NWChemEx-Project/DeveloperDox/blob/master/dox/README.md) 
 in the dox directory.  
+
 You can do the same `doxygen dox/Doxyfile` command to build the documentation in 
 each repo.  Eventually we will put together one cohesive set of documentation, but not until the repos
 go public.
