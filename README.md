@@ -27,5 +27,5 @@ is capable of building all of the various submodules and assembling them.
 Additionally, this repo provides tools to interact with the resulting 
 software suite in a number of ways. 
 
-![Here are some instructions] (dox/firstbuild.md) on how to do your first build 
+![Here are some instructions](dox/firstbuild.md) on how to do your first build 
 of NWChemEx (with the current structure that is private).
