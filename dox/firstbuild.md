@@ -1,4 +1,4 @@
-* Instructions for first time NWChemEx developers:
+# Instructions for first time NWChemEx developers:
 
 These are basic instructions that are not meant to be all encompassing.  
 However, they should allow a beginner to our repos to build a version of NWChemEx.  
@@ -11,7 +11,7 @@ place in your path.  So if not, get them and install them.  You will want to bui
 libint with `–fPIC`.
  
 It is easiest if you set the CMAKE_PREFIX_PATH in your .bashrc file.  
-This is the path that cmake looks for packages.  For example:
+This is the path that cmake uses to look for packages.  For example:
 ```
 export CMAKE_PREFIX_PATH=$HOME/NWChemEx/install
 ```
@@ -20,10 +20,10 @@ On some machines, it might be better to use `/home/$USER`.  The point here is th
 is the root directory where you are going to download and build NWChemEx.)
 
 For the compute environment, we know that the following work:
-cmake: 3.9
-gcc: 6.2 or 6.3
-mpi: mpich 3.2
-doxygen: 1.8.11 or 1.8.5
+* cmake: 3.9
+* gcc: 6.2 or 6.3
+* mpi: mpich 3.2
+* doxygen: 1.8.11 or 1.8.5
 
 If you are on a machine that uses modules, then it is recommended that you use those.
 
@@ -39,8 +39,7 @@ git config --global credential.helper cache
 ```
 Now you are ready to clone all of the repositories.  If you are going to just build and not
 develop, then you can clone code from the NWChemEx-Project repositories.  If you are going
-to make changes, it is recommended that you follow the [GitHub workflow]
-(https://github.com/NWChemEx-Project/DeveloperDox/blob/master/README.md) instead (at least
+to make changes, it is recommended that you follow the [GitHub workflow](https://github.com/NWChemEx-Project/DeveloperDox/blob/master/README.md) instead (at least
 for the part that you are going to change!).  An example of cloning directly from the
 NWChemEx-Project repositories is:
 
@@ -74,7 +73,9 @@ It may just take a bit of time to build.)
 cd build
 make
 make install
-ctest #Note:Don't do this step if you included the last -D option in the first cmake command!)
+ctest 
+```
+**Note:** Don't do this step if you included the last -D option in the first cmake command!)
 
 cd $HOME/NWChemEx/UtilitiesEx
 cmake –H. –B$HOME/NWChemEx/UtilitiesEx/build –DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
@@ -112,9 +113,8 @@ cd $HOME/NWChemEx/DeveloperDox
 doxygen dox/Doxyfile
 ```
 The documentation will then be in the doc/html or doc/latex directories in that repo.
-Note that you should also look at the [README] 
-(https://github.com/NWChemEx-Project/DeveloperDox/blob/master/dox/README.md) in the 
-dox directory.  
+Note that you should also look at the [README](https://github.com/NWChemEx-Project/DeveloperDox/blob/master/dox/README.md) 
+in the dox directory.  
 You can do the same `doxygen dox/Doxyfile` command to build the documentation in 
-each repo.  Eventually we will put together one doxygen file, but not until the repos
+each repo.  Eventually we will put together one cohesive set of documentation, but not until the repos
 go public.
