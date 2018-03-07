@@ -66,7 +66,7 @@ following order and with the following commands:
 cd $HOME/NWChemEx/NWChemExBase
 cmake -H. -B$HOME/NWChemEx/NWChemExBase/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install -DBUILD_TESTS=false
 ```
-(The last –D is so that it won’t try to build libint which is the test of the build framework.
+(The last -D is so that it won’t try to build libint which is the test of the build framework.
 If you want to test that the build system is working, go ahead and leave this final option off.
 It may just take a bit of time to build.)
 ```
@@ -78,28 +78,28 @@ ctest
 **Note:** Don't do this last step if you included the last -D option in the first cmake command!)
 ```
 cd $HOME/NWChemEx/UtilitiesEx
-cmake –H. –B$HOME/NWChemEx/UtilitiesEx/build –DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
+cmake -H. -B$HOME/NWChemEx/UtilitiesEx/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
 cd build
 make
 make install
 ctest
 
 cd $HOME/NWChemEx/LibChemist
-cmake –H. –B$HOME/NWChemEx/LibChemist/build –DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
+cmake -H. -B$HOME/NWChemEx/LibChemist/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
 cd build
 make
 make install
 ctest
 
 cd $HOME/NWChemEx/IntegralsEx
-cmake –H. –B$HOME/NWChemEx/IntegralsEx/build –DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
+cmake -H. -B$HOME/NWChemEx/IntegralsEx/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
 cd build
 make
 make install
 ctest
 
 cd $HOME/NWChemEx/SCF
-cmake –H. –B$HOME/NWChemEx/SCF/build –DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
+cmake -H. -B$HOME/NWChemEx/SCF/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
 cd build
 make
 make install
