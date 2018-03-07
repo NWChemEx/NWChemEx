@@ -1,8 +1,8 @@
 # Instructions for first time NWChemEx developers:
 
-These are basic instructions that are not meant to be all encompassing.  
-However, they should allow a beginner to our repos to build a version of NWChemEx.  
-Note that the build process and repos names are currently in flux and this will 
+These are basic instructions that are not meant to be all encompassing. However, they should allow a beginner to build a version of NWChemEx.  
+
+**Note** that the build process and repos names are currently in flux and this will 
 have to be updated on a regular basis.
 
 It can be useful to have [libint](https://github.com/evaleev/libint/releases/download/v2.4.2/libint-2.4.2.tgz) and 
