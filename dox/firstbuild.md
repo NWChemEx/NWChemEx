@@ -5,11 +5,13 @@ However, they should allow a beginner to our repos to build a version of NWChemE
 Note that the build process and repos names are currently in flux and this will 
 have to be updated on a regular basis.
 
-It is useful if you have [libint](https://github.com/evaleev/libint/releases/download/v2.4.2/libint-2.4.2.tgz) and 
+It can be useful to have [libint](https://github.com/evaleev/libint/releases/download/v2.4.2/libint-2.4.2.tgz) and 
 [eigen](https://github.com/eigenteam/eigen-git-mirror) already installed in a 
-place in your path.  So if not, get them and install them.  You will want to build 
-libint with `-fPIC`.
- 
+place in your path (especially if multiple developers will be developing on the same machine), but you do not have 
+to specifically build these libraries if you do not want to.  If you do not have these libraries already installed, they will
+be built when you build the IntegralsEx repo - note that this build could take a while.  If you do build libint yourself
+outside of the IntegralsEx build, build libint with `-fPIC`.
+
 It is easiest if you set the CMAKE_PREFIX_PATH in your .bashrc file.  
 This is the path that cmake uses to look for packages.  For example:
 ```
