@@ -71,6 +71,8 @@ cmake -H. -B$HOME/NWChemEx/NWChemExBase/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChe
 (The last -D is so that it won’t try to build libint which is the test of the build framework.
 If you want to test that the build system is working, go ahead and leave this final option off.
 It may just take a bit of time to build.)
+
+**Note:** Instead of using the full path in `-B$HOME/NWChemEx/NWChemExBase/build`, one could also use a relative path like `-Bbuild`.  This has already been done when using the `.` in `-H.`.
 ```
 cd build
 make
