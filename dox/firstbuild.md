@@ -50,7 +50,7 @@ git clone https://github.com/NWChemEx-Project/NWChemEx.git
 cd NWChemEx
 git clone https://github.com/NWChemEx-Project/CMakeBuild.git
 git clone https://github.com/NWChemEx-Project/Utilities.git
-git clone https://github.com/NWChemEx-Project/SimulationDevelopmentEnvironment.git
+git clone https://github.com/NWChemEx-Project/LibChemist.git
 git clone https://github.com/NWChemEx-Project/Integrals.git
 git clone https://github.com/NWChemEx-Project/SCF.git
 git clone https://github.com/NWChemEx-Project/DeveloperTools.git
@@ -88,8 +88,8 @@ make
 make install
 ctest
 
-cd $HOME/NWChemEx/SimulationDevelopmentEnvironment
-cmake -H. -B$HOME/NWChemEx/SimulationDevelopmentEnvironment/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
+cd $HOME/NWChemEx/LibChemist
+cmake -H. -B$HOME/NWChemEx/LibChemist/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
 cd build
 make
 make install
