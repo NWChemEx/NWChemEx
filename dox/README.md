@@ -24,7 +24,7 @@ the last two steps will not work.
 haven't already (it's just a bash script)
 1. In the top-level directory of your project run:
 ~~~git
-git subrepo clone https://github.com/NWChemEx-Project/dox
+git subrepo clone https://github.com/NWChemEx-Project/DeveloperTools
 ~~~
 2. Modify `dox/settings.doxcfg` to be descriptive of your project.
 3. (NYI) Create a file `.codedocs` in the top directory of your repository which
