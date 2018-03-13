@@ -32,7 +32,7 @@ If you are on a machine that uses modules, then it is recommended that you use t
 We use GitHub to manage the code.  See the [top level organization](https://github.com/NWChemEx-Project) 
 to see all of the repositories.
 
-There is a [short Git/GitHub tutorial](https://github.com/NWChemEx-Project/DeveloperDox/blob/master/README.md) 
+There is a [short Git/GitHub tutorial](https://github.com/NWChemEx-Project/DeveloperTools/blob/master/README.md) 
 that you should read if you are new to Git or GitHub.  It also includes some basic instructions on our workflow.
 
 **Note:** The following optional command caches your GitHub username/password for 1 hour for convenience
@@ -41,23 +41,23 @@ git config --global credential.helper cache
 ```
 Now you are ready to clone all of the repositories.  If you are going to just build and not
 develop, then you can clone code from the NWChemEx-Project repositories.  If you are going
-to make changes, it is recommended that you follow the [GitHub workflow](https://github.com/NWChemEx-Project/DeveloperDox/blob/master/README.md) instead (at least
+to make changes, it is recommended that you follow the [GitHub workflow](https://github.com/NWChemEx-Project/DeveloperTools/blob/master/README.md) instead (at least
 for the part that you are going to change!).  An example of cloning directly from the
 NWChemEx-Project repositories is:
 
 ```
 git clone https://github.com/NWChemEx-Project/NWChemEx.git
 cd NWChemEx
-git clone https://github.com/NWChemEx-Project/NWChemExBase.git
-git clone https://github.com/NWChemEx-Project/UtilitiesEx.git
+git clone https://github.com/NWChemEx-Project/CMakeBuild.git
+git clone https://github.com/NWChemEx-Project/Utilities.git
 git clone https://github.com/NWChemEx-Project/LibChemist.git
-git clone https://github.com/NWChemEx-Project/IntegralsEx.git
+git clone https://github.com/NWChemEx-Project/Integrals.git
 git clone https://github.com/NWChemEx-Project/SCF.git
-git clone https://github.com/NWChemEx-Project/DeveloperDox.git
+git clone https://github.com/NWChemEx-Project/DeveloperTools.git
 ```
 
-[Basic instructions](https://github.com/NWChemEx-Project/NWChemExBase/blob/master/README.md) 
-and [More detailed instructions](https://github.com/NWChemEx-Project/NWChemExBase/blob/master/dox/Building.md) for building with our cmake build.  However, explicit instructions are given below to help the
+[Basic instructions](https://github.com/NWChemEx-Project/CMakeBuild/blob/master/README.md) 
+and [More detailed instructions](https://github.com/NWChemEx-Project/CMakeBuild/blob/master/dox/Building.md) for building with our cmake build.  However, explicit instructions are given below to help the
 first time builder.
 
 Currently, we need to build each of the repositories separately.  This will change once the 
@@ -65,14 +65,14 @@ repos go public since we will then be able to have the top level NWChemEx repo d
 downloading and building. But for now, it is recommended that you build the repos in the 
 following order and with the following commands:
 ```
-cd $HOME/NWChemEx/NWChemExBase
-cmake -H. -B$HOME/NWChemEx/NWChemExBase/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install -DBUILD_TESTS=false
+cd $HOME/NWChemEx/CMakeBuild
+cmake -H. -B$HOME/NWChemEx/CMakeBuild/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install -DBUILD_TESTS=false
 ```
 (The last -D is so that it won’t try to build libint which is the test of the build framework.
 If you want to test that the build system is working, go ahead and leave this final option off.
 It may just take a bit of time to build.)
 
-**Note:** Instead of using the full path in `-B$HOME/NWChemEx/NWChemExBase/build`, one could also use a relative path like `-Bbuild`.  This has already been done when using the `.` in `-H.`.
+**Note:** Instead of using the full path in `-B$HOME/NWChemEx/CMakeBuild/build`, one could also use a relative path like `-Bbuild`.  This has already been done when using the `.` in `-H.`.
 ```
 cd build
 make
@@ -81,8 +81,8 @@ ctest
 ```
 **Note:** Don't do this last step if you included the last -D option in the first cmake command!)
 ```
-cd $HOME/NWChemEx/UtilitiesEx
-cmake -H. -B$HOME/NWChemEx/UtilitiesEx/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
+cd $HOME/NWChemEx/Utilities
+cmake -H. -B$HOME/NWChemEx/Utilities/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
 cd build
 make
 make install
@@ -95,8 +95,8 @@ make
 make install
 ctest
 
-cd $HOME/NWChemEx/IntegralsEx
-cmake -H. -B$HOME/NWChemEx/IntegralsEx/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
+cd $HOME/NWChemEx/Integrals
+cmake -H. -B$HOME/NWChemEx/Integrals/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
 cd build
 make
 make install
@@ -121,11 +121,11 @@ uninstall as well, you should `make uninstall` first and then remove the build d
 
 If you would like to build the documentation:
 ```
-cd $HOME/NWChemEx/DeveloperDox
+cd $HOME/NWChemEx/DeveloperTools
 doxygen dox/Doxyfile
 ```
 The documentation will then be in the doc/html or doc/latex directories in that repo.
-Note that you should also look at the [README](https://github.com/NWChemEx-Project/DeveloperDox/blob/master/dox/README.md) 
+Note that you should also look at the [README](https://github.com/NWChemEx-Project/DeveloperTools/blob/master/dox/README.md) 
 in the dox directory.  
 
 You can do the same `doxygen dox/Doxyfile` command to build the documentation in 
