@@ -23,8 +23,8 @@ is the root directory where you are going to download and build NWChemEx.)
 
 For the compute environment, we know that the following work:
 * cmake: 3.9
-* gcc: 6.2 or 6.3 or 7.10
-* mpi: mpich 3.2
+* gcc: 6.2 or 6.3 or 7.10, on Mac also Apple LLVM version 9.0.0 (clang-900.0.39.2)
+* mpi: mpich 3.2, on Mac also with open-mpi 2.2.1
 * doxygen: 1.8
 
 If you are on a machine that uses modules, then it is recommended that you use those.
