@@ -51,6 +51,7 @@ cd NWChemEx
 git clone https://github.com/NWChemEx-Project/CMakeBuild.git
 git clone https://github.com/NWChemEx-Project/Utilities.git
 git clone https://github.com/NWChemEx-Project/LibChemist.git
+git clone https://github.com/NWChemEx-Project/SDE.git
 git clone https://github.com/NWChemEx-Project/Integrals.git
 git clone https://github.com/NWChemEx-Project/SCF.git
 git clone https://github.com/NWChemEx-Project/DeveloperTools.git
@@ -90,6 +91,13 @@ ctest
 
 cd $HOME/NWChemEx/LibChemist
 cmake -H. -B$HOME/NWChemEx/LibChemist/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
+cd build
+make
+make install
+ctest
+
+cd $HOME/NWChemEx/SDE
+cmake -H. -B$HOME/NWChemEx/SDE/build -DCMAKE_INSTALL_PREFIX=$HOME/NWChemEx/install 
 cd build
 make
 make install
