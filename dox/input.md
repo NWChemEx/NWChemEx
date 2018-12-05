@@ -26,7 +26,7 @@ Mock-up from Ryan:
 ```.cpp
 class ModuleBase {
     virtual void register_submodule_(ModuleManager& mm) = 0;
-    virtual void register_parameters_(Paramters& params) = 0;
+    virtual void register_parameters_(Parameters& params) = 0;
     virtual void register_returns_(Returns& returns) = 0;
     
     Returns run_(const Parameters& params) = 0;
@@ -74,7 +74,7 @@ struct DummySCF : ModuleBase {
 
 struct EnergyPropertyType {
     
-    Tensor run(Module& mod, Moleucle mol, int deriv) {
+    Tensor run(Module& mod, Molecule mol, int deriv) {
         Parameters params = mod.params();
         params.change("System", mol);
         params.change("Derivative", deriv);
