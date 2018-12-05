@@ -13,11 +13,13 @@ Startup and Input/Parameter Instantiation
 import NWChemEx as NWX
 ```
 
-2. Read input, add parameters (including structure, basis set info, etc.) to parameter class.
+2. Read input, add parameters (including structure, basis set info, etc.) to parameter class that gets instantiated upfront.
 
 3. Ensure modules calling submodules do not overwrite user set parameters upfront. Needs an infrastructure.
 
 4. Need for graph class to be able to setup workflow, module execution tree.
+
+5. We call the main modules with a parameters class included.
 
 
 Single Point Calculation
