@@ -99,6 +99,8 @@ struct SCFPropertyType {
 
 
 auto scf = mm.at("DummySCF"); 
+Parameters params = scf.params();
+params.change("Energy_convergence", convergence);
 scf.run_as<SCFPropertyType>(mol, bs, deriv);
 ```
 
