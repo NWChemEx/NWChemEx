@@ -4,6 +4,22 @@ Input Infrastructure
 The purpose of this document is to prototype/discuss what input to NWChemEx
 looks like to an end-user.
 
+Startup and Input/Parameter Instantiation
+-----------------------------------------
+
+1. Module manager load all modules. Analogue for Python:
+
+```.python
+import NWChemEx as NWX
+```
+
+2. Read input, add parameters (including structure, basis set info, etc.) to parameter class.
+
+3. Ensure modules calling submodules do not overwrite user set parameters upfront. Needs an infrastructure.
+
+4. Need for graph class to be able to setup workflow, module execution tree.
+
+
 Single Point Calculation
 ------------------------
 
