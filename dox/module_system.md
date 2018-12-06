@@ -149,7 +149,7 @@ setting the parameters:
 ```
 // change the submodule the module, "ModuleKey", calls when it calls 
 // "SubmoduleKey" to the module with key "ModifiedModuleKey"
-mm.at("ModuleKey").submodules.change("SubmoduleKey", "ModifiedModuleKey");
+mm.at("ModuleKey").submodules().change("SubmoduleKey", "ModifiedModuleKey");
 ```
 
 Running a Module
@@ -169,9 +169,9 @@ the present example) and returns a single value, `rv`. As far as static analysis
 is concerned, every module can be run as every property type, thus we can not
 rely on the compiler to deduce if "ModuleKey" is actually of type 
 `PropertyType`. The SDE will still implement such a check, but it will happen at
-runtime. 
+ runtime. 
 
-A similar procedure is done to run submodules.
+A similar procedure is done to run submodules. 
 
 Modules
 -------
@@ -186,7 +186,7 @@ private:
     void register_submodules_(ModuleManager& mm) {...}
     void register_parameters_(Parameters& params){...}
     void register_returns_(Returns& returns){...}
-    Returns run_(const Parameters& params){...}
+    Returns run_(const Parameters& params, const Submodules& submods){...}
 };
 ```
 
@@ -194,9 +194,20 @@ For ease of presentation we have elided the definitions for the time being. The
 first function, `register_submodules_`, is used to tell the `ModuleManager`
 what types of submodules your module will call. `register_parameters_` defines
 the input API to your module. `register_returns_` defines the output API to
-your module, and finally `run_` actually executes your module. 
+your module, and finally `run_` actually executes your module's code. 
 
-When you write your module you know that you will need to call modules that
+### register_submodules_
+
+Within the framework of the SDE modules encapsulate the details pertaining to
+how a quantity is computed. Often when writing a module you need a quantity that
+was not part of your input. You have two options compute the quantity yourself,
+or ask another module to do it for you. In this scenario, your module typically
+doesn't care how the quantity is computed, only that it is. It falls to the
+`ModuleManager` to provide your module with the submodules it should call. This
+requires your module to tell the `ModuleManager` what submodules your module 
+will need. This is the purpose of the `register_submodules_` function.
+
+For our sample SCF code, this looks something like: 
 
 ```
     void register_submodules_(ModuleManager& mm) {
@@ -212,6 +223,109 @@ When you write your module you know that you will need to call modules that
         mm.register_submodule<MOBuilder>("MOBuilder");
         
     }
+```
+
+The syntax is `mm.register_submodule<X>("Y", Z)`, where `X` is the C++ type of
+the property type the module must satisfy and `"Y"` is the submodule key your 
+module will use to refer to it (*vide infra*). `Z` is an optional module key, 
+not used in our example, that allows your module to request that a specific 
+module (*i.e.*, the one with the specified module key) be used to satisfy the 
+submodule dependency. 
+
+The actual process by which the `ModuleManager` assigns modules is somewhat
+complicated and it does not guarantee that your module will use any 
+particular module (even if you specify the key). This is because the user has
+the final say in which submodule a module calls. If your module only works with
+a very specific submodule it is best if your module directly calls that module   
+instead of registering it with the `ModuleManager`. 
+
+### register_parameters_
+
+Each module needs a series of input parameters in order 
+to perform its task. These parameters are module specific, although they should
+be designed such that the module satisfies as many relevant property types as
+possible. Regardless, it is the purpose of the `register_parameters_` function
+to tell the SDE what parameters your module accepts. This is done by filling in
+an empty `Parameters` instance.
+
+Returning to our example SCF module:
+
+```
+void register_parameters_(Parameters& params) {
+    // Declare a parameter, allowing the user to set:
+
+    // the initial molecular system, of type Molecule
+    params.add(Option<Molecule>("System"));
+    
+    // the initial AO basis set, of type AOBasisSet
+    params.add(Option<AOBasisSet>("Basis"));
+    
+    // the energy convergence criteria, of type double
+    params.add(Option<double>("Threshold", 10E-6));
+    
+    // the deriviative order of the SCF energy to compute 
+    params.add(Option<int>("Derivative", 0));
+}
+```
+
+The syntax is `params.add(Option<X>("Y", Z))`, where `X` is the C++ type of the
+parameter, `"Y"` is the key that will be used to retrieve the parameter, and `Z`
+is the default value. The `Option` class supports other additional arguments
+including a description and a callback for bounds checking the value omitted
+here for clarity. 
+
+
+### register_returns_
+
+Since modules are opaque and because modules may satisfy multiple property 
+types, the only way for the SDE to know all of the quantities that your module
+computes is for your module to also register its returns. This is done *via* the
+`register_returns_` function. This function works similar to the 
+`register_parameters_` function in that your module is provided an empty 
+`Returns` object and is charged with filling it.
+
+For our example SCF module this looks something like:
+
+```
+void register_returns_(Returns& returns) {
+    returns.add(Return<Tensor>("Energy"));
+    returns.add(Return<OrbitalSpace>("MOs"));
+}
+```
+
+Here the syntax is `returns.add(Return<X>("Y"))`, where `X` is the C++ type
+of the return and `"Y"` is the key for the value.
+
+### run_
+
+Conceptually this is the simplest function of the Module API. The `run_` 
+function is where you actually implement your module. Regardless of what your
+module does, the `run_` function always has the same API: 
+`Returns run_(const Parameters&, const Submodules&)`. This API takes a 
+`Parameters` instance and a `Submodules` instance (basically a map from 
+submodule keys to the actual submodules) and returns a `Returns` instance.
+
+With respect to our SCF module this looks something like:
+
+```
+Returns run_(const Parameters& params, const Submodules& submods) {
+    auto mol = params.at<Molecule>("System");
+    auto bs = params.at<AOBasisSet>("Basis");
+    auto mos = //get a guess for the mos
+    auto h = //get the core Hamiltonian
+    auto egy = 0;
+    do{
+    
+        auto F = submods["FockBuilder"].run_as<FockBuilder>(bs, bs, mos);
+        mos = submods["MOBuilder"].run_as<MOBuilder>(F);
+        egy = //compute energy
+        
+    }while(egy >= params.at<double>("Threshold"));
+    Returns rv;
+    rv.add(Return<Tensor>("Energy",egy));
+    rv.add(Return<OrbitalSpace>("MOs",mos));
+    return rv; 
+}
 ```
 
 Property Types
@@ -242,11 +356,11 @@ closed shell-system or an unrestricted system, whether we have a fitting basis
 or not, *etc.* The aforementioned module system is such that some of these
 property types are intrinsically convertible among each other (*e.g.*, the
 property type `JKBuilder` would automatically be usable as a `JBuilder` or a
-`KBuilder`, albiet at additional cost since it would build both matrices).
+`KBuilder`, albeit at additional cost since it would build both matrices).
 
 While it's hard to say upfront how many property types we need, and what the
-APIs for those property types should look like. Our goal is to come up with some
-spanning set for all of electronic structure theory. Ideally this set should be
-as small as possible, while still maintaining some level of generality so that
-the module can be used in multiple scenarios. This will no doubt be an iterative
-process. Along the way though 
+APIs for those property types should look like, our goal is to come up with some
+spanning set of property types for all of electronic structure theory. Ideally 
+this set should be as small as possible, while still maintaining some level 
+of generality so that the modules can be used in multiple scenarios. This will
+no doubt be an iterative process.
