@@ -4,6 +4,107 @@ Input Infrastructure
 The purpose of this document is to prototype/discuss what input to NWChemEx
 looks like to an end-user.
 
+Startup and Input/Parameter Instantiation
+-----------------------------------------
+
+1. Module manager load all modules. Analogue for Python:
+
+```.python
+import NWChemEx as NWX
+```
+
+2. Read input, add parameters (including structure, basis set info, etc.) to parameter class that gets instantiated upfront.
+
+3. Ensure modules calling submodules do not overwrite user set parameters upfront. Needs an infrastructure.
+
+4. Need for graph class to be able to setup workflow, module execution tree.
+
+5. We call the main modules with a parameters class included.
+
+Mock-up from Ryan:
+
+```.cpp
+class ModuleBase {
+    virtual void register_submodule_(ModuleManager& mm) = 0;
+    virtual void register_parameters_(Parameters& params) = 0;
+    virtual void register_returns_(Returns& returns) = 0;
+    
+    Returns run_(const Parameters& params) = 0;
+    
+};
+
+struct DummySCF : ModuleBase {
+    void register_submodule_(ModuleManager& mm) {
+        mm.register_submodule<FockBuilder>("FockBuilder");
+        mm.register_submodule<MOBuilder>("MOBuilder");
+    }
+    
+    void register_parameters_(Parameters& params) {
+        params.add(Option<Molecule>("System"));
+        params.add(Option<AOBasisSet>("Basis"));
+        params.add(Option<double>("Threshold", 10E-6));
+        params.add(Option<int>("Derivative", 0));
+    }
+    
+    void register_returns_(Returns& returns) {
+        Returns.add(Return<Tensor>("Energy"));
+        Returns.add(Return<OrbitalSpace>("MOs"));
+    }
+    
+    Returns run(const Parameters& params) {
+        //Grab our parameters
+        auto mol = params.at<Molecule>("System");
+        auto bs = params.at<AOBasisSet>("Basis");
+        
+        // Do stuff...
+        
+        //(example of calling a submodule)
+        auto rv = 
+            run_submodule_as<FockBuilder>("FockBuilder", bs, bs, mos);
+        
+        // Done doing stuff
+        
+        //Set returns
+        Returns returns;
+        returns.add(Return<Tensor>("Energy", energy));
+        returns.add(Return<OrbitalSpace>("MOs", mos));
+        return returns;
+    }
+};
+
+struct EnergyPropertyType {
+    
+    Tensor run(Module& mod, Molecule mol, int deriv) {
+        Parameters params = mod.params();
+        params.change("System", mol);
+        params.change("Derivative", deriv);
+        auto rv = mod.run(params);
+        return rv.at<Tensor>("Energy");
+    }
+};
+
+struct SCFPropertyType {
+    
+    auto run(Module& mod, Molecule mol, AOBasisSet bs, int deriv) {
+        Parameters params = mod.params;
+        params.change("System", mol);
+        params.change("Basis", bs);
+        params.change("Derivative", deriv);
+        
+        auto rv = mod.run(params);
+        return std::make_tuple(rv.at<Tensor>("Energy"), 
+                               rv.at<OrbitalSpace>("MOs"));
+    }
+};
+
+
+auto scf = mm.at("DummySCF"); 
+Parameters params = scf.params();
+params.change("Energy_convergence", convergence);
+scf.run_as<SCFPropertyType>(mol, bs, deriv);
+```
+
+
 Single Point Calculation
 ------------------------
 
