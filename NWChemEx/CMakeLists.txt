@@ -1,6 +1,7 @@
 set(NWX_SRCS DefaultModuleManager.cpp
 )
 set(NWX_INCLUDES DefaultModuleManager.hpp
+		 MethodWrappers.hpp
 )
 cpp_add_library(
     NWChemEx

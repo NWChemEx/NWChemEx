@@ -1,5 +1,0 @@
-#include <SDE/ModuleManager.hpp>
-
-namespace nwx {
-  SDE::ModuleManager default_mm();
-}
