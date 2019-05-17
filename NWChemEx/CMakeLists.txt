@@ -1,13 +1,14 @@
-set(NWX_SRCS DefaultModuleManager.cpp
+set(NWX_SRCS default_module_manager.cpp
+	     method_wrappers.cpp
 )
-set(NWX_INCLUDES DefaultModuleManager.hpp
-		 MethodWrappers.hpp
+set(NWX_INCLUDES default_module_manager.hpp
+		 method_wrappers.hpp
 )
 cpp_add_library(
     NWChemEx
     SOURCES "${NWX_SRCS}"
     INCLUDES "${NWX_INCLUDES}"
-    DEPENDS sde::sde scf::scf libchemist::chemist
+    DEPENDS sde::sde
 )
 
 if(BUILD_PYBINDINGS)

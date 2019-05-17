@@ -16,20 +16,6 @@ cpp_find_or_build_dependency(
     CMAKE_ARGS BUILD_TESTS=OFF BUILD_PYBINDINGS=ON
 )
 
-cpp_find_or_build_dependency(
-        NAME scf
-        URL github.com/NWChemEx-Project/SCF
-        PRIVATE
-        CMAKE_ARGS BUILD_TESTS=OFF BUILD_PYBINDINGS=ON
-)
-
-cpp_find_or_build_dependency(
-        NAME libchemist
-        URL github.com/NWChemEx-Project/LibChemist
-        PRIVATE
-        CMAKE_ARGS BUILD_TESTS=OFF BUILD_PYBINDINGS=ON
-)
-
 ### Target ###
 add_subdirectory(NWChemEx)
 
