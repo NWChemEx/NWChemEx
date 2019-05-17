@@ -8,4 +8,9 @@ namespace NWChemEx {
     scf::load_modules(mm);
     return mm;
   }
+
+  void load_mm(sde::ModuleManager&& mm){
+    scf::load_modules(mm);
+  }
+  
 }

@@ -2,4 +2,5 @@
 
 namespace NWChemEx {
   sde::ModuleManager default_mm();
+  void load_mm(sde::ModuleManager&& mm);
 }
