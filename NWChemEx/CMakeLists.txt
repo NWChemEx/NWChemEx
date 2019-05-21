@@ -9,6 +9,9 @@ cpp_add_library(
     SOURCES "${NWX_SRCS}"
     INCLUDES "${NWX_INCLUDES}"
     DEPENDS sde::sde
+            property_types::property_types
+            integrals::integrals
+            scf::scf
 )
 
 if(BUILD_PYBINDINGS)

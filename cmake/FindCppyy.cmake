@@ -13,6 +13,21 @@ if(NOT "${_fcppyy_result}" STREQUAL "")
     set(Cppyy_FOUND FALSE)
 endif()
 
+function(cppyy_skim_incs all_incs target)
+    #List of target's include directories, usually a generator
+    get_target_property(_csi_inc_dir ${target} INTERFACE_INCLUDE_DIRECTORIES)
+    #List of libraries, usually a mix of targets and libraries
+    get_target_property(_csi_depends ${target} INTERFACE_LINK_LIBRARIES)
+    #Get each dependency's include directory by recursion
+    foreach(_csi_depend_i ${_csi_depends})
+        if(TARGET ${_csi_depend_i})
+            cppyy_skim_incs(_csi_depend_incs ${_csi_depend_i})
+            list(APPEND _csi_inc_dir ${_csi_depend_incs})
+        endif()
+        set(${all_incs} "${_csi_inc_dir}" PARENT_SCOPE)
+    endforeach()
+endfunction()
+
 # This function will skim a CMake target and create a file __init__.py that
 # should be placed next to the shared library created by that target. This
 # function assumes the target's:
@@ -62,24 +77,12 @@ function(cppyy_make_python_package _cmpp_target)
     #---------------------------------------------------------------------------
     #------------Collect the information we need off the target-----------------
     #---------------------------------------------------------------------------
-    #List of include directories, usually a generator
-    get_target_property(
-            _cmpp_inc_dir ${_cmpp_target} INTERFACE_INCLUDE_DIRECTORIES
-    )
-    #List of libraries, usually a mix of targets and libraries
-    get_target_property(_cmpp_depends ${_cmpp_target} INTERFACE_LINK_LIBRARIES)
-    #Get each dependency's include directory (shouldn't have to recurse if the
-    #the targets are set up correctly)
-    foreach(_cmpp_depend_i ${_cmpp_depends})
-        if(TARGET ${_cmpp_depend_i})
-            get_target_property(
-                _cmpp_depend_inc ${_cmpp_depend_i} INTERFACE_INCLUDE_DIRECTORIES
-            )
-            list(APPEND _cmpp_inc_dir ${_cmpp_depend_inc})
-        endif()
-    endforeach()
+
     #List of header files
     get_target_property(_cmpp_headers ${_cmpp_target} PUBLIC_HEADER)
+
+    #The include paths
+    cppyy_skim_incs(_cmpp_inc_dir ${_cmpp_target})
 
     #The library name (obviously a generator...)
     set(_cmpp_lib "$<TARGET_FILE_NAME:${_cmpp_target}>")
