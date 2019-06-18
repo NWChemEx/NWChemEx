@@ -13,15 +13,16 @@ following will suffice to build NWChemEx.
 
 First, create a toolchain file in the SCF directory (`SCF.toolchain`). This
 file should contain the following information
-```
-set(CMAKE_PREFIX_PATH    <prefix directory>)
-set(CMAKE_INSTALL_PREFIX <install directory>)
-set(CMAKE_CC_COMPILER    <C compiler>)
-set(CMAKE_CXX_COMPILER   <C++ compiler>)
-set(CMAKE_FC_COMPILER    <Fortran compiler>)
-set(PYTHON_EXECUTABLE    <Python interpreter>)
-set(PYTHON_LIBRARY       <Python library (libpythonX.X)>)
-```
+
+.. code-block:: cmake
+
+   set(CMAKE_PREFIX_PATH    <prefix directory>)
+   set(CMAKE_INSTALL_PREFIX <install directory>)
+   set(CMAKE_CC_COMPILER    <C compiler>)
+   set(CMAKE_CXX_COMPILER   <C++ compiler>)
+   set(CMAKE_FC_COMPILER    <Fortran compiler>)
+   set(PYTHON_EXECUTABLE    <Python interpreter>)
+   set(PYTHON_LIBRARY       <Python library (libpythonX.X)>)
 
 .. note::
 
