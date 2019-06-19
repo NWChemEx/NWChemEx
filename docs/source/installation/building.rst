@@ -1,17 +1,16 @@
 Building the NWChemEx Package
 =============================
 
-NWChemEx is built using `CPP <https://github.com
+NWChemEx is built using `CMakePP <https://github.com
 /CMakePackagingProject/CMakePackagingProject.git>`_.
-Further TAMM depends on CMakeBuild, where CMakeBuild requires at least
+Further TAMM depends on CMakeBuild., where CMakeBuild requires at least
 CMake 3.14.2 or higher to build.
-TAMM also depends on GCC compilers of version 7.2 or higher. If necessary
-set the environment variables CC, FC, and CXX to point to the right compilers.
-Assuming you have already installed CPP, that you are on a sane Unix-like
+TAMM also depends on GCC compilers of version 7.2 or higher.
+Assuming you have already installed CMakePP, that you are on a sane Unix-like
 computer, and you are willing to let NWChemEx build all dependencies, then the
 following will suffice to build NWChemEx.
 
-First, create a toolchain file in the SCF directory (`SCF_toolchain.cmake`). This
+First, create a toolchain file in the top-level directory (`toolchain.cmake`). This
 file should contain the following information
 
 .. code-block:: cmake
@@ -58,7 +57,7 @@ file should contain the following information
    cmake -H. \
          -Bbuild \
          -DCPP_GITHUB_TOKEN=<your super-secret token> \
-         -DCMAKE_TOOLCHAIN_FILE=`pwd`/SCF_toolchain.cmake \
+         -DCMAKE_TOOLCHAIN_FILE=`pwd`/../toolchain.cmake \
    cd build
    cmake --build .
    #May need to run as an admin depending on where you are installing SCF to
@@ -73,7 +72,7 @@ file should contain the following information
     -the-command-line>`_).
 
 For finer-grained control over the build we direct the reader to the more
-thorough CPP build instructions located `here <https://cmakepackagingproject
+thorough CMakePP build instructions located `here <https://cmakepackagingproject
 .readthedocs.io/en/latest/end_user/quick_start.html>`_ and note that NWChemEx
 depends on several other projects:
 
