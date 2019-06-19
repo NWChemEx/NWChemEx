@@ -4,25 +4,25 @@ Building the NWChemEx Package
 NWChemEx is built using `CPP <https://github.com
 /CMakePackagingProject/CMakePackagingProject.git>`_.
 Further TAMM depends on CMakeBuild, where CMakeBuild requires at least
-CMake 3.13 or higher to build.
+CMake 3.14.2 or higher to build.
 TAMM also depends on GCC compilers of version 7.2 or higher. If necessary
 set the environment variables CC, FC, and CXX to point to the right compilers.
 Assuming you have already installed CPP, that you are on a sane Unix-like
 computer, and you are willing to let NWChemEx build all dependencies, then the
 following will suffice to build NWChemEx.
 
-First, create a toolchain file in the SCF directory (`SCF.toolchain`). This
+First, create a toolchain file in the SCF directory (`SCF_toolchain.cmake`). This
 file should contain the following information
 
 .. code-block:: cmake
 
-   set(CMAKE_PREFIX_PATH    <prefix directory>)
-   set(CMAKE_INSTALL_PREFIX <install directory>)
-   set(CMAKE_CC_COMPILER    <C compiler>)
-   set(CMAKE_CXX_COMPILER   <C++ compiler>)
-   set(CMAKE_FC_COMPILER    <Fortran compiler>)
-   set(PYTHON_EXECUTABLE    <Python interpreter>)
-   set(PYTHON_LIBRARY       <Python library (libpythonX.X)>)
+   set(CMAKE_PREFIX_PATH      <prefix directory>)
+   set(CMAKE_INSTALL_PREFIX   <install directory>)
+   set(CMAKE_C_COMPILER       <C compiler>)
+   set(CMAKE_CXX_COMPILER     <C++ compiler>)
+   set(CMAKE_Fortran_COMPILER <Fortran compiler>)
+   set(PYTHON_EXECUTABLE      <Python interpreter>)
+   set(PYTHON_LIBRARY         <Python library (libpythonX.X)>)
 
 .. note::
 
@@ -58,7 +58,7 @@ file should contain the following information
    cmake -H. \
          -Bbuild \
          -DCPP_GITHUB_TOKEN=<your super-secret token> \
-         -DCMAKE_TOOLCHAIN_FILE=`pwd`/SCF.toolchain \
+         -DCMAKE_TOOLCHAIN_FILE=`pwd`/SCF_toolchain.cmake \
    cd build
    cmake --build .
    #May need to run as an admin depending on where you are installing SCF to
