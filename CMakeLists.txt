@@ -8,6 +8,19 @@ option(BUILD_PYBINDINGS "Should we build Python3 bindings?" ON)
 
 ### Dependencies ####
 cpp_find_or_build_dependency(
+    NAME utilities
+    URL github.com/NWChemEx-Project/Utilities
+    PRIVATE
+    CMAKE_ARGS BUILD_TESTS=OFF
+)
+cpp_find_or_build_dependency(
+    NAME sde
+    URL github.com/NWChemEx-Project/SDE
+    PRIVATE
+    CMAKE_ARGS BUILD_TESTS=OFF
+)
+
+cpp_find_or_build_dependency(
     NAME property_types
     URL github.com/NWChemEx-Project/PropertyTypes
     PRIVATE

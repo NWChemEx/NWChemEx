@@ -1,0 +1,5 @@
+#Build directory names
+cmake-build-*
+
+#Common toolchain names
+toolchain.cmake
