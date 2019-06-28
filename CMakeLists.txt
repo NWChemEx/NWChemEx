@@ -13,11 +13,13 @@ cpp_find_or_build_dependency(
     PRIVATE
     CMAKE_ARGS BUILD_TESTS=OFF
 )
+
 cpp_find_or_build_dependency(
     NAME sde
     URL github.com/NWChemEx-Project/SDE
     PRIVATE
     CMAKE_ARGS BUILD_TESTS=OFF
+    #BUILD_PYBINDINGS=ON
 )
 
 cpp_find_or_build_dependency(
@@ -41,11 +43,18 @@ cpp_find_or_build_dependency(
     CMAKE_ARGS BUILD_TESTS=OFF
 )
 
+cpp_find_or_build_dependency(
+    NAME dft
+    URL github.com/NWChemEx-Project/DFT
+    PRIVATE
+    CMAKE_ARGS BUILD_TESTS=OFF
+)
+
 ### Target ###
 add_subdirectory(nwchemex)
 
 ### Testing ###
-if(BUILD_TESTS)
+if(BUILD_TESTS_disableForNow)
     cpp_find_or_build_dependency(NAME Catch2 URL github.com/catchorg/Catch2)
     enable_testing()
     add_subdirectory(tests)

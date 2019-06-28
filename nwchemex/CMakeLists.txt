@@ -9,4 +9,4 @@ cpp_add_library(
             scf::scf
 )
 
-cpp_install(TARGETS NWChemEx)
+cpp_install(TARGETS nwchemex)
