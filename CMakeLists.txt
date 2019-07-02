@@ -32,7 +32,7 @@ cpp_find_or_build_dependency(
 add_subdirectory(nwchemex)
 
 ### Testing ###
-if(BUILD_TESTS)
+if(TRUE)
     cpp_find_or_build_dependency(NAME Catch2 URL github.com/catchorg/Catch2)
     enable_testing()
     add_subdirectory(tests)
