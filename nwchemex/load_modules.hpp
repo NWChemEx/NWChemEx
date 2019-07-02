@@ -11,6 +11,6 @@ namespace nwx {
  *  @throw std::bad_alloc if there is insufficient memory to create the new
  *                        modules. Weak throw guarantee.
  */
-void load_modules(sd::ModuleManager& mm);
+void load_modules(sde::ModuleManager& mm);
 
 } //namespace nwx
