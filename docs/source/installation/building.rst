@@ -25,7 +25,7 @@ Below the build instructions are given based on a few assumptions:
 1. You are using a sane Unix-like operating system
 2. You have already installed CMakePP
 3. You have Python installed and the installation supports numpy, i.e.
-   the command `import numpy` must succeed
+the command `import numpy` must succeed
 4. You are going to install all components in the same location
 
 First, create a toolchain file in the top-level directory (`toolchain.cmake`). This
@@ -34,7 +34,6 @@ file should contain the following information
 .. code-block:: cmake
 
    set(CMAKE_PREFIX_PATH      <prefix directory>)
-   set(CMAKE_INSTALL_PREFIX   <install directory>)
    set(CMAKE_C_COMPILER       <C compiler>)
    set(CMAKE_CXX_COMPILER     <C++ compiler>)
    set(CMAKE_Fortran_COMPILER <Fortran compiler>)
