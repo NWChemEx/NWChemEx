@@ -9,8 +9,9 @@ operation infrastructure. In turn compiling TAMM requires the CMakeBuild
 library. More details on downloading and installing these components will
 be provided below.
 
-Secondly, NWChemEx builds using `CMakePP <https://github.com
-/CMakePackagingProject/CMakePackagingProject.git>`_. CMakePP extends
+Secondly, NWChemEx builds using `CMakePP 
+<https://github.com/CMakePackagingProject/CMakePackagingProject.git>`_. 
+CMakePP extends
 the CMake package with advanced dependency management capabilities. 
 This package enables checking for, downloading, and building dependencies
 automatically. A side effect of using this capability is that running CMake
@@ -80,7 +81,7 @@ The following script will then build and install CMakeBuild, TAMM and NWChemEx.
          -DCMAKE_INSTALL_PREFIX=<where/you/want/to/install>
    cd build
    cmake --build .
-   #May need to run as an admin depending on where you are installing SCF to
+   #May need to run as an admin depending on where you are installing NWChemEx to
    cmake --build . --target install
    cd ../..
 
@@ -89,24 +90,22 @@ The following script will then build and install CMakeBuild, TAMM and NWChemEx.
     The GitHub token is only necessary because, at the moment, various
     dependencies are hosted in
     private repositories (instructions for generating a token are `here
-    <https://help.github.com/articles/creating-a-personal-access-token-for
-    -the-command-line>`_).
+    <https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line>`_).
 
 .. note::
 
-    The `CMAKE_INSTALL_PREFIX` and the `CMAKE_PREFIX_PATH` need to be declared both
-    in the `toolchain.cmake` file as well as on the CMake command line to propagate 
+    The `CMAKE_PREFIX_PATH` need to be declared both in the `toolchain.cmake`
+    file as well as on the CMake command line to propagate 
     properly to a module and all of its dependencies.
 
 For finer-grained control over the build we direct the reader to the more
-thorough CMakePP build instructions located `here <https://cmakepackagingproject
-.readthedocs.io/en/latest/end_user/quick_start.html>`_ and note that NWChemEx
-depends on several other projects:
+thorough CMakePP build instructions located `here 
+<https://cmakepackagingproject.readthedocs.io/en/latest/end_user/quick_start.html>`_
+and note that NWChemEx depends on several other projects:
 
-* `TAMM <https://github.com/NWChemEx-Project/TAMM`_
-  * `CMakeBuild <https://github.com/NWChemEx-Project/CMakeBuild`_
+* `TAMM <https://github.com/NWChemEx-Project/TAMM>`_
+  * `CMakeBuild <https://github.com/NWChemEx-Project/CMakeBuild>`_
 
-* `utilities <https://github.com/NWChemEx-Project/utilities>`_
 * `bphash <https://github.com/bennybp/BPHash>`_
 * `cereal <https://github.com/USCiLab/cereal>`_
 * `Catch2 <https://github.com/catchorg/Catch2>`_ (for testing only)
