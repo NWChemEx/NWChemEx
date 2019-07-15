@@ -104,7 +104,12 @@ thorough CMakePP build instructions located `here
 and note that NWChemEx depends on several other projects:
 
 * `TAMM <https://github.com/NWChemEx-Project/TAMM>`_
+
   + `CMakeBuild <https://github.com/NWChemEx-Project/CMakeBuild>`_
+
 * `bphash <https://github.com/bennybp/BPHash>`_
+
 * `cereal <https://github.com/USCiLab/cereal>`_
+
 * `Catch2 <https://github.com/catchorg/Catch2>`_ (for testing only)
+
