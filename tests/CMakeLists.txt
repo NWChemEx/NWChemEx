@@ -1,4 +1,5 @@
-set(sources test_main.cpp)
+set(sources driver.cpp
+            test_main.cpp)
 
 cpp_add_executable(
         test_nwx

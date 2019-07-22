@@ -5,7 +5,8 @@
 namespace nwx {
 
 void load_modules(sde::ModuleManager& mm) {
-    integrals::libint::load_modules(mm);
+    //SCF right now includes this, uncomment when fixed
+    //integrals::libint::load_modules(mm);
     scf::load_modules(mm);
 }
 
