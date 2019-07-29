@@ -25,12 +25,12 @@ cpp_find_or_build_dependency(
     NAME scf
     URL github.com/NWChemEx-Project/SCF
     PRIVATE
-    CMAKE_ARGS BUILD_TESTS=OFF
+    CMAKE_ARGS BUILD_TESTS=ON
 )
 
 cpp_find_or_build_dependency(
-    NAME dft
-    URL github.com/NWChemEx-Project/DFT
+    NAME pwdft
+    URL github.com/NWChemEx-Project/PWDFT
     PRIVATE
     CMAKE_ARGS BUILD_TESTS=OFF
 )
