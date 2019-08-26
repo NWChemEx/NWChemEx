@@ -17,6 +17,7 @@ cpp_find_or_build_dependency(
 cpp_find_or_build_dependency(
     NAME integrals
     URL github.com/NWChemEx-Project/Integrals
+    BRANCH multipole
     PRIVATE
     CMAKE_ARGS BUILD_TESTS=OFF
 )

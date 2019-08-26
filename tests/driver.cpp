@@ -1,22 +1,32 @@
-//1. Has function for making molecule and AO basis set (change if needed)
-#include "tests/test_common.hpp"
 #include <catch2/catch.hpp>
 #include <nwchemex/load_modules.hpp>
+#include <tamm/tamm.hpp>
+#include <libchemist/libchemist.hpp>
+
 //2. Include the property type for the module you want to run
-#include <property_types/aointegral.hpp>
+#include <property_types/reference_wavefunction.hpp>
 
 //3. Change this to the property type you want to run as
-using property_type = property_types::AOIntegral<2,double>;
+using pt_type = property_types::ReferenceWavefunction<double>;
 
 TEST_CASE("Driving NWX from C++"){
     sde::ModuleManager mm;
     nwx::load_modules(mm);
-    auto [mol, bs] = testing::make_molecule();
-    //4. Change to the module key you want to run
-    const auto key = "Overlap";
-    //5. Call your module
-    std::array bss{bs, bs};
-    auto [S] = mm.run_as<property_type>(key, mol, bss, std::size_t{0});
+    libchemist::MoleculeManager mols;
 
+    auto mol = mols.at("water");
+    auto bs  = libchemist::apply_basis("cc-pvdz", mol);
+
+    //4. Change to the module key you want to run
+    const auto module_key = "SCF";
+    //5. (Optional) Change options
+
+    //6. Run the module
+    const auto& [egy, mos] =
+        mm.run_as<pt_type>(module_key, mol, bs, std::size_t{0});
+
+    std::cout <<
+      tamm::get_scalar(const_cast<tamm::Tensor<double>&>(egy)) <<
+      std::endl;
 }
 
