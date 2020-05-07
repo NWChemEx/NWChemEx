@@ -1,46 +1,53 @@
-cmake_minimum_required(VERSION 3.8)
-project(NWCHEMEX VERSION 1.0.0)
-find_package(CPP REQUIRED)
+cmake_minimum_required(VERSION 3.14)
+project(nwchemex VERSION 1.0.0)
+
+set(
+        CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake"
+        CACHE STRING "" FORCE
+)
+
+include(get_cpp)
 
 ### Options ###
-option(BUILD_TESTS "Should we build the tests?" OFF)
+option(BUILD_TESTING "Should we build the tests?" OFF)
 option(BUILD_PYBINDINGS "Should we build Python3 bindings?" ON)
 
-### Dependencies ####
 cpp_find_or_build_dependency(
-    NAME property_types
-    URL github.com/NWChemEx-Project/PropertyTypes
-    PRIVATE
-    CMAKE_ARGS BUILD_TESTS=OFF
+        scf
+        URL github.com/NWChemEx-Project/SCF
+        PRIVATE TRUE
+        BUILD_TARGET scf
+        FIND_TARGET nwx::scf
+        CMAKE_ARGS BUILD_TESTING=OFF
 )
 
 cpp_find_or_build_dependency(
-    NAME integrals
-    URL github.com/NWChemEx-Project/Integrals
-    PRIVATE
-    CMAKE_ARGS BUILD_TESTS=OFF
+        integrals
+        URL github.com/NWChemEx-Project/Integrals
+        PRIVATE TRUE
+        BUILD_TARGET integrals
+        FIND_TARGET nwx::integrals
+        CMAKE_ARGS BUILD_TESTING=OFF
 )
 
-cpp_find_or_build_dependency(
-    NAME scf
-    URL github.com/NWChemEx-Project/SCF
-    PRIVATE
-    CMAKE_ARGS BUILD_TESTS=ON
+cpp_add_library(
+        nwchemex
+        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
+        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
+        DEPENDS nwx::scf nwx::integrals
 )
 
-cpp_find_or_build_dependency(
-    NAME pwdft
-    URL github.com/NWChemEx-Project/PWDFT
-    PRIVATE
-    CMAKE_ARGS BUILD_TESTS=OFF
-)
-
-### Target ###
-add_subdirectory(nwchemex)
-
-### Testing ###
-if(TRUE)
-    cpp_find_or_build_dependency(NAME Catch2 URL github.com/catchorg/Catch2)
-    enable_testing()
-    add_subdirectory(tests)
+if("${BUILD_TESTING}")
+    cpp_find_or_build_dependency(
+            Catch2
+            URL github.com/catchorg/Catch2
+            BUILD_TARGET Catch2
+            FIND_TARGET Catch2::Catch2
+    )
+    cpp_add_tests(
+            test_nwchemex
+            SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests"
+            INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
+            DEPENDS Catch2::Catch2 nwchemex
+    )
 endif()
