@@ -45,9 +45,9 @@ if("${BUILD_TESTING}")
             FIND_TARGET Catch2::Catch2
     )
     cpp_add_tests(
-            test_nwchemex
-            SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests"
-            INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
-            DEPENDS Catch2::Catch2 nwchemex
+       test_nwchemex
+       SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests"
+       INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
+       DEPENDS Catch2::Catch2 nwchemex
     )
 endif()
