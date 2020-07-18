@@ -33,6 +33,10 @@ jobs:
             sudo apt-get install openmpi-bin libopenmpi-dev
             mpicc -show
             mpiexec --version
+    - name: Get Doxygen
+      run: |
+        sudo apt update
+        sudo apt-get install -f doxygen
     - name: get-gcovr
       run:  pip install gcovr
     - name: get-cmake
