@@ -13,6 +13,15 @@ option(BUILD_TESTING "Should we build the tests?" OFF)
 option(BUILD_PYBINDINGS "Should we build Python3 bindings?" ON)
 
 cpp_find_or_build_dependency(
+        integrals
+        URL github.com/NWChemEx-Project/Integrals
+        PRIVATE TRUE
+        BUILD_TARGET integrals
+        FIND_TARGET nwx::integrals
+        CMAKE_ARGS BUILD_TESTING=OFF
+)
+
+cpp_find_or_build_dependency(
         scf
         URL github.com/NWChemEx-Project/SCF
         PRIVATE TRUE
@@ -22,19 +31,20 @@ cpp_find_or_build_dependency(
 )
 
 cpp_find_or_build_dependency(
-        integrals
-        URL github.com/NWChemEx-Project/Integrals
+        mp2
+        URL github.com/NWChemEx-Project/MP2
         PRIVATE TRUE
-        BUILD_TARGET integrals
-        FIND_TARGET nwx::integrals
+        BUILD_TARGET mp2
+        FIND_TARGET nwx::mp2
         CMAKE_ARGS BUILD_TESTING=OFF
 )
+
 
 cpp_add_library(
         nwchemex
         SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
         INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
-        DEPENDS nwx::scf nwx::integrals
+        DEPENDS nwx::mp2 nwx::scf nwx::integrals
 )
 
 if("${BUILD_TESTING}")
