@@ -78,7 +78,7 @@ jobs:
             CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
       run: |
             export CURR_DIR=`pwd`
-            cmake-3.16.3-Linux-x86_64/bin/cmake -H. -Bbuild -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=TRUE -DCPP_GITHUB_TOKEN=$CPP_GITHUB_TOKEN -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="${CURR_DIR}/toolchain.cmake"verage" -DCMAKE_EXE_LINKER_FLAGS="-fprofile-arcs" -DCPP_GITHUB_TOKEN=$CPP_GITHUB_TOKEN -DCMAKE_BUILD_TYPE=Debug
+            cmake-3.16.3-Linux-x86_64/bin/cmake -H. -Bbuild -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=TRUE -DCPP_GITHUB_TOKEN=$CPP_GITHUB_TOKEN -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="${CURR_DIR}/toolchain.cmake"
     - name: ctest
       run: |
             #ctest is annoying in that it caches all output until it is finished keeping you in the dark about
