@@ -10,9 +10,14 @@ void load_modules(sde::ModuleManager& mm) {
     integrals::load_modules(mm);
     scf::load_modules(mm);
 
-    // TODO: move these defaults to the Integrals repo
-    mm.set_default<property_types::KineticIntegral<double>>(std::string{"Kinetic"});
-    mm.set_default<property_types::NuclearIntegral<double>>(std::string{"Nuclear"});
+    mm.change_submod("CoreH", "T Builder", "Kinetic");
+    mm.change_submod("CoreH", "V Builder", "Nuclear");
+    mm.change_submod("DFJK", "3CERI Builder", "ERI3");
+    mm.change_submod("DFJ", "3CERI Builder", "ERI3");
+    mm.change_submod("CanJK", "ERI Builder", "ERI4");
+    mm.change_submod("CanJ", "ERI Builder", "ERI4");
+    mm.change_submod("MetricChol", "M Builder", "ERI2");
+    mm.change_submod("DiagonalUpdate", "S Builder", "Overlap");
 }
 
 } // namespace nwx
