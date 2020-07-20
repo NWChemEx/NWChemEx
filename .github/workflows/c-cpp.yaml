@@ -39,8 +39,8 @@ jobs:
       run: |
         sudo apt update
         sudo apt-get install -f doxygen
-    - name: get-gcovr
-      run:  pip install gcovr
+#    - name: get-gcovr
+#      run:  pip install gcovr
     - name: get-cmake
       run: |
             wget https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3-Linux-x86_64.sh
@@ -78,7 +78,8 @@ jobs:
             CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
       run: |
             export CURR_DIR=`pwd`
-            cmake-3.16.3-Linux-x86_64/bin/cmake -H. -Bbuild -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=TRUE -DCPP_GITHUB_TOKEN=$CPP_GITHUB_TOKEN -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="${CURR_DIR}/toolchain.cmake"
+            export INSTALL_PATH=`pwd`/install
+            cmake-3.16.3-Linux-x86_64/bin/cmake -H. -Bbuild -DCMAKE_PREFIX_PATH=${INSTALL_PATH} -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=TRUE -DCPP_GITHUB_TOKEN=$CPP_GITHUB_TOKEN -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="${CURR_DIR}/toolchain.cmake"
     - name: ctest
       run: |
             #ctest is annoying in that it caches all output until it is finished keeping you in the dark about
@@ -87,12 +88,12 @@ jobs:
             cd build
             make
             make test
-    - name: gcovr
-      run: |
-            cd ..
-            gcovr --root NWChemEx --filter NWChemEx --exclude NWChemEx/tests --xml NWChemEx/coverage.xml
-            ls -al NWChemEx
-    - uses: codecov/codecov-action@v1
-      with:
-         token: ${{ secrets.CODECOV_TOKEN }}
-         file: ./coverage.xml
+#    - name: gcovr
+#      run: |
+#            cd ..
+#            gcovr --root NWChemEx --filter NWChemEx --exclude NWChemEx/tests --xml NWChemEx/coverage.xml
+#            ls -al NWChemEx
+#    - uses: codecov/codecov-action@v1
+#      with:
+#         token: ${{ secrets.CODECOV_TOKEN }}
+#         file: ./coverage.xml
