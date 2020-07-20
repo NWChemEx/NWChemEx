@@ -33,6 +33,8 @@ jobs:
             sudo apt-get install openmpi-bin libopenmpi-dev
             mpicc -show
             mpiexec --version
+    - name: get-scalapack
+      run:  sudo apt-get install libscalapack-openmpi-dev
     - name: Get Doxygen
       run: |
         sudo apt update
@@ -43,6 +45,19 @@ jobs:
       run: |
             wget https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3-Linux-x86_64.sh
             yes | /bin/sh cmake-3.16.3-Linux-x86_64.sh
+    - name: make-toolchain
+      run:  |
+        echo 'set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX")' >> toolchain.cmake
+        echo 'set(CMAKE_CXX_STANDARD 17)' >> toolchain.cmake
+        echo 'set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)' >> toolchain.cmake
+        echo 'set(ENABLE_SCALAPACK ON)' >> toolchain.cmake
+        echo 'set(LIBDIR "/usr/lib/x86_64-linux-gnu")' >> toolchain.cmake
+        echo 'set(LAPACK_LIBRARIES "-L${LIBDIR} -lblas -llapack")' >> toolchain.cmake
+        echo 'set(SCALAPACK_LIBRARIES  "-L${LIBDIR} -lscalapack-openmpi")' >> toolchain.cmake
+        echo 'set(blacs_LIBRARIES ${SCALAPACK_LIBRARIES})' >> toolchain.cmake
+        echo 'set(scalapack_LIBRARIES ${SCALAPACK_LIBRARIES})' >> toolchain.cmake
+        echo 'set(lapack_LIBRARIES ${LAPACK_LIBRARIES})' >> toolchain.cmake
+
     - name: build-libint
       env:
             CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
@@ -62,9 +77,8 @@ jobs:
       env:
             CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
       run: |
-            export INSTALL_DIR=`pwd`/install
-            echo "NWChemEx: INSTALL_DIR=${INSTALL_DIR}"
-            cmake-3.16.3-Linux-x86_64/bin/cmake -H. -Bbuild -DCMAKE_PREFIX_PATH=${INSTALL_DIR} -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=TRUE -DCATCH_ENABLE_COVERAGE=ON -DCMAKE_CXX_FLAGS="--coverage -std=c++17" -DCMAKE_C_FLAGS="--coverage" -DCMAKE_EXE_LINKER_FLAGS="-fprofile-arcs" -DCPP_GITHUB_TOKEN=$CPP_GITHUB_TOKEN -DCMAKE_BUILD_TYPE=Debug
+            export CURR_DIR=`pwd`
+            cmake-3.16.3-Linux-x86_64/bin/cmake -H. -Bbuild -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=TRUE -DCPP_GITHUB_TOKEN=$CPP_GITHUB_TOKEN -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="${CURR_DIR}/toolchain.cmake"
     - name: ctest
       run: |
             #ctest is annoying in that it caches all output until it is finished keeping you in the dark about
