@@ -22,6 +22,9 @@ TEST_CASE("DLPNO-MP2"){
     libchemist::Molecule mol(He1, He2);
     auto bs  = libchemist::apply_basis("cc-pvdz", mol);
     const auto [E_SCF, C] = mm.run_as<scf_pt>("SCFDIIS", mol, bs);
-    const auto [E_MP2] = mm.run_as<mp2_pt>("DLPNO", mol, bs, C);
+    property_types::type::orbital_map<orthogonal_mos> m{
+      {"Occupied", C.at("Occupied")}
+    };
+    const auto [E_MP2] = mm.run_as<mp2_pt>("DLPNO", mol, bs, m);
     std::cout << E_MP2 << std::endl;
 }
