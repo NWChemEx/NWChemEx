@@ -6,93 +6,71 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-python@v1
-      with: 
-         python-version: '3.x'
-    - name: get-gcc
-      run: |
-            sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-            sudo apt-get update
-            sudo apt-get install gcc-8 g++-8 gfortran-8
-            sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 95 --slave /usr/bin/g++ g++ /usr/bin/g++-8 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-8 --slave /usr/bin/gcov gcov /usr/bin/gcov-8
-            gcc      --version
-            g++      --version
-            gfortran --version
-            gcov     --version
-    - name: get-blas-lapack
-      run:  sudo apt-get install libopenblas-base libopenblas-dev libgslcblas0 libgsl-dev liblapacke liblapacke-dev
-    - name: get-boost
-      run:  sudo apt-get install libboost-dev libboost-all-dev
-    - name: get-eigen3
-      run:  sudo apt-get install libeigen3-dev
-    - name: get-openmpi
-      run: |
-            sudo apt-get install openmpi-bin libopenmpi-dev
-            mpicc -show
-            mpiexec --version
-    - name: get-scalapack
-      run:  sudo apt-get install libscalapack-openmpi-dev
-    - name: Get Doxygen
-      run: |
-        sudo apt update
-        sudo apt-get install -f doxygen
-    - name: get-gcovr
-      run:  pip install gcovr
-    - name: get-cmake
-      run: |
-            wget https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3-Linux-x86_64.sh
-            yes | /bin/sh cmake-3.16.3-Linux-x86_64.sh
-    - name: make-toolchain
-      run:  |
-        echo 'set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX")' >> toolchain.cmake
-        echo 'set(CMAKE_CXX_STANDARD 17)' >> toolchain.cmake
-        echo 'set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)' >> toolchain.cmake
-        echo 'set(ENABLE_SCALAPACK ON)' >> toolchain.cmake
-        echo 'set(LIBDIR "/usr/lib/x86_64-linux-gnu")' >> toolchain.cmake
-        echo 'set(LAPACK_LIBRARIES "-L${LIBDIR} -lblas -llapack")' >> toolchain.cmake
-        echo 'set(SCALAPACK_LIBRARIES  "-L${LIBDIR} -lscalapack-openmpi")' >> toolchain.cmake
-        echo 'set(blacs_LIBRARIES ${SCALAPACK_LIBRARIES})' >> toolchain.cmake
-        echo 'set(scalapack_LIBRARIES ${SCALAPACK_LIBRARIES})' >> toolchain.cmake
-        echo 'set(lapack_LIBRARIES ${LAPACK_LIBRARIES})' >> toolchain.cmake
 
-    - name: build-libint
-      env:
-            CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
-      run: |
-            export INSTALL_PATH=`pwd`/install
-            # check code out
-            wget https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz
-            tar -zxf libint-2.6.0.tgz
-            cd libint-2.6.0
-            export CXX=`which g++-8`
-            export CC=`which gcc-8`
-            ../cmake-3.16.3-Linux-x86_64/bin/cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX=${INSTALL_PATH} -DCMAKE_CXX_COMPILER=${CXX} -DCMAKE_C_COMPILER=${CC} -DCMAKE_CXX_FLAGS="-std=c++17" -DBUILD_SHARED_LIBS=ON -DCPP_GITHUB_TOKEN=$CPP_GITHUB_TOKEN
-            cd build
-            make
-            make install
-    - name: cmake
-      env:
-            CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
-      run: |
-            export CURR_DIR=`pwd`
-            cmake-3.16.3-Linux-x86_64/bin/cmake -H. -Bbuild -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=TRUE -DCPP_GITHUB_TOKEN=$CPP_GITHUB_TOKEN -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="${CURR_DIR}/toolchain.cmake"
-    - name: ctest
-      run: |
-            #ctest is annoying in that it caches all output until it is finished keeping you in the dark about
-            #whether things are working as they should.
-            #cmake-3.16.3-Linux-x86_64/bin/ctest --build-and-test build build --build-nocmake --build-generator "Unix Makefiles" --test-command make test
-            cd build
-            make
-            make test
-    - name: gcovr
-      run: |
-            cd ..
-            gcovr --root NWChemEx --filter NWChemEx --exclude NWChemEx/tests --xml NWChemEx/coverage.xml
-            ls -al NWChemEx
-    - uses: codecov/codecov-action@v1
-      with:
-         token: ${{ secrets.CODECOV_TOKEN }}
-         file: ./coverage.xml
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+      - name: get-gcc
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install gcc-9 g++-9
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 95 --slave /usr/bin/g++ g++ /usr/bin/g++-9 --slave /usr/bin/gcov gcov /usr/bin/gcov-9
+          gcc  --version
+          g++  --version
+          gcov --version
+      - name: get-blas-lapack
+        run:  sudo apt-get install libopenblas-base libopenblas-dev libgslcblas0 libgsl-dev liblapacke liblapacke-dev
+      - name: get-boost
+        run:  sudo apt-get install libboost-dev libboost-all-dev
+      - name: get-eigen3
+        run:  sudo apt-get install libeigen3-dev
+      - name: get-openmpi
+        run: |
+          sudo apt-get install openmpi-bin libopenmpi-dev
+          mpicc -show
+          mpiexec --version
+      - name: get-scalapack
+        run:  sudo apt-get install libscalapack-openmpi-dev
+      - name: Get Doxygen
+        run: |
+          sudo apt update
+          sudo apt-get install -f doxygen
+      #    - name: get-gcovr
+      #      run:  pip install gcovr
+      - name: get-cmake
+        run: |
+          wget https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3-Linux-x86_64.sh
+          yes | /bin/sh cmake-3.16.3-Linux-x86_64.sh
+      - name: get-cmake
+        run: |
+          wget https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3-Linux-x86_64.sh
+          yes | /bin/sh cmake-3.16.3-Linux-x86_64.sh
+      - name: make-toolchain
+        run:  |
+          echo 'set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX")' >> toolchain.cmake
+          echo 'set(CMAKE_CXX_STANDARD 17)' >> toolchain.cmake
+          echo 'set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)' >> toolchain.cmake
+          echo 'set(ENABLE_SCALAPACK ON)' >> toolchain.cmake
+          echo 'set(LIBDIR "/usr/lib/x86_64-linux-gnu")' >> toolchain.cmake
+          echo 'set(LAPACK_LIBRARIES "-L${LIBDIR} -lblas -llapack")' >> toolchain.cmake
+          echo 'set(SCALAPACK_LIBRARIES  "-L${LIBDIR} -lscalapack-openmpi")' >> toolchain.cmake
+          echo 'set(blacs_LIBRARIES ${SCALAPACK_LIBRARIES})' >> toolchain.cmake
+          echo 'set(scalapack_LIBRARIES ${SCALAPACK_LIBRARIES})' >> toolchain.cmake
+          echo 'set(lapack_LIBRARIES ${LAPACK_LIBRARIES})' >> toolchain.cmake
+      - name: cmake
+        env:
+          CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
+        run: |
+          export CURR_DIR=`pwd`
+          cmake-3.16.3-Linux-x86_64/bin/cmake -H. -Bbuild -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=TRUE -DCPP_GITHUB_TOKEN=$CPP_GITHUB_TOKEN -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="${CURR_DIR}/toolchain.cmake"
+      - name: ctest
+        run: |
+          #ctest is annoying in that it caches all output until it is finished keeping you in the dark about
+          #whether things are working as they should.
+          #cmake-3.16.3-Linux-x86_64/bin/ctest --build-and-test build build --build-nocmake --build-generator "Unix Makefiles" --test-command make test
+          cd build
+          make
+          make test
