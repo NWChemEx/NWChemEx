@@ -27,5 +27,46 @@ is capable of building all of the various submodules and assembling them.
 Additionally, this repo provides tools to interact with the resulting 
 software suite in a number of ways. 
 
-![Here are some instructions](dox/firstbuild.md) on how to do your first build 
-of NWChemEx (with the current structure that is private).
+## Building
+
+TODO: Turn into more formal instructions
+
+### Prerequisite: Dependenciess
+
+NWX depends on Boost, BLAS, LAPACK, MPI, and Libint2 and is not capable of
+building these depdencies on its own. Thus you will need to build and install
+them on your machine prior to attempting to build NWX.
+
+- Boost is used by TiledArray
+- BLAS/LAPACK are detected by MADNESS through TiledArray. Instructions are
+  located
+  [here](https://github.com/ValeevGroup/tiledarray/blob/master/INSTALL.md).
+- Path to Libint2 is passed to CMake by including it in CMAKE_PREFIX_PATH
+
+### Recomendations: Toolchain File
+
+It is strongly recommended that you put all options you need to pass to CMake in
+a toolchain file and tell CMake to use that file, *e.g*, if you have the
+toolchain file:
+
+```.cmake
+set(CMAKE_C_COMPILER /usr/bin/gcc)
+set(CMAKE_CPP_COMPILER /usr/bin/g++)
+#Lots of other CMake options follow
+```
+
+that has path `/path/to/my_toolchain.cmake` tell CMake about it like:
+
+```.sh
+cmake -DCMAKE_TOOLCHAIN_FILE=/path/to/my_toolchain.cmake
+```
+
+### Running jobs
+
+NWX is really designed to be driven from Python. At the moment the Python API is
+a work in progress and NWX can only be reliably driven from C++. The easiest way
+to drive NWX from C++ is the "Driving NWX from C++" unit test. This test is
+built when you build the test suite. To enable building of the test suite pass
+`BUILD_TESTING=TRUE` to CMake.
+
+

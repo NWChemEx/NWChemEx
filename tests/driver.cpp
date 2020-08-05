@@ -1,13 +1,12 @@
 #include <catch2/catch.hpp>
 #include <nwchemex/load_modules.hpp>
-#include <tamm/tamm.hpp>
 #include <libchemist/libchemist.hpp>
 
 //2. Include the property type for the module you want to run
-#include <property_types/reference_wavefunction.hpp>
+#include <property_types/core_hamiltonian.hpp>
 
 //3. Change this to the property type you want to run as
-using pt_type = property_types::ReferenceWavefunction<double>;
+using pt_type = property_types::CoreHamiltonian<double>;
 
 TEST_CASE("Driving NWX from C++"){
     sde::ModuleManager mm;
@@ -18,15 +17,13 @@ TEST_CASE("Driving NWX from C++"){
     auto bs  = libchemist::apply_basis("cc-pvdz", mol);
 
     //4. Change to the module key you want to run
-    const auto module_key = "SCF";
+    const auto module_key = "CoreH";
     //5. (Optional) Change options
 
     //6. Run the module
-    const auto& [egy, mos] =
-        mm.run_as<pt_type>(module_key, mol, bs, std::size_t{0});
+    const auto& [H] =
+        mm.run_as<pt_type>(module_key, mol, bs, bs);
 
-    std::cout <<
-      tamm::get_scalar(const_cast<tamm::Tensor<double>&>(egy)) <<
-      std::endl;
+    std::cout << H << std::endl;
 }
 
