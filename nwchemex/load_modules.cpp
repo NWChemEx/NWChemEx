@@ -18,12 +18,14 @@ void set_scf_default_modules(sde::ModuleManager& mm) {
 
 void set_mp2_default_modules(sde::ModuleManager& mm) {
     mm.change_submod("MP2", "ERI Builder", "ERI4");
-
     mm.change_submod("DOI SparseMap Builder", "dois", "DOI");
     mm.change_submod("LMO 2 AO", "dois", "DOI");
     mm.change_submod("DLPNO", "Fock Builder", "Fock");
-    mm.change_submod("DLPNO", "Dipole Builder", "EDipole");
-    mm.change_submod("DLPNO", "ERI Builder", "ERI4");
+    mm.change_submod("Dipole Center", "Dipole Builder", "EDipole");
+    mm.change_submod("Transistion Dipole", "Dipole Builder", "EDipole");
+    mm.change_submod("MP2 3-Center Sparse K", "DF Builder", "MetricChol");
+    mm.change_submod("MP2 3-Center Sparse K", "ERI Builder", "ERI3");
+    mm.change_submod("MP2 4-Center Sparse K", "ERI Builder", "ERI4");
 }
 
 } // namespace
