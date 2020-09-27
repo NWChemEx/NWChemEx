@@ -34,11 +34,9 @@ void set_mp2_default_modules(sde::ModuleManager& mm) {
 
 } // namespace
 
-
 namespace nwx {
 
 void load_modules(sde::ModuleManager& mm) {
-
     integrals::load_modules(mm);
     scf::load_modules(mm);
     mp2::load_modules(mm);
@@ -48,4 +46,3 @@ void load_modules(sde::ModuleManager& mm) {
 }
 
 } // namespace nwx
-
