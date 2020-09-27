@@ -10,11 +10,13 @@ Welcome to NWChemEx's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Core NWX Libraries
+   :caption: Core NWX Documentation
 
    SDE <https://nwchemex-project.github.io/SDE/>
-   Utilities <https://nwchemex-project.github.io/Utilities/>
    Property Types <https://nwchemex-project.github.io/PropertyTypes/>
+   Utilities <https://nwchemex-project.github.io/Utilities/>
+   LibChemist <https://nwchemex-project.github.io/LibChemist/>
+   Developer Docs <https://nwchemex-project.github.io/DeveloperTools/>
 
 .. toctree::
    :maxdepth: 2
@@ -23,4 +25,3 @@ Welcome to NWChemEx's documentation!
    Integrals <https://nwchemex-project.github.io/Integrals/>
    SCF <https://nwchemex-project.github.io/SCF/>
    MP2 <https://nwchemex-project.github.io/MP2/>
-
