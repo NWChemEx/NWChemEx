@@ -8,17 +8,17 @@
 
 import os
 
-
 # -- Project information -----------------------------------------------------
 
 project = u'NWChemEx'
-copyright = u'2019, NWChemEx Team'
+copyright = u'2020, NWChemEx Team'
 author = u'NWChemEx Team'
 
-# The short X.Y version
-version = u'1.0.0'
+# Get the version from version.txt
+with open('../../version.txt', 'r') as file:
+    version = file.read().replace('\n', '')
 # The full version, including alpha/beta/rc tags
-release = u'1.0.0alpha'
+release = version
 
 ##############################################################################
 #           Shouldn't need to change anything below this point               #
@@ -40,30 +40,14 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
-    'sphinx.ext.githubpages',
-    'breathe',
-    'exhale'
+    'sphinx.ext.githubpages'
 ]
 dir_path = os.path.dirname(os.path.realpath(__file__))
 doc_path = os.path.dirname(dir_path)
 root_path = os.path.dirname(doc_path)
 
-breathe_default_project = project
-breathe_projects = { project : os.path.join(doc_path, "doxyoutput", "xml")}
-
-exhale_args = {
-    "containmentFolder" : "./api",
-    "rootFileName" : "library_root.rst",
-    "rootFileTitle" : "Library API",
-    "doxygenStripFromPath" : "..",
-    "createTreeView" : True,
-    "exhaleExecutesDoxygen" : True,
-    "exhaleDoxygenStdin" : "INPUT = " + os.path.join(root_path, project,
-                                                     "detail_")
-}
-
 # Add any paths that contain templates here, relative to this directory.
-templates_path = []
+#templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -106,7 +90,7 @@ html_theme = 'sphinx_rtd_theme'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+#html_static_path = ['_static']
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.

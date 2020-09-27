@@ -1,5 +1,7 @@
 # NWChemEx
 
+[Documentation](https://nwchemex-project.github.io/NWChemEx)
+
 ## About This Repo
 
 First a tiny-bit of background.  NWChemEx attempts to break from the 
