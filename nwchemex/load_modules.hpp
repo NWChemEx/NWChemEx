@@ -13,4 +13,4 @@ namespace nwx {
  */
 void load_modules(sde::ModuleManager& mm);
 
-} //namespace nwx
+} // namespace nwx
