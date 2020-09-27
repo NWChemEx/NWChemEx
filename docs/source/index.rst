@@ -8,7 +8,6 @@ Welcome to NWChemEx's documentation!
    installation/index
    C++ API <https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html>
 
-
 .. toctree::
    :maxdepth: 2
    :caption: Core NWX Documentation
@@ -26,5 +25,3 @@ Welcome to NWChemEx's documentation!
    Integrals <https://nwchemex-project.github.io/Integrals/>
    SCF <https://nwchemex-project.github.io/SCF/>
    MP2 <https://nwchemex-project.github.io/MP2/>
-
-
