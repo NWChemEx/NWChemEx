@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Building the NWChemEx Package &mdash; NWChemEx 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> NWChemEx
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Building the NWChemEx Package</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html">C++ API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Core NWX Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/SDE/">SDE</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/Utilities/">Utilities</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/PropertyTypes/">Property Types</a></li>
+</ul>
+<p class="caption"><span class="caption-text">First Party NWX Supermodules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/Integrals/">Integrals</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/SCF/">SCF</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/MP2/">MP2</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NWChemEx</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">&lt;no title&gt;</a> &raquo;</li>
+        
+      <li>Building the NWChemEx Package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/installation/building.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="building-the-nwchemex-package">
+<h1>Building the NWChemEx Package<a class="headerlink" href="#building-the-nwchemex-package" title="Permalink to this headline">¶</a></h1>
+<p>Before any attempts at compiling NWChemEx can be successful there are
+a few packages that need to be available.</p>
+<p>First of all, NWChemEx depends on the TAMM library for the tensor
+operation infrastructure. In turn compiling TAMM requires the CMakeBuild
+library. More details on downloading and installing these components will
+be provided below.</p>
+<p>Secondly, NWChemEx builds using <a class="reference external" href="https://github.com/CMakePackagingProject/CMakePackagingProject.git">CMakePP</a>.
+CMakePP extends
+the CMake package with advanced dependency management capabilities.
+This package enables checking for, downloading, and building dependencies
+automatically. A side effect of using this capability is that running CMake
+will do more than just configuring the build and generating the makefiles.
+The reason is that CMakePP has to compile all the missing dependencies to
+successfully configure the build.
+Hence, a first run of CMake can take considerably longer than
+would be expected from a normal configuration run. When all
+dependencies are in place, subsequent CMake runs should be much faster.</p>
+<p>Below the build instructions are given based on a few assumptions:
+1. You are using a sane Unix-like operating system
+2. You have already installed CMakePP
+3. You have Python installed and the installation supports numpy, i.e.
+the command <cite>import numpy</cite> must succeed
+4. You are going to install all components in the same location</p>
+<p>First, create a toolchain file in the top-level directory (<cite>toolchain.cmake</cite>). This
+file should contain the following information</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span>      <span class="s">&lt;prefix</span> <span class="s">directory&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span>       <span class="s">&lt;C</span> <span class="s">compiler&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER</span>     <span class="s">&lt;C++</span> <span class="s">compiler&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_Fortran_COMPILER</span> <span class="s">&lt;Fortran</span> <span class="s">compiler&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">PYTHON_EXECUTABLE</span>      <span class="s">&lt;Python</span> <span class="s">interpreter&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">PYTHON_LIBRARY</span>         <span class="s">&lt;Python</span> <span class="s">library</span> <span class="p">(</span><span class="s">libpythonX.X</span><span class="p">)</span><span class="s">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The following script will then build and install CMakeBuild, TAMM and NWChemEx.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/NWChemEx-Project/CMakeBuild.git
+<span class="nb">cd</span> CMakeBuild
+cmake -H. <span class="se">\</span>
+      -Bbuild <span class="se">\</span>
+      -DCMAKE_TOOLCHAIN_FILE<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/../toolchain.cmake <span class="se">\</span>
+      -DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;where/you/want/to/install&gt;
+<span class="nb">cd</span> build
+cmake --build .
+<span class="c1">#May need to run as an admin depending on where you are installing CMakeBuild to</span>
+cmake --build . --target install
+<span class="nb">cd</span> ../..
+
+git clone https://github.com/NWChemEx-Project/TAMM.git
+<span class="nb">cd</span> TAMM
+cmake -H. <span class="se">\</span>
+      -Bbuild <span class="se">\</span>
+      -DCMAKE_TOOLCHAIN_FILE<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/../toolchain.cmake <span class="se">\</span>
+      -DCMAKE_PREFIX_PATH<span class="o">=</span>&lt;where/you/want/to/install&gt; <span class="se">\</span>
+      -DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;where/you/want/to/install&gt;
+<span class="nb">cd</span> build
+cmake --build .
+<span class="c1">#May need to run as an admin depending on where you are installing TAMM to</span>
+cmake --build . --target install
+<span class="nb">cd</span> ../..
+
+git clone https://github.com/NWChemEx-Project/NWChemEx.git
+<span class="nb">cd</span> NWChemEx
+cmake -H. <span class="se">\</span>
+      -Bbuild <span class="se">\</span>
+      -DCPP_GITHUB_TOKEN<span class="o">=</span>&lt;your super-secret token&gt; <span class="se">\</span>
+      -DCMAKE_TOOLCHAIN_FILE<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/../toolchain.cmake <span class="se">\</span>
+      -DCMAKE_PREFIX_PATH<span class="o">=</span>&lt;where/you/want/to/install&gt; <span class="se">\</span>
+      -DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;where/you/want/to/install&gt;
+<span class="nb">cd</span> build
+cmake --build .
+<span class="c1">#May need to run as an admin depending on where you are installing NWChemEx to</span>
+cmake --build . --target install
+<span class="nb">cd</span> ../..
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The GitHub token is only necessary because, at the moment, various
+dependencies are hosted in
+private repositories (instructions for generating a token are <a class="reference external" href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line">here</a>).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <cite>CMAKE_PREFIX_PATH</cite> need to be declared both in the <cite>toolchain.cmake</cite>
+file as well as on the CMake command line to propagate
+properly to a module and all of its dependencies.</p>
+</div>
+<p>For finer-grained control over the build we direct the reader to the more
+thorough CMakePP build instructions located <a class="reference external" href="https://cmakepackagingproject.readthedocs.io/en/latest/end_user/quick_start.html">here</a>
+and note that NWChemEx depends on several other projects:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/NWChemEx-Project/TAMM">TAMM</a></p>
+<ul>
+<li><p><a class="reference external" href="https://github.com/NWChemEx-Project/CMakeBuild">CMakeBuild</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://github.com/bennybp/BPHash">bphash</a></p></li>
+<li><p><a class="reference external" href="https://github.com/USCiLab/cereal">cereal</a></p></li>
+<li><p><a class="reference external" href="https://github.com/catchorg/Catch2">Catch2</a> (for testing only)</p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, NWChemEx Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
