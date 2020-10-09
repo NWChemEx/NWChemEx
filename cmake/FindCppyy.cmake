@@ -66,8 +66,10 @@ function(cppyy_make_python_package _cmpp_target)
     get_target_property(
             _cmpp_inc_dir ${_cmpp_target} INTERFACE_INCLUDE_DIRECTORIES
     )
+    message("incdirs ${_cmpp_inc_dir}")
     #List of libraries, usually a mix of targets and libraries
     get_target_property(_cmpp_depends ${_cmpp_target} INTERFACE_LINK_LIBRARIES)
+    message("linklibs ${_cmpp_depends}")
     #Get each dependency's include directory (shouldn't have to recurse if the
     #the targets are set up correctly)
     foreach(_cmpp_depend_i ${_cmpp_depends})
@@ -78,6 +80,7 @@ function(cppyy_make_python_package _cmpp_target)
             list(APPEND _cmpp_inc_dir ${_cmpp_depend_inc})
         endif()
     endforeach()
+    message("incdirs2 ${_cmpp_inc_dir}")
     #Printout
     get_cmake_property(_variableNames VARIABLES)
     list (SORT _variableNames)
@@ -86,8 +89,11 @@ function(cppyy_make_python_package _cmpp_target)
     endforeach()
     #List of header files
     get_target_property(_cmpp_headers ${_cmpp_target} PUBLIC_HEADER)
+    find_file(_fileloc atom.hpp)
+    message("location ${_fileloc}")
     #The library name (obviously a generator...)
     set(_cmpp_lib "$<TARGET_FILE_NAME:${_cmpp_target}>")
+    message("output dir ${_cmpp_OUTPUT_DIR}")
 
     #---------------------------------------------------------------------------
     #-----------------Generate __init__.py file contents------------------------
@@ -111,4 +117,5 @@ function(cppyy_make_python_package _cmpp_target)
     set(_cmpp_file "${_cmpp_file}from cppyy.gbl import std\n")
     #Write it out
     file(GENERATE OUTPUT ${_cmpp_file_name} CONTENT "${_cmpp_file}")
+    message("done generating")
 endfunction()

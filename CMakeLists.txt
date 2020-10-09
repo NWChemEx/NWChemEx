@@ -51,7 +51,7 @@ if(BUILD_PYBINDINGS)
     find_package(Python3 REQUIRED)
     list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
     find_package(Cppyy REQUIRED)
-    cppyy_make_python_package(chemist NAMESPACE libchemist PREFIX libchemist)
+    cppyy_make_python_package(nwchemex NAMESPACE nwchemex PREFIX nwchemex)
 endif()
 
 if("${BUILD_TESTING}")
@@ -67,15 +67,15 @@ if("${BUILD_TESTING}")
        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
        DEPENDS Catch2::Catch2 nwchemex
     )
-    if(BUILD_PYBINDINGS)
-       add_test(
-           NAME test_python
-           COMMAND Python3::Interpreter
-                   ${CMAKE_CURRENT_SOURCE_DIR}/test_python.py
-       )
-       set_tests_properties(
-           py_${test_name}
-           PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}"
-       )
-    endif()
+#    if(BUILD_PYBINDINGS)
+#       add_test(
+#           NAME test_python
+#           COMMAND Python3::Interpreter
+#                   ${CMAKE_CURRENT_SOURCE_DIR}/test_python.py
+#       )
+#       set_tests_properties(
+#           py_${test_name}
+#           PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}"
+#       )
+#    endif()
 endif()
