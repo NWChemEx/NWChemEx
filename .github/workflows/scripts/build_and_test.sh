@@ -2,7 +2,7 @@
 ################################################################################
 #
 # The master build_and_test.sh script lives at
-# NWChemEx-Project/DeveloperTools/.gihub/workflows/scripts. The
+# NWChemEx-Project/DeveloperTools/.github/workflows/scripts. The
 # build_and_test.sh script contained in all other NWChemEx-Project repositories
 # is a synchronized copy of the master script. Thus to make changes to the
 # build_and_test.sh file please make them to the master script.
@@ -35,6 +35,7 @@ echo "set(BUILD_TESTING ON)" > "${toolchain_file}"
   echo 'set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)'
   echo "set(BUILD_SHARED_LIBS ON)"
   echo "set(CATCH_ENABLE_COVERAGE ON)"
+  echo "set(CMAKE_PREFIX_PATH $(pwd)/install)"
   echo 'set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -std=c++17")'
   echo 'set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX")'
   echo 'set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")'
