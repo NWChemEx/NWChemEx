@@ -78,7 +78,7 @@ if("${BUILD_TESTING}")
                    ${CMAKE_CURRENT_SOURCE_DIR}/test_python.py
        )
        set_tests_properties(
-           py_${test_name}
+           test_python 
            PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}"
        )
     endif()

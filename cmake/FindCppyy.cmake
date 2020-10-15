@@ -68,7 +68,7 @@ function(cppyy_make_python_package _cmpp_target)
         string(TOLOWER ${_cmpp_PREFIX} _cmpp_PREFIX)
     endif()
     if("${_cmpp_OUTPUT_DIR}" STREQUAL "")
-        set(_cmpp_OUTPUT_DIR ${CMAKE_BINARY_DIR}/PyNWChemEx})
+        set(_cmpp_OUTPUT_DIR "${CMAKE_BINARY_DIR}/PyNWChemEx")
     endif()
 
     #---------------------------------------------------------------------------
