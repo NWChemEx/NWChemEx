@@ -76,8 +76,7 @@ function(cppyy_make_python_package _cmpp_target)
     #---------------------------------------------------------------------------
     #List of include directories, usually a generator
     get_target_property(
-            _cmpp_inc_dir ${_cmpp_target} INTERFACE_INCLUDE_DIRECTORIES
-    )
+            _cmpp_inc_dir ${_cmpp_target} INCLUDE_DIRECTORIES)
     #Add dependent libraries
     list(APPEND _cmpp_inc_dir ${utilities_SOURCE_DIR} ${libchemist_SOURCE_DIR})
     list(APPEND _cmpp_inc_dir ${property_types_SOURCE_DIR} ${sde_SOURCE_DIR})
