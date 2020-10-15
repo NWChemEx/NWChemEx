@@ -17,22 +17,26 @@ void set_scf_default_modules(sde::ModuleManager& mm) {
 }
 
 void set_mp2_default_modules(sde::ModuleManager& mm) {
-    mm.change_submod("MP2", "ERI Builder", "ERI4");
-
     mm.change_submod("DOI SparseMap Builder", "dois", "DOI");
     mm.change_submod("LMO 2 AO", "dois", "DOI");
+    mm.change_submod("AO 2 Aux", "dois", "DOI");
     mm.change_submod("DLPNO", "Fock Builder", "Fock");
-    mm.change_submod("DLPNO", "Dipole Builder", "EDipole");
-    mm.change_submod("DLPNO", "ERI Builder", "ERI4");
+    mm.change_submod("Dipole Center", "Dipole Builder", "EDipole");
+    mm.change_submod("Transistion Dipole", "Dipole Builder", "EDipole");
+    mm.change_submod("MP2 3-Center K", "(P | mu nu)", "ERI3");
+    mm.change_submod("MP2 3-Center K", "(Q | P)", "MetricChol");
+    mm.change_submod("MP2 3-Center Sparse K", "(Q | P)", "Sparse DF Coefs");
+    mm.change_submod("MP2 3-Center Sparse K", "(P | mu nu)", "ERI3");
+    mm.change_submod("MP2 4-Center K", "(mu nu | lambda sigma)", "ERI4");
+    mm.change_submod("MP2 4-Center Sparse K", "(mu nu | lambda sigma)", "ERI4");
+    mm.change_submod("Sparse DF Coefs", "M Builder", "ERI2");
 }
 
 } // namespace
 
-
 namespace nwx {
 
 void load_modules(sde::ModuleManager& mm) {
-
     integrals::load_modules(mm);
     scf::load_modules(mm);
     mp2::load_modules(mm);
@@ -42,4 +46,3 @@ void load_modules(sde::ModuleManager& mm) {
 }
 
 } // namespace nwx
-

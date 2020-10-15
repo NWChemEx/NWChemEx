@@ -1,8 +1,3 @@
-.. NWChemEx documentation master file, created by
-   sphinx-quickstart on Fri Feb 15 16:25:36 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to NWChemEx's documentation!
 ====================================
 
@@ -10,5 +5,23 @@ Welcome to NWChemEx's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
    installation/index
+   C++ API <https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html>
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Core NWX Documentation
+
+   SDE <https://nwchemex-project.github.io/SDE/>
+   Property Types <https://nwchemex-project.github.io/PropertyTypes/>
+   Utilities <https://nwchemex-project.github.io/Utilities/>
+   LibChemist <https://nwchemex-project.github.io/LibChemist/>
+   Developer Docs <https://nwchemex-project.github.io/DeveloperTools/>
+
+.. toctree::
+   :maxdepth: 2
+   :caption: First Party NWX Supermodules
+
+   Integrals <https://nwchemex-project.github.io/Integrals/>
+   SCF <https://nwchemex-project.github.io/SCF/>
+   MP2 <https://nwchemex-project.github.io/MP2/>

@@ -1,0 +1,26 @@
+name: Test Documentation
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  Build-Documentation:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        cmake_version: [3.16.3]
+
+    steps:
+      - name: Obtain Source
+        uses: actions/checkout@v2
+      - name: Get dependencies
+        env:
+          cmake_version: ${{ matrix.cmake_version }}
+        run: .github/workflows/scripts/get_dependencies.sh cmake doxygen sphinx
+      - name: Build documentation
+        env:
+          cmake_version: ${{ matrix.cmake_version }}
+        run: .github/workflows/scripts/build_docs.sh nwchemex_cxx_api
+
