@@ -1,16 +1,28 @@
 #This CMake module ensures that your Python interpreter has the cppyy module
 #installed. It also defines a function ``cppyy_make_python_package`` which will
 #skim a CMake target and automatically generate a
-find_package(Python3 REQUIRED)
+
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+
+#Check if cppyy Python package exists
 execute_process(
     COMMAND Python3::Interpreter -c "import cppyy"
     RESULT_VARIABLE _fcppyy_result
-    OUTPUT_VARIABLE _fcppyy_output
-    ERROR_VARIABLE  _fcppyy_error
 )
-
 if(NOT "${_fcppyy_result}" STREQUAL "")
-    set(Cppyy_FOUND FALSE)
+    #Try to install cppyy Python package, as it doesn't exist
+    if(DEFINED ENV{VIRTUAL_ENV} OR DEFINED ENV{CONDA_PREFIX})
+      set(_pip_args)
+    else()
+      set(_pip_args "--user")
+    endif()
+    set(_pypkg_name "cppyy")
+    execute_process(COMMAND ${Python3_EXECUTABLE} -m pip install ${_pypkg_name} ${_pip_args})
+    #Check again if cppyy Python works
+    execute_process(COMMAND Python3::Interpreter -c "import cppyy" RESULT_VARIABLE _fcppyy_result)
+    if(NOT "${_fcppyy_result}" STREQUAL "")
+       set(Cppyy_FOUND FALSE)
+    endif()
 endif()
 
 # This function will skim a CMake target and create a file __init__.py that
@@ -56,7 +68,7 @@ function(cppyy_make_python_package _cmpp_target)
         string(TOLOWER ${_cmpp_PREFIX} _cmpp_PREFIX)
     endif()
     if("${_cmpp_OUTPUT_DIR}" STREQUAL "")
-        set(_cmpp_OUTPUT_DIR ${CMAKE_BINARY_DIR}/${_cmpp_PREFIX})
+        set(_cmpp_OUTPUT_DIR ${CMAKE_BINARY_DIR}/PyNWChemEx})
     endif()
 
     #---------------------------------------------------------------------------
@@ -66,56 +78,33 @@ function(cppyy_make_python_package _cmpp_target)
     get_target_property(
             _cmpp_inc_dir ${_cmpp_target} INTERFACE_INCLUDE_DIRECTORIES
     )
-    message("incdirs ${_cmpp_inc_dir}")
-    #List of libraries, usually a mix of targets and libraries
-    get_target_property(_cmpp_depends ${_cmpp_target} INTERFACE_LINK_LIBRARIES)
-    message("linklibs ${_cmpp_depends}")
-    #Get each dependency's include directory (shouldn't have to recurse if the
-    #the targets are set up correctly)
-    foreach(_cmpp_depend_i ${_cmpp_depends})
-        if(TARGET ${_cmpp_depend_i})
-            get_target_property(
-                _cmpp_depend_inc ${_cmpp_depend_i} INTERFACE_INCLUDE_DIRECTORIES
-            )
-            list(APPEND _cmpp_inc_dir ${_cmpp_depend_inc})
-        endif()
-    endforeach()
-    message("incdirs2 ${_cmpp_inc_dir}")
-    #Printout
-    get_cmake_property(_variableNames VARIABLES)
-    list (SORT _variableNames)
-    foreach (_variableName ${_variableNames})
-        message(STATUS "${_variableName}=${${_variableName}}")
-    endforeach()
-    #List of header files
-    get_target_property(_cmpp_headers ${_cmpp_target} PUBLIC_HEADER)
-    find_file(_fileloc atom.hpp)
-    message("location ${_fileloc}")
+    #Add dependent libraries
+    list(APPEND _cmpp_inc_dir ${utilities_SOURCE_DIR} ${libchemist_SOURCE_DIR})
+    list(APPEND _cmpp_inc_dir ${property_types_SOURCE_DIR} ${sde_SOURCE_DIR})
     #The library name (obviously a generator...)
     set(_cmpp_lib "$<TARGET_FILE_NAME:${_cmpp_target}>")
-    message("output dir ${_cmpp_OUTPUT_DIR}")
 
     #---------------------------------------------------------------------------
     #-----------------Generate __init__.py file contents------------------------
     #---------------------------------------------------------------------------
     set(_cmpp_file_name "${_cmpp_OUTPUT_DIR}/__init__.py")
-    set(_cmpp_file "import cppyy\n")
-    set(_cmpp_file "${_cmpp_file}import os\n")
-    set(_cmpp_file "${_cmpp_file}paths = \"${_cmpp_inc_dir}\".split(';')\n")
-    set(_cmpp_file "${_cmpp_file}for p in paths:\n")
-    set(_cmpp_file "${_cmpp_file}    if p:\n")
-    set(_cmpp_file "${_cmpp_file}        cppyy.add_include_path(p)\n")
-    set(_cmpp_file "${_cmpp_file}headers = \"${_cmpp_headers}\".split(';')\n")
-    set(_cmpp_file "${_cmpp_file}for h in headers:\n")
-    set(_cmpp_file "${_cmpp_file}    if h:\n")
-    set(_cmpp_file "${_cmpp_file}        cppyy.include(h)\n")
-    set(_cmpp_file "${_cmpp_file}dir = os.path.realpath(__file__)\n")
-    set(_cmpp_file "${_cmpp_file}dir = os.path.dirname(dir)\n")
-    set(_cmpp_file "${_cmpp_file}lib = os.path.join(\"${CMAKE_BINARY_DIR}\", \"${_cmpp_lib}\")\n")
-    set(_cmpp_file "${_cmpp_file}cppyy.load_library(lib)\n")
-    set(_cmpp_file "${_cmpp_file}from cppyy.gbl import ${_cmpp_NAMESPACE}\n")
-    set(_cmpp_file "${_cmpp_file}from cppyy.gbl import std\n")
+    set(_cmpp_file "import cppyy\n\n")
+    foreach(_item ${_cmpp_inc_dir})
+        if(NOT ${_item} STREQUAL "")
+          set(_cmpp_file "${_cmpp_file}cppyy.add_include_path(\"${_item}\")\n")
+        endif()
+    endforeach()
+    set(_cmpp_file "${_cmpp_file}cppyy.include(\"${nwchemex_SOURCE_DIR}/nwchemex/load_modules.hpp\")\n")
+    set(_cmpp_file "${_cmpp_file}cppyy.include(\"${libchemist_SOURCE_DIR}/libchemist/libchemist.hpp\")\n")
+    set(_cmpp_file "${_cmpp_file}cppyy.include(\"${sde_SOURCE_DIR}/sde/module_manager.hpp\")\n")
+    set(_cmpp_file "${_cmpp_file}cppyy.include(\"${property_types_SOURCE_DIR}/property_types/types.hpp\")\n")
+    set(_cmpp_file "${_cmpp_file}cppyy.include(\"${property_types_SOURCE_DIR}/property_types/reference_wavefunction.hpp\")\n")
+    set(_cmpp_file "${_cmpp_file}cppyy.include(\"${property_types_SOURCE_DIR}/property_types/correlation_energy.hpp\")\n")
+    set(_cmpp_file "${_cmpp_file}cppyy.include(\"${property_types_SOURCE_DIR}/property_types/core_hamiltonian.hpp\")\n")
+    set(_cmpp_file "${_cmpp_file}\ncppyy.load_library(\"${CMAKE_BINARY_DIR}/${_cmpp_lib}\")\n\n")
+    set(_cmpp_file "${_cmpp_file}from cppyy.gbl import sde, libchemist, nwx, property_types, TA\n")
+    set(_cmpp_file "${_cmpp_file}from cppyy.gbl.std import array, vector\n")
+    set(_cmpp_file "${_cmpp_file}from ctypes import c_int\n")
     #Write it out
     file(GENERATE OUTPUT ${_cmpp_file_name} CONTENT "${_cmpp_file}")
-    message("done generating")
 endfunction()
