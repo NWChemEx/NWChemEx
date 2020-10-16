@@ -37,15 +37,16 @@ class NWChemExTestCase(unittest.TestCase):
         E_MP2 = mm.run_as[mp2_pt]("MP2", molecule, basis, C)
         self.assertAlmostEqual(ref_mp2, E_MP2[0], places=8)
 
-     def test_dlpno_mp2_energy(self):
-         ref_scf = -5.588377138718967
-         ref_dlpno_mp2 = 0.0
+     def test_dlpno_mp2_energy_2(self):
+         ref_scf = -75.9897958417729
+         ref_dlpno_mp2 = -0.21434765347797086
  
          mm = sde.ModuleManager()
          nwx.load_modules(mm)
-         He_1 = libchemist.Atom("He", array([0.0, 0.0, 0.0]), libchemist.Atom.AtomicNumber(2))
-         He_2 = libchemist.Atom("He", array([0.0, 0.0, 2.0]), libchemist.Atom.AtomicNumber(2))
-         molecule = libchemist.Molecule(He_1, He_2, libchemist.Molecule.Charge(0), libchemist.Molecule.Multiplicity(1))
+         O   = libchemist.Atom("O", array([0.0, -0.07579039945857, 0.0]), libchemist.Atom.AtomicNumber(8)
+         H_1 = libchemist.Atom("H", array([0.86681456860648, 0.60144316994806, 0.0]), libchemist.Atom.AtomicNumber(1))
+         H_2 = libchemist.Atom("H", array([-0.86681456860648, 0.60144316994806, 0.0]), libchemist.Atom.AtomicNumber(1))
+         molecule = libchemist.Molecule(O, H_1, H_2, libchemist.Molecule.Charge(0), libchemist.Molecule.Multiplicity(1))
          basis = libchemist.apply_basis("cc-pvdz", molecule)
          canonical_mos = property_types.type.canonical_mos["double"]
          pt_type = property_types.ReferenceWavefunction["double", canonical_mos]
