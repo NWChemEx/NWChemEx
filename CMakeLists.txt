@@ -75,7 +75,7 @@ if("${BUILD_TESTING}")
        add_test(
            NAME test_python
            COMMAND Python3::Interpreter
-                   ${CMAKE_CURRENT_SOURCE_DIR}/test_python.py
+                   ${CMAKE_CURRENT_SOURCE_DIR}tests//test_python.py
        )
        set_tests_properties(
            test_python 
