@@ -80,6 +80,9 @@ function(cppyy_make_python_package _cmpp_target)
     #Add dependent libraries
     list(APPEND _cmpp_inc_dir ${utilities_SOURCE_DIR} ${libchemist_SOURCE_DIR})
     list(APPEND _cmpp_inc_dir ${property_types_SOURCE_DIR} ${sde_SOURCE_DIR})
+    list(APPEND _cmpp_inc_dir ${BPHash_SOURCE_DIR} ${MADNESS_SOURCE_DIR})
+    list(APPEND _cmpp_inc_dir "${TiledArray_SOURCE_DIR}/src" "${TiledArray_BINARY_DIR}/src")
+    list(APPEND _cmpp_inc_dir "${blacspp_SOURCE_DIR}/include" "${scalapackpp_SOURCE_DIR}/include")
     #The library name (obviously a generator...)
     set(_cmpp_lib "$<TARGET_FILE_NAME:${_cmpp_target}>")
 
