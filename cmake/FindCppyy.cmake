@@ -84,6 +84,7 @@ function(cppyy_make_python_package _cmpp_target)
     list(APPEND _cmpp_inc_dir "${MADNESS_SOURCE_DIR}/src" "${MADNESS_BINARY_DIR}/src")
     list(APPEND _cmpp_inc_dir "${TiledArray_SOURCE_DIR}/src" "${TiledArray_BINARY_DIR}/src")
     list(APPEND _cmpp_inc_dir "${blacspp_SOURCE_DIR}/include" "${scalapackpp_SOURCE_DIR}/include")
+    list(APPEND _cmpp_inc_dir ${MPI_C_COMPILER_INCLUDE_DIRS})
     #The library name (obviously a generator...)
     set(_cmpp_lib "$<TARGET_FILE_NAME:${_cmpp_target}>")
 
