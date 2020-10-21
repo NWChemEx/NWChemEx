@@ -43,9 +43,9 @@ class NWChemExTestCase(unittest.TestCase):
  
         mm = sde.ModuleManager()
         nwx.load_modules(mm)
-        O   = libchemist.Atom("O", array([0.0, -0.07579039945857, 0.0]), libchemist.Atom.AtomicNumber(8))
-        H_1 = libchemist.Atom("H", array([0.86681456860648, 0.60144316994806, 0.0]), libchemist.Atom.AtomicNumber(1))
-        H_2 = libchemist.Atom("H", array([-0.86681456860648, 0.60144316994806, 0.0]), libchemist.Atom.AtomicNumber(1))
+        O   = libchemist.Atom("O", array([0.0, -0.1432223429807816, 0.0]), libchemist.Atom.AtomicNumber(8))
+        H_1 = libchemist.Atom("H", array([1.6380335020342418, 1.1365568803584036, 0.0]), libchemist.Atom.AtomicNumber(1))
+        H_2 = libchemist.Atom("H", array([-1.6380335020342418, 1.1365568803584036, 0.0]), libchemist.Atom.AtomicNumber(1))
         molecule = libchemist.Molecule(O, H_1, H_2, libchemist.Molecule.Charge(0), libchemist.Molecule.Multiplicity(1))
         basis = libchemist.apply_basis("cc-pvdz", molecule)
         canonical_mos = property_types.type.canonical_mos["double"]
