@@ -58,7 +58,7 @@ class NWChemExTestCase(unittest.TestCase):
   
         orb_map = property_types.type.orbital_map[orthogonal_mos]({"Occupied": C.at("Occupied")})
         E_MP2_DLPNO = mm.run_as[dlpno_pt]("DLPNO", molecule, basis, orb_map)
-        self.assertAlmostEqual(ref_dlpno_mp2, E_MP2_DLPNO, places=8)
+        self.assertAlmostEqual(ref_dlpno_mp2, E_MP2_DLPNO[0], places=8)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
