@@ -38,16 +38,18 @@ class NWChemExTestCase(unittest.TestCase):
         self.assertAlmostEqual(ref_mp2, E_MP2[0], places=8)
 
     def test_dlpno_mp2_energy(self):
-        ref_scf = -75.9897958417729
+        ref_scf = -75.9897958417729   
         ref_dlpno_mp2 = -0.21434765347797086
  
         mm = sde.ModuleManager()
         nwx.load_modules(mm)
-        O   = libchemist.Atom("O", array([0.0, -0.07579039945857, 0.0]), libchemist.Atom.AtomicNumber(8))
-        H_1 = libchemist.Atom("H", array([0.86681456860648, 0.60144316994806, 0.0]), libchemist.Atom.AtomicNumber(1))
-        H_2 = libchemist.Atom("H", array([-0.86681456860648, 0.60144316994806, 0.0]), libchemist.Atom.AtomicNumber(1))
-        molecule = libchemist.Molecule(O, H_1, H_2, libchemist.Molecule.Charge(0), libchemist.Molecule.Multiplicity(1))
+
+        O   = libchemist.Atom(AtomName="O", Coordinates=[0.0, -0.1432223429807816, 0.0], AtomicNumber=8)
+        H_1 = libchemist.Atom(AtomName="H", Coordinates=[1.6380335020342418, 1.1365568803584036, 0.0], AtomicNumber=1)
+        H_2 = libchemist.Atom(AtomName="H", Coordinates=[-1.6380335020342418, 1.1365568803584036, 0.0], AtomicNumber=1)
+        molecule = libchemist.Molecule(O, H_1, H_2, Charge=0, Multiplicity=1)
         basis = libchemist.apply_basis("cc-pvdz", molecule)
+
         canonical_mos = property_types.type.canonical_mos["double"]
         pt_type = property_types.ReferenceWavefunction["double", canonical_mos]
         orthogonal_mos = property_types.type.orthogonal_orbs["double"]
@@ -57,8 +59,8 @@ class NWChemExTestCase(unittest.TestCase):
         self.assertAlmostEqual(ref_scf, E, places=8)
   
         orb_map = property_types.type.orbital_map[orthogonal_mos]({"Occupied": C.at("Occupied")})
-        E_MP2_DLPNO= mm.run_as[dlpno_pt]("DLPNO", molecule, basis, orb_map)
-        self.assertAlmostEqual(ref_dlpno_mp2, E, places=8)
+        E_MP2_DLPNO = mm.run_as[dlpno_pt]("DLPNO", molecule, basis, orb_map)
+        self.assertAlmostEqual(ref_dlpno_mp2, E_MP2_DLPNO[0], places=8)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
