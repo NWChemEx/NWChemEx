@@ -25,6 +25,15 @@
 #   - This script needs to be run in sudo mode to actually install dependencies
 #   - Python dependencies are installed in the virtual environment "venv"
 
+
+################################################################################
+#             Assign Shell Commands to Variables for Consistency               #
+################################################################################
+
+APT_COMMAND="sudo apt"
+APT_GET_COMMAND="sudo apt-get"
+PIP_COMMAND="pip"
+
 ################################################################################
 #                               Internal Functions                             #
 ################################################################################
@@ -34,8 +43,8 @@
 # Usage:
 #   get_boost
 get_boost() {
-  sudo apt update
-  sudo apt-get install libboost-all-dev
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install libboost-all-dev
 }
 
 # Wraps getting CBLAS
@@ -44,8 +53,8 @@ get_boost() {
 #   get_cblas
 # TODO: Should the libgsl be made into it's own function?
 get_cblas() {
-  sudo apt update
-  sudo apt-get install libgslcblas0 libgsl-dev
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install libgslcblas0 libgsl-dev
 }
 
 # Wraps installing clang-format
@@ -53,9 +62,11 @@ get_cblas() {
 # Usage:
 #   get_clang_format
 get_clang_format() {
-  sudo apt update
-  sudo apt-get install -f clang-format-9
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install -f clang-format-9
 }
+
+
 
 # Wraps downloading and installing a specific version of CMake
 #
@@ -71,13 +82,21 @@ get_cmake() {
   yes | /bin/sh "${script_name}"
 }
 
+# Wraps installing Cppyy
+#
+# Usage:
+#   get_cppyy
+get_cppyy() {
+  ${PIP_COMMAND} install cppyy
+}
+
 # Wraps installing Doxygen
 #
 # Usage:
 #   get_doxygen
 get_doxygen() {
-  sudo apt update
-  sudo apt-get install -f doxygen
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install -f doxygen
 }
 
 # Wraps installing Eigen3
@@ -85,8 +104,8 @@ get_doxygen() {
 # Usage:
 #   get_eigen3
 get_eigen3() {
-  sudo apt update
-  sudo apt-get install libeigen3-dev
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install libeigen3-dev
 }
 
 # Wraps installing GCC
@@ -106,8 +125,8 @@ get_gcc() {
   gcov_v="${gcov_no_v}-${1}"
 
   sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-  sudo apt-get update
-  sudo apt-get install "gcc-${1}" "g++-${1}" "gfortran-${1}"
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install "gcc-${1}" "g++-${1}" "gfortran-${1}"
   sudo update-alternatives --install "${gcc_no_v}" gcc "${gcc_v}" 95 \
                            --slave "${gxx_no_v}" g++ "${gxx_v}" \
                            --slave "${gfort_no_v}" gfortran "${gfort_v}" \
@@ -119,9 +138,9 @@ get_gcc() {
 # Usage:
 #   get_gcovr
 get_gcovr() {
-  sudo apt update
-  sudo apt-get install libxml2-dev libxslt-dev python-dev
-  pip install gcovr
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install libxml2-dev libxslt-dev python-dev
+  ${PIP_COMMAND} install gcovr
 }
 
 # Wraps installing LAPACKe
@@ -130,8 +149,8 @@ get_gcovr() {
 #   get_lapacke
 # TODO: Does this need synchronized with the version of BLAS being installed?
 get_lapacke() {
-  sudo apt update
-  sudo apt-get install liblapacke liblapacke-dev
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install liblapacke liblapacke-dev
 }
 
 # Wraps installing OpenBLAS
@@ -139,8 +158,8 @@ get_lapacke() {
 # Usage:
 #   get_openblas
 get_openblas() {
-  sudo apt update
-  sudo apt-get install libopenblas-base libopenblas-dev
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install libopenblas-base libopenblas-dev
 }
 
 # Wraps installing OpenMPI
@@ -148,8 +167,8 @@ get_openblas() {
 # Usage:
 #   get_openmpi
 get_openmpi() {
-  sudo apt update
-  sudo apt-get install openmpi-bin libopenmpi-dev
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install openmpi-bin libopenmpi-dev
 }
 
 # Wraps installing ScaLAPACK
@@ -159,8 +178,8 @@ get_openmpi() {
 #
 # TODO: We probably need to take the MPI distro into account
 get_scalapack() {
-  sudo apt update
-  sudo apt-get install libscalapack-openmpi-dev
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install libscalapack-openmpi-dev
 }
 
 # Wraps installing Sphinx and the ReadTheDocs Theme
@@ -168,11 +187,11 @@ get_scalapack() {
 # Usage:
 #   get_sphinx
 get_sphinx() {
-  sudo apt update
-  sudo apt-get install -f python3-venv
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install -f python3-venv
   python3 -m venv venv
   . venv/bin/activate
-  pip3 install sphinx sphinx_rtd_theme
+  ${PIP_COMMAND} install sphinx sphinx_rtd_theme
 }
 
 ################################################################################
@@ -193,6 +212,8 @@ for depend in "$@"; do
     get_clang_format
   elif [ "${depend}" = "cmake" ]; then
     get_cmake "${cmake_version}"
+  elif [ "${depend}" = "cppyy" ]; then
+    get_cppyy
   elif [ "${depend}" = "doxygen" ]; then
     get_doxygen
   elif [ "${depend}" = "eigen3" ]; then
