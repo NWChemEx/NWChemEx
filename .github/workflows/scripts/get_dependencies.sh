@@ -119,6 +119,8 @@ get_gcc() {
 # Usage:
 #   get_gcovr
 get_gcovr() {
+  sudo apt update
+  sudo apt-get install libxml2-dev libxslt-dev python-dev
   pip install gcovr
 }
 
