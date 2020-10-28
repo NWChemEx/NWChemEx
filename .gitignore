@@ -15,6 +15,10 @@
 # These are directories used by IDEs for storing settings
 .idea/
 
+# These are common Python virtual enviornment directory names
+venv/
+docs/venv/
+
 # These are common build directory names
 docs/build
 docs/doxyoutput
