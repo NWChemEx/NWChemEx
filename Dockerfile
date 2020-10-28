@@ -60,8 +60,6 @@ RUN         apt-get update \
             && . venv/bin/activate \
             && python -m pip install sphinx sphinx_rtd_theme
 
-ENV         CPP_GITHUB_TOKEN "c14db7d3bb0aa4859e29bf875ec285cd87624b8f"
-
 ENV         arch Linux-x86_64
 ENV         cmake_root ${pwd}/cmake-"${cmake_v}"-"${arch}"
 ENV         cmake_command "${cmake_root}/bin/cmake"
