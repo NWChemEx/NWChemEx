@@ -1,6 +1,27 @@
 FROM        ubuntu:20.04
 
-LABEL       maintainer "Bert de Jong, wadejong@lbl.gov"
+ARG         github_token
+ARG         username
+ARG         password
+
+# This Dockerfile aim to reproduce the setup in the Github Actions cloud
+# instances as closely as possible.
+#
+# Note:
+# In this Dockerfile we use the developer's personal GITHUB_TOKEN to access
+# private repositories. For this to work the GITHUB_TOKEN must be passed to
+# to Docker when Docker is invoked. To pass the GITHUB_TOKEN to the Docker
+# instance invoke Docker as:
+#
+#    docker build . \
+#           --build-arg github_token=$CPP_GITHUB_TOKEN \
+#           --build-arg username=<username> \
+#           --build-arg password=<password>
+#
+# Where $GITHUB_TOKEN returns the value of the GITHUB_TOKEN environment
+# variable (which should be set to your personal GITHUB_TOKEN). The 
+# GITHUB_TOKEN before the "=" is the name of the variable that can be used
+# in the Dockerfile.
 
 ENV         LC_ALL C.UTF-8
 ENV         LANG C.UTF-8
@@ -87,7 +108,7 @@ RUN         echo "set(BUILD_TESTING ON)" > "${toolchain_file}" \
             && echo 'set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX")' >> "${toolchain_file}" \
             && echo 'set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")' >> "${toolchain_file}" \
             && echo 'set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fprofile-arcs")' >> "${toolchain_file}" \
-            && echo 'set(CPP_GITHUB_TOKEN "${CPP_GITHUB_TOKEN}")' >> "${toolchain_file}" \
+            && echo 'set(CPP_GITHUB_TOKEN "${github_token}")' >> "${toolchain_file}" \
             && echo 'set(CMAKE_BUILD_TYPE Debug)' >> "${toolchain_file}" \
             && echo 'set(ENABLE_SCALAPACK ON)' >> "${toolchain_file}" \
             && echo 'set(LIBDIR "/usr/lib/x86_64-linux-gnu")' >> "${toolchain_file}" \
@@ -98,7 +119,7 @@ RUN         echo "set(BUILD_TESTING ON)" > "${toolchain_file}" \
             && echo 'set(lapack_LIBRARIES ${LAPACK_LIBRARIES})' >> "${toolchain_file}"
 
 WORKDIR     /app
-RUN         git clone --branch python https://${CPP_GITHUB_USER}:${CPP_GITHUB_TOKEN}@github.com/NWChemEx-Project/NWChemEx.git 
+RUN         git clone --branch python https://${username}:${password}@github.com/NWChemEx-Project/NWChemEx.git 
 WORKDIR     /app/NWChemEx
 RUN         ${cmake_command} -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE="${toolchain_file}" ; ${cmake_command} --build build
 WORKDIR     /app/NWChemEx/build 
