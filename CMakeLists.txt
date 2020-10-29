@@ -51,12 +51,20 @@ cpp_add_library(
         DEPENDS nwx::mp2 nwx::scf nwx::integrals
 )
 
+if(BUILD_PYBINDINGS)
+    find_package(Python3 REQUIRED)
+    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+    find_package(Cppyy REQUIRED)
+    cppyy_make_python_package(nwchemex NAMESPACE nwchemex PREFIX nwchemex)
+endif()
+
 if("${BUILD_TESTING}")
     cpp_find_or_build_dependency(
             Catch2
             URL github.com/catchorg/Catch2
             BUILD_TARGET Catch2
             FIND_TARGET Catch2::Catch2
+            VERSION v2.x
     )
     cpp_add_tests(
        test_nwchemex
@@ -64,4 +72,15 @@ if("${BUILD_TESTING}")
        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
        DEPENDS Catch2::Catch2 nwchemex
     )
+    if(BUILD_PYBINDINGS)
+       add_test(
+           NAME test_python
+           COMMAND Python3::Interpreter
+                   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_python.py
+       )
+       set_tests_properties(
+           test_python 
+           PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}"
+       )
+    endif()
 endif()
