@@ -2,7 +2,6 @@ import unittest
 from PyNWChemEx import *
 
 unittest.TestLoader.sortTestMethodsUsing = None
-world = TA.initialize(c_int(0),c_int(0),True)
 
 class NWChemExTestCase(unittest.TestCase):
 
@@ -64,4 +63,3 @@ class NWChemExTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
-    TA.finalize()
