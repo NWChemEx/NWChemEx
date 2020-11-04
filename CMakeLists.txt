@@ -52,6 +52,9 @@ cpp_add_library(
 )
 
 if(BUILD_PYBINDINGS)
+    if(NOT ${BUILD_SHARED_LIBS})
+       message(FATAL_ERROR "BUILD_SHARED_LIBS needs to be ON as Python needs shared libraries")
+    endif()
     find_package(Python3 REQUIRED)
     list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
     find_package(Cppyy REQUIRED)
