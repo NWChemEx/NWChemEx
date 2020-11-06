@@ -22,7 +22,7 @@ void set_mp2_default_modules(sde::ModuleManager& mm) {
     mm.change_submod("AO 2 Aux", "dois", "DOI");
     mm.change_submod("DLPNO", "Fock Builder", "Fock");
     mm.change_submod("Dipole Center", "Dipole Builder", "EDipole");
-    mm.change_submod("Transistion Dipole", "Dipole Builder", "EDipole");
+    mm.change_submod("Transition Dipole", "Dipole Builder", "EDipole");
     mm.change_submod("MP2 3-Center K", "(P | mu nu)", "ERI3");
     mm.change_submod("MP2 3-Center K", "(Q | P)", "MetricChol");
     mm.change_submod("MP2 3-Center Sparse K", "(Q | P)", "Sparse DF Coefs");
