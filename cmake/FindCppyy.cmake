@@ -86,7 +86,7 @@ function(cppyy_make_python_package _cmpp_target)
     list(APPEND _cmpp_inc_dir "${blacspp_SOURCE_DIR}/include" "${scalapackpp_SOURCE_DIR}/include")
     list(APPEND _cmpp_inc_dir ${MPI_CXX_HEADER_DIR}) 
     get_property(EIGEN3_INCLUDE_DIRS TARGET TiledArray_Eigen PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-    list(APPEND _cmpp_inc_dir ${CMAKE_INSTALL_OLDINCLUDEDIR} "${EIGEN3_INCLUDE_DIRS}")  
+    list(APPEND _cmpp_inc_dir "${EIGEN3_INCLUDE_DIRS}")  
     #The library name (obviously a generator...)
     set(_cmpp_lib "$<TARGET_FILE_NAME:${_cmpp_target}>")
 
