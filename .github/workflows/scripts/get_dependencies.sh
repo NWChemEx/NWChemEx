@@ -32,6 +32,7 @@
 
 APT_COMMAND="sudo apt"
 APT_GET_COMMAND="sudo apt-get"
+APT_REPO_COMMAND="sudo add-apt-repository"
 PIP_COMMAND="pip"
 
 ################################################################################
@@ -40,11 +41,20 @@ PIP_COMMAND="pip"
 
 # Wraps getting Boost
 #
+# This function will download and install a particular version of the Boost
+# libraries and header files. By default that version is 1.74, but the version
+# can optionally be specified.
+#
 # Usage:
-#   get_boost
+#   get_boost [<version>]
+# Optional Arguments:
+#   version: The version of Boost to download. Default is 1.74.
+#
 get_boost() {
+  BOOST_VERSION="${1-1.74}"
+  ${APT_REPO_COMMAND} ppa:mhier/libboost-latest
   ${APT_COMMAND} update
-  ${APT_GET_COMMAND} install libboost-all-dev
+  ${APT_GET_COMMAND} install "libboost${BOOST_VERSION}-dev"
 }
 
 # Wraps getting CBLAS
@@ -65,8 +75,6 @@ get_clang_format() {
   ${APT_COMMAND} update
   ${APT_GET_COMMAND} install -f clang-format-9
 }
-
-
 
 # Wraps downloading and installing a specific version of CMake
 #
@@ -124,7 +132,7 @@ get_gcc() {
   gcov_no_v="/usr/bin/gcov"
   gcov_v="${gcov_no_v}-${1}"
 
-  sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+  ${APT_REPO_COMMAND} ppa:ubuntu-toolchain-r/test
   ${APT_COMMAND} update
   ${APT_GET_COMMAND} install "gcc-${1}" "g++-${1}" "gfortran-${1}"
   sudo update-alternatives --install "${gcc_no_v}" gcc "${gcc_v}" 95 \
