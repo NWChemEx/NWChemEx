@@ -14,12 +14,14 @@
 
 # These are directories used by IDEs for storing settings
 .idea/
+.vscode/
 
 # These are common Python virtual enviornment directory names
 venv/
 docs/venv/
 
 # These are common build directory names
+build/
 docs/build
 docs/doxyoutput
 docs/source/api
