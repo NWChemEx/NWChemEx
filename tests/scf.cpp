@@ -1,9 +1,10 @@
 #include <catch2/catch.hpp>
+#include "scf/types.hpp"
 #include <nwchemex/load_modules.hpp>
 #include <libchemist/libchemist.hpp>
 #include <property_types/reference_wavefunction.hpp>
 
-using canonical_mos = property_types::type::canonical_mos<double>;
+using canonical_mos = scf::type::canonical_space_t<double>;
 using pt_type = property_types::ReferenceWavefunction<double, canonical_mos>;
 
 TEST_CASE("Direct SCF"){
@@ -17,3 +18,4 @@ TEST_CASE("Direct SCF"){
 
     std::cout << E << std::endl;
 }
+
