@@ -4,7 +4,7 @@
 #include <libchemist/libchemist.hpp>
 #include <property_types/reference_wavefunction.hpp>
 
-using canonical_mos = scf::type::canonical_space_t<double>;
+using canonical_mos = property_types::type::canonical_space_t<double>;
 using pt_type = property_types::ReferenceWavefunction<double, canonical_mos>;
 
 TEST_CASE("Direct SCF"){
