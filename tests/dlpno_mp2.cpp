@@ -18,14 +18,10 @@ TEST_CASE("DLPNO-MP2") {
     auto mol = mols.at("water");
     auto bs  = libchemist::apply_basis("cc-pvdz", mol);
 
-    //    auto aux = libchemist::apply_basis("cc-pvdz-jkfit", mol);
-    //    mm.change_input("MP2 3-Center Sparse K", "Fitting Basis", aux);
-    //    mm.change_submod("DLPNO", "K", "MP2 4-Center Sparse K");
     const auto [E_SCF, C] = mm.run_as<scf_pt>("SCFDIIS", mol, bs);
     property_types::type::orbital_map<orthogonal_mos> m{
       {"Occupied", C.at("Occupied")}};
     const auto [E_MP2] = mm.run_as<mp2_pt>("DLPNO", mol, bs, m);
-    std::cout << mm.at("DLPNO").profile_info();
     std::cout << E_MP2 << std::endl;
     // Canonical = -0.214348
 }

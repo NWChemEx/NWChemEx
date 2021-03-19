@@ -69,11 +69,18 @@ if("${BUILD_TESTING}")
             VERSION v2.x
             FIND_TARGET Catch2::Catch2
     )
+    cpp_find_or_build_dependency(
+            testing
+            URL github.com/NWChemEx-Project/testing
+            PRIVATE
+            BUILD_TARGET testing
+            FIND_TARGET nwx::testing
+    )
     cpp_add_tests(
        test_nwchemex
        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests"
        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
-       DEPENDS Catch2::Catch2 nwchemex
+       DEPENDS Catch2::Catch2 nwchemex nwx::testing
     )
     if(BUILD_PYBINDINGS)
        add_test(
