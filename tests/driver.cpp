@@ -22,6 +22,4 @@ TEST_CASE("Driving NWX from C++") {
 
     // 6. Run the module
     const auto& [H] = mm.run_as<pt_type>(module_key, mol, bs, bs);
-
-    std::cout << H << std::endl;
 }
