@@ -35,19 +35,19 @@ cpp_find_or_build_dependency(
 )
 
 cpp_find_or_build_dependency(
-        mp2
-        URL github.com/NWChemEx-Project/MP2
-        PRIVATE TRUE
-        BUILD_TARGET mp2
-        FIND_TARGET nwx::mp2
-        CMAKE_ARGS BUILD_TESTING=OFF
+       mp2
+       URL github.com/NWChemEx-Project/MP2
+       PRIVATE TRUE
+       BUILD_TARGET mp2
+       FIND_TARGET nwx::mp2
+       CMAKE_ARGS BUILD_TESTING=OFF
 )
 
 
 cpp_add_library(
         nwchemex
-        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
-        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
+        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
+        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include/nwchemex"
         DEPENDS nwx::mp2 nwx::scf nwx::integrals
 )
 
@@ -66,14 +66,21 @@ if("${BUILD_TESTING}")
             Catch2
             URL github.com/catchorg/Catch2
             BUILD_TARGET Catch2
-            FIND_TARGET Catch2::Catch2
             VERSION v2.x
+            FIND_TARGET Catch2::Catch2
+    )
+    cpp_find_or_build_dependency(
+            testing
+            URL github.com/NWChemEx-Project/testing
+            PRIVATE
+            BUILD_TARGET testing
+            FIND_TARGET nwx::testing
     )
     cpp_add_tests(
        test_nwchemex
        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests"
        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
-       DEPENDS Catch2::Catch2 nwchemex
+       DEPENDS Catch2::Catch2 nwchemex nwx::testing
     )
     if(BUILD_PYBINDINGS)
        add_test(

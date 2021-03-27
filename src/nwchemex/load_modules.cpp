@@ -6,14 +6,15 @@
 namespace {
 
 void set_scf_default_modules(sde::ModuleManager& mm) {
-    mm.change_submod("CoreH", "T Builder", "Kinetic");
-    mm.change_submod("CoreH", "V Builder", "Nuclear");
-    mm.change_submod("DFJK", "3CERI Builder", "ERI3");
-    mm.change_submod("DFJ", "3CERI Builder", "ERI3");
     mm.change_submod("CanJK", "ERI Builder", "ERI4");
     mm.change_submod("CanJ", "ERI Builder", "ERI4");
-    mm.change_submod("MetricChol", "M Builder", "ERI2");
+    mm.change_submod("CoreH", "T Builder", "Kinetic");
+    mm.change_submod("CoreH", "V Builder", "Nuclear");
+    mm.change_submod("DFJ", "3CERI Builder", "ERI3");
+    mm.change_submod("DFJK", "3CERI Builder", "ERI3");
     mm.change_submod("DiagonalUpdate", "S Builder", "Overlap");
+    mm.change_submod("MetricChol", "M Builder", "ERI2");
+    mm.change_submod("SCFDIIS", "S Builder", "Overlap");
 }
 
 void set_mp2_default_modules(sde::ModuleManager& mm) {
