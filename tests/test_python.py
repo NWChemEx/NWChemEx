@@ -12,7 +12,7 @@ class NWChemExTestCase(unittest.TestCase):
         nwx.load_modules(mm)
         molecule = libchemist.MoleculeManager().at("water")
         basis = libchemist.apply_basis("sto-3g", molecule)
-        canonical_mos = property_types.type.canonical_mos["double"]
+        canonical_mos = property_types.type.canonical_space_t["double"]
         pt_type = property_types.ReferenceWavefunction["double", canonical_mos]
 
         E, C = mm.run_as[pt_type]("SCFDIIS", molecule, basis)
@@ -26,7 +26,7 @@ class NWChemExTestCase(unittest.TestCase):
         nwx.load_modules(mm)
         molecule = libchemist.MoleculeManager().at("water")
         basis = libchemist.apply_basis("cc-pvdz", molecule)
-        canonical_mos = property_types.type.canonical_mos["double"]
+        canonical_mos = property_types.type.canonical_space_t["double"]
         pt_type = property_types.ReferenceWavefunction["double", canonical_mos]
         mp2_pt = property_types.CorrelationEnergy["double", canonical_mos]
 
@@ -49,12 +49,13 @@ class NWChemExTestCase(unittest.TestCase):
         molecule = libchemist.Molecule(O, H_1, H_2, Charge=0, Multiplicity=1)
         basis = libchemist.apply_basis("cc-pvdz", molecule)
 
-        canonical_mos = property_types.type.canonical_mos["double"]
-        pt_type = property_types.ReferenceWavefunction["double", canonical_mos]
-        orthogonal_mos = property_types.type.orthogonal_orbs["double"]
+        canonical_mos = property_types.type.canonical_space_t["double"]
+        orthogonal_mos = property_types.type.orthogonal_space_t["double"]
+        orbitals = property_types.type.orbital_space_t["double"]
+        scf_pt = property_types.ReferenceWavefunction["double", canonical_mos]
         dlpno_pt = property_types.CorrelationEnergy["double", orthogonal_mos]
  
-        E, C = mm.run_as[pt_type]("SCFDIIS", molecule, basis)
+        E, C = mm.run_as[scf_pt]("SCFDIIS", molecule, basis)
         self.assertAlmostEqual(ref_scf, E, places=8)
   
         orb_map = property_types.type.orbital_map[orthogonal_mos]({"Occupied": C.at("Occupied")})
