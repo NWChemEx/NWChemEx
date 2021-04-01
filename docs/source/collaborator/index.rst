@@ -12,4 +12,5 @@ are targeted at collaborators.
     :caption: Contents:
 
     sde_primer
+    advanced_sde
     faqs
