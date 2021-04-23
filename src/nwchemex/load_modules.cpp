@@ -35,6 +35,7 @@ void set_mp2_default_modules(sde::ModuleManager& mm) {
     mm.change_submod("L(Pair->PAO)", "dois", "DOI");
     mm.change_submod("Dense MP2 Amplitudes", "(ia|jb)", "Transformed ERI4");
     mm.change_submod("MP2", "(ia|jb)", "Transformed ERI4");
+    mm.change_submod("MP2 Dipole", "dipole", "EDipole");
 }
 
 } // namespace
