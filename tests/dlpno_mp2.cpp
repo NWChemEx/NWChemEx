@@ -18,13 +18,13 @@ TEST_CASE("DLPNO-MP2") {
     nwx::load_modules(mm);
     libchemist::MoleculeManager mols;
 
-    std::vector<std::string> names{"h2", "h2o"};
+    std::vector names{testing::molecule::h2, testing::molecule::h2o};
     for(const auto& name : names) {
         auto mol       = testing::get_molecules().at(name);
-        const auto bs  = "sto-3g";
+        const auto bs  = testing::basis_set::sto3g;
         const auto aos = testing::get_bases().at(name).at(bs);
 
-        SECTION(name + "/" + bs) {
+        SECTION(testing::as_string(name) + "/" + testing::as_string(bs)) {
             const auto [E_SCF, C] = mm.run_as<scf_pt>("SCFDIIS", mol, aos);
             orb_map m{{"Occupied", C.at("Occupied")}};
 
