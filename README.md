@@ -33,7 +33,7 @@ software suite in a number of ways.
 
 [See Documentation](https://nwchemex-project.github.io/NWChemEx/installation/building.html#)
 
-### Running jobs
+## Running jobs
 
 NWX is really designed to be driven from Python. At the moment the Python API is
 a work in progress and NWX can only be reliably driven from C++. The easiest way
