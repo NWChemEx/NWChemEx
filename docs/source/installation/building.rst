@@ -36,23 +36,22 @@ libint2
 
 **Important:** Boost must be installed and in your path prior to building libint2. This is not required by libint2, as libint2 will use its own internal build of Boost. However, when building NWChemEx, errors related to using this internal build of Boost have been observed (by Zach Crandall as of April 29, 2021).
 
-The libint2 build will take a long time (probably >2 hrs), and should be started well in advance. At the time of writing, libint v2.6.0, the latest release, can be obtained from `Download of libint v2.6.0 <https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz>`_ and built using instructions at `libint Wiki <https://github.com/evaleev/libint/wiki#compiling-libint-library>`_, although the instructions are not 100% accurate at the moment so some modifications are needed.
-**Note:** For some reason, the download on the `v2.6.0 release <https://github.com/evaleev/libint/archive/refs/tags/v2.6.0.tar.gz>`_ does not have the necessary CMakeLists.txt file.
+The libint2 build will take a long time (probably >2 hrs), and should be started well in advance. At the time of writing, libint v2.6.0 can be obtained from the `libint v2.6.0 release<https://github.com/evaleev/libint/releases/tag/v2.6.0>`_ page and built using instructions at `libint Wiki <https://github.com/evaleev/libint/wiki>`_ if a custom library is needed.
 
-The following build script can be used to build and install libint2. Download and extract the above linked libint v2.6.0. Inside the newly extracted libint-2.6.0 directory, create a file named ``build.sh`` and paste the below contents, modifying everything in angled brackets (<>) to be correct for your system.
+The following build script can be used to build and install the libint2 pre-generated library "lmax=6 library (standard ints only)", which can be downloaded from the `libint v2.6.0 release <https://github.com/evaleev/libint/releases/tag/v2.6.0>`_ page or directly from `here <https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz>`_. Download and extract the pre-generated libint v2.6.0 library. Inside the newly extracted libint-2.6.0 directory, create a file named ``build.sh`` and paste the below contents, modifying everything in angled brackets (<>) to be correct for your system.
 
 .. code-block:: bash
 
     #!/usr/bin/env bash
     
     cmake -S . \
-        -B build \
-	-DCMAKE_INSTALL_PREFIX=<desired_install_location> \
-	-DCMAKE_CXX_COMPILER=<c++_compiler> \
-	-DCMAKE_CXX_FLAGS="-O3" \
-	-DCMAKE_CXX_STANDARD=11 \
-	-DCMAKE_POSITION_INDEPENDENT_CODE=TRUE \
-	2>&1 | tee OUTPUT.GEN
+          -B build \
+	  -DCMAKE_INSTALL_PREFIX=<desired_install_location> \
+	  -DCMAKE_CXX_COMPILER=<c++_compiler> \
+	  -DCMAKE_CXX_FLAGS="-O3" \
+	  -DCMAKE_CXX_STANDARD=11 \
+	  -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE \
+	  2>&1 | tee OUTPUT.GEN
 
     cmake --build build --target install 2>&1 | tee OUTPUT.BUILD
 
