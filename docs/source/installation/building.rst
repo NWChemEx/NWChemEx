@@ -24,12 +24,12 @@ NWChemEx also depends on a number of repositories listed below. Please visit the
 BLAS/LAPACK/ScaLAPACK
 ^^^^^^^^^^^^^^^^^^^^^
 
-**Intel MKL (Intel oneAPI MKL):** Ensure that all required environment variables for the Intel MKL are set by executing `/path/to/intel/mkl/bin/mklvars.sh <arch>`, where `<arch>` must be either `ia32` or `intel64`. The following command can be added to your `.bashrc` to set the required environment variables automatically for all new terminal sessions:
+**Intel MKL (Intel oneAPI MKL):** Ensure that all required environment variables for the Intel MKL are set by executing ``/path/to/intel/mkl/bin/mklvars.sh <arch>``, where ``<arch>`` must be either ``ia32`` or ``intel64``. The following command can be added to your ``.bashrc`` to set the required environment variables automatically for all new terminal sessions:
 
 .. code-block:: bash
     . /path/to/intel/mkl/bin/mklvars.sh <arch>
 
-**Other BLAS/LAPACK/ScaLAPACK:** If not using the Intel MKL, closely study the BLAS/LAPACK section of the NWChemEx `toolchain.cmake` file below to ensure all paths are correct for your BLAS/LAPACK/ScaLAPACK installations.
+**Other BLAS/LAPACK/ScaLAPACK:** If not using the Intel MKL, closely study the BLAS/LAPACK section of the NWChemEx ``toolchain.cmake`` file below to ensure all paths are correct for your BLAS/LAPACK/ScaLAPACK installations.
 
 libint2
 ^^^^^^^
@@ -39,7 +39,7 @@ libint2
 The libint2 build will take a long time (probably >2 hrs), and should be started well in advance. At the time of writing, libint v2.6.0, the latest release, can be obtained from `Download of libint v2.6.0 <https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz>`_ and built using instructions at `libint Wiki <https://github.com/evaleev/libint/wiki#compiling-libint-library>`_, although the instructions are not 100% accurate at the moment so some modifications are needed.
 **Note:** For some reason, the download on the `v2.6.0 release <https://github.com/evaleev/libint/archive/refs/tags/v2.6.0.tar.gz>`_ does not have the necessary CMakeLists.txt file.
 
-The following build script can be used to build and install libint2. Download and extract the above linked libint v2.6.0. Inside the newly extracted libint-2.6.0 directory, create a file named `build.sh` and paste the below contents, modifying everything in angled brackets (<>) to be correct for your system.
+The following build script can be used to build and install libint2. Download and extract the above linked libint v2.6.0. Inside the newly extracted libint-2.6.0 directory, create a file named ``build.sh`` and paste the below contents, modifying everything in angled brackets (<>) to be correct for your system.
 
 .. code-block:: bash
 
@@ -72,13 +72,13 @@ The build instructions are given in the following sections based on a few assump
 
 The following two files will be created to build NWChemEx, with instructions for each in the sections below:
 
-#. CMake Toolchain File: `toolchain.cmake`
-#. NWChemEx Build Script: `build_nwx.sh`
+#. CMake Toolchain File: ``toolchain.cmake``
+#. NWChemEx Build Script: ``build_nwx.sh``
 
 CMake Toolchain File
 ^^^^^^^^^^^^^^^^^^^^
 
-NWChemEx requires knowledge of many packages and tools which may have system-specific installation locations. Inside the top level directory where NWChemEx will be built, create a toolchain file named `toolchain.cmake`. This file should contain the following information, replacing everything in angled brackets (<>) for your system.
+NWChemEx requires knowledge of many packages and tools which may have system-specific installation locations. Inside the top level directory where NWChemEx will be built, create a toolchain file named ``toolchain.cmake``. This file should contain the following information, replacing everything in angled brackets (<>) for your system.
 
 .. code-block:: cmake
 
@@ -114,7 +114,7 @@ NWChemEx requires knowledge of many packages and tools which may have system-spe
 NWChemEx Build Script
 ^^^^^^^^^^^^^^^^^^^^^
 
-Create a new file named `build_nwx.sh` next to `toolchain.cmake` and paste the script below into it. This script will download, build, and install NWChemEx and any remaining dependencies. Logs for the build will be generated beside this build script.
+Create a new file named ``build_nwx.sh`` next to ``toolchain.cmake`` and paste the script below into it. This script will download, build, and install NWChemEx and any remaining dependencies. Logs for the build will be generated beside this build script.
 
 .. code-block:: bash
 
