@@ -89,7 +89,20 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Building the NWChemEx Package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Building the NWChemEx Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blas-lapack-scalapack">BLAS/LAPACK/ScaLAPACK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#libint2">libint2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#github-personal-access-token">GitHub Personal Access Token</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#building-nwchemex">Building NWChemEx</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cmake-toolchain-file">CMake Toolchain File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nwchemex-build-script">NWChemEx Build Script</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html">C++ API</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Core NWX Documentation</span></p>
@@ -176,105 +189,141 @@
             
   <div class="section" id="building-the-nwchemex-package">
 <h1>Building the NWChemEx Package<a class="headerlink" href="#building-the-nwchemex-package" title="Permalink to this headline">¶</a></h1>
-<p>Before any attempts at compiling NWChemEx can be successful there are
-a few packages that need to be available.</p>
-<p>First of all, NWChemEx depends on the TAMM library for the tensor
-operation infrastructure. In turn compiling TAMM requires the CMakeBuild
-library. More details on downloading and installing these components will
-be provided below.</p>
-<p>Secondly, NWChemEx builds using <a class="reference external" href="https://github.com/CMakePackagingProject/CMakePackagingProject.git">CMakePP</a>.
-CMakePP extends
-the CMake package with advanced dependency management capabilities.
-This package enables checking for, downloading, and building dependencies
-automatically. A side effect of using this capability is that running CMake
-will do more than just configuring the build and generating the makefiles.
-The reason is that CMakePP has to compile all the missing dependencies to
-successfully configure the build.
-Hence, a first run of CMake can take considerably longer than
-would be expected from a normal configuration run. When all
-dependencies are in place, subsequent CMake runs should be much faster.</p>
-<p>Below the build instructions are given based on a few assumptions:
-1. You are using a sane Unix-like operating system
-2. You have already installed CMakePP
-3. You have Python installed and the installation supports numpy, i.e.
-the command <cite>import numpy</cite> must succeed
-4. You are going to install all components in the same location</p>
-<p>First, create a toolchain file in the top-level directory (<cite>toolchain.cmake</cite>). This
-file should contain the following information</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span>      <span class="s">&lt;prefix</span> <span class="s">directory&gt;</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span>       <span class="s">&lt;C</span> <span class="s">compiler&gt;</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER</span>     <span class="s">&lt;C++</span> <span class="s">compiler&gt;</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_Fortran_COMPILER</span> <span class="s">&lt;Fortran</span> <span class="s">compiler&gt;</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">PYTHON_EXECUTABLE</span>      <span class="s">&lt;Python</span> <span class="s">interpreter&gt;</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">PYTHON_LIBRARY</span>         <span class="s">&lt;Python</span> <span class="s">library</span> <span class="p">(</span><span class="s">libpythonX.X</span><span class="p">)</span><span class="s">&gt;</span><span class="p">)</span>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>To compile NWChemEx, some packages must be available on your system beforehand:</p>
+<ol class="arabic simple">
+<li><p>A C++ compiler supporting the C++17 standard</p></li>
+<li><p>CMake</p></li>
+<li><p>BLAS/LAPACK/ScaLAPACK</p></li>
+<li><p>Boost</p></li>
+<li><p>MPI</p></li>
+<li><p>libint2</p></li>
+</ol>
+<p>If necessary, more installation details for a package will be provided in the subsections below.</p>
+<p>NWChemEx also depends on a number of repositories listed below. Please visit the repositories and ensure that any additional packages that must be available before building are installed.</p>
+<ol class="arabic simple">
+<li><p><cite>integrals &lt;https://github.com/NWChemEx-Project/Integrals&gt;</cite></p></li>
+<li><p><cite>SCF &lt;https://github.com/NWChemEx-Project/SCF&gt;</cite></p></li>
+<li><p><cite>MP2 &lt;https://github.com/NWChemEx-Project/MP2&gt;</cite></p></li>
+</ol>
+<div class="section" id="blas-lapack-scalapack">
+<h3>BLAS/LAPACK/ScaLAPACK<a class="headerlink" href="#blas-lapack-scalapack" title="Permalink to this headline">¶</a></h3>
+<p><strong>Intel MKL (Intel oneAPI MKL):</strong> Ensure that all required environment variables for the Intel MKL are set by executing <code class="docutils literal notranslate"><span class="pre">/path/to/intel/mkl/bin/mklvars.sh</span> <span class="pre">&lt;arch&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;arch&gt;</span></code> must be either <code class="docutils literal notranslate"><span class="pre">ia32</span></code> or <code class="docutils literal notranslate"><span class="pre">intel64</span></code>. The following command can be added to your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> to set the required environment variables automatically for all new terminal sessions:</p>
+<p><strong>Other BLAS/LAPACK/ScaLAPACK:</strong> If not using the Intel MKL, closely study the BLAS/LAPACK section of the NWChemEx <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code> file below to ensure all paths are correct for your BLAS/LAPACK/ScaLAPACK installations.</p>
+</div>
+<div class="section" id="libint2">
+<h3>libint2<a class="headerlink" href="#libint2" title="Permalink to this headline">¶</a></h3>
+<p><strong>Important:</strong> Boost must be installed and in your path prior to building libint2. This is not required by libint2, as libint2 will use its own internal build of Boost. However, when building NWChemEx, errors related to using this internal build of Boost have been observed (by Zach Crandall as of April 29, 2021).</p>
+<p>The libint2 build will take a long time (probably &gt;2 hrs), and should be started well in advance. At the time of writing, libint v2.6.0, the latest release, can be obtained from <a class="reference external" href="https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz">Download of libint v2.6.0</a> and built using instructions at <a class="reference external" href="https://github.com/evaleev/libint/wiki#compiling-libint-library">libint Wiki</a>, although the instructions are not 100% accurate at the moment so some modifications are needed.
+<strong>Note:</strong> For some reason, the download on the <a class="reference external" href="https://github.com/evaleev/libint/archive/refs/tags/v2.6.0.tar.gz">v2.6.0 release</a> does not have the necessary CMakeLists.txt file.</p>
+<p>The following build script can be used to build and install libint2. Download and extract the above linked libint v2.6.0. Inside the newly extracted libint-2.6.0 directory, create a file named <code class="docutils literal notranslate"><span class="pre">build.sh</span></code> and paste the below contents, modifying everything in angled brackets (&lt;&gt;) to be correct for your system.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+
+cmake -S . <span class="se">\</span>
+    -B build <span class="se">\</span>
+    -DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;desired_install_location&gt; <span class="se">\</span>
+    -DCMAKE_CXX_COMPILER<span class="o">=</span>&lt;c++_compiler&gt; <span class="se">\</span>
+    -DCMAKE_CXX_FLAGS<span class="o">=</span><span class="s2">&quot;-O3&quot;</span> <span class="se">\</span>
+    -DCMAKE_CXX_STANDARD<span class="o">=</span><span class="m">11</span> <span class="se">\</span>
+    -DCMAKE_POSITION_INDEPENDENT_CODE<span class="o">=</span>TRUE <span class="se">\</span>
+    <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> tee OUTPUT.GEN
+
+cmake --build build --target install <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> tee OUTPUT.BUILD
 </pre></div>
 </div>
-<p>The following script will then build and install CMakeBuild, TAMM and NWChemEx.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/NWChemEx-Project/CMakeBuild.git
-<span class="nb">cd</span> CMakeBuild
-cmake -H. <span class="se">\</span>
-      -Bbuild <span class="se">\</span>
-      -DCMAKE_TOOLCHAIN_FILE<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/../toolchain.cmake <span class="se">\</span>
-      -DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;where/you/want/to/install&gt;
-<span class="nb">cd</span> build
-cmake --build .
-<span class="c1">#May need to run as an admin depending on where you are installing CMakeBuild to</span>
-cmake --build . --target install
-<span class="nb">cd</span> ../..
+</div>
+<div class="section" id="github-personal-access-token">
+<h3>GitHub Personal Access Token<a class="headerlink" href="#github-personal-access-token" title="Permalink to this headline">¶</a></h3>
+<p>A GitHub Personal Access Token (PAT) is necessary since, at the moment, NWChemEx and some dependencies are hosted in private repositories. To create a PAT, follow the instructions at GitHub’s <a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a> page. This PAT will be used when prompted for a password while cloning repositories.</p>
+</div>
+</div>
+<div class="section" id="building-nwchemex">
+<h2>Building NWChemEx<a class="headerlink" href="#building-nwchemex" title="Permalink to this headline">¶</a></h2>
+<p>The build instructions are given in the following sections based on a few assumptions:</p>
+<ol class="arabic simple">
+<li><p>You are using a sane Unix-like operating system.</p></li>
+<li><p>All components will be installed in the same location.</p></li>
+</ol>
+<p>The following two files will be created to build NWChemEx, with instructions for each in the sections below:</p>
+<ol class="arabic simple">
+<li><p>CMake Toolchain File: <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code></p></li>
+<li><p>NWChemEx Build Script: <code class="docutils literal notranslate"><span class="pre">build_nwx.sh</span></code></p></li>
+</ol>
+<div class="section" id="cmake-toolchain-file">
+<h3>CMake Toolchain File<a class="headerlink" href="#cmake-toolchain-file" title="Permalink to this headline">¶</a></h3>
+<p>NWChemEx requires knowledge of many packages and tools which may have system-specific installation locations. Inside the top level directory where NWChemEx will be built, create a toolchain file named <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code>. This file should contain the following information, replacing everything in angled brackets (&lt;&gt;) for your system.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Compilers</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span>   <span class="s">&lt;C</span> <span class="s">compiler&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER</span> <span class="s">&lt;C++</span> <span class="s">compiler&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">MPI_C_COMPILER</span>     <span class="s">&lt;MPI</span> <span class="s">C</span> <span class="s">compiler&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">MPI_CXX_COMPILER</span>   <span class="s">&lt;MPI</span> <span class="s">CXX</span> <span class="s">compiler&gt;</span><span class="p">)</span>
 
-git clone https://github.com/NWChemEx-Project/TAMM.git
-<span class="nb">cd</span> TAMM
-cmake -H. <span class="se">\</span>
-      -Bbuild <span class="se">\</span>
-      -DCMAKE_TOOLCHAIN_FILE<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/../toolchain.cmake <span class="se">\</span>
-      -DCMAKE_PREFIX_PATH<span class="o">=</span>&lt;where/you/want/to/install&gt; <span class="se">\</span>
-      -DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;where/you/want/to/install&gt;
-<span class="nb">cd</span> build
-cmake --build .
-<span class="c1">#May need to run as an admin depending on where you are installing TAMM to</span>
-cmake --build . --target install
-<span class="nb">cd</span> ../..
+<span class="c"># Token for private repos</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CPP_GITHUB_TOKEN</span> <span class="s">&lt;your_super_secret_github_PAT&gt;</span><span class="p">)</span>
 
-git clone https://github.com/NWChemEx-Project/NWChemEx.git
+<span class="c"># Options</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_POSITION_INDEPENDENT_CODE</span> <span class="s">TRUE</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">BUILD_SHARED_LIBS</span> <span class="s">TRUE</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">BUILD_TESTING</span> <span class="s">TRUE</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span> <span class="s">&lt;prefix_directory&gt;</span><span class="p">)</span> <span class="c"># This is where libint2 is installed</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span> <span class="s">17</span><span class="p">)</span>
+
+<span class="c"># BLAS/LAPACK</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">ENABLE_SCALAPACK</span> <span class="s">ON</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">MKLROOT</span> <span class="o">$ENV{</span><span class="nv">MKLROOT</span><span class="o">}</span><span class="p">)</span> <span class="c"># Environment variable set through your MKL install or a script</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">LAPACK_LIBRARIES</span> <span class="s2">&quot;-L${MKLROOT}/lib/intel64 -Wl,--no-as-needed -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl&quot;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">LAPACK_INCLUDE_DIRS</span> <span class="s2">&quot;${MKLROOT}/include&quot;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">lapack_LIBRARIES</span> <span class="o">${</span><span class="nv">LAPACK_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">SCALAPACK_LIBRARIES</span>  <span class="s">-L</span><span class="o">${</span><span class="nv">MKLROOT</span><span class="o">}</span><span class="s">/lib/intel64</span> <span class="s">-Wl,--no-as-needed</span> <span class="s">-lmkl_scalapack_lp64</span> <span class="s">-lmkl_intel_lp64</span> <span class="s">-lmkl_sequential</span> <span class="s">-lmkl_core</span> <span class="s">-lmkl_blacs_openmpi_lp64</span> <span class="s">-lpthread</span> <span class="s">-lm</span> <span class="s">-ldl</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">blacs_LIBRARIES</span> <span class="o">${</span><span class="nv">SCALAPACK_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">scalapack_LIBRARIES</span> <span class="o">${</span><span class="nv">SCALAPACK_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">lapack_LIBRARIES</span> <span class="o">${</span><span class="nv">LAPACK_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS</span> <span class="s2">&quot;${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="nwchemex-build-script">
+<h3>NWChemEx Build Script<a class="headerlink" href="#nwchemex-build-script" title="Permalink to this headline">¶</a></h3>
+<p>Create a new file named <code class="docutils literal notranslate"><span class="pre">build_nwx.sh</span></code> next to <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code> and paste the script below into it. This script will download, build, and install NWChemEx and any remaining dependencies. Logs for the build will be generated beside this build script.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the repo</span>
+git clone https://github.com/NWChemEx-Project/NWChemEx.git <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> tee <span class="s2">&quot;OUTPUT.GITCLONE&quot;</span>
+<span class="c1"># &lt;Type login information if prompted.&gt;</span>
+
+<span class="c1"># Navigate into the newly created NWChemEx subdirectory</span>
 <span class="nb">cd</span> NWChemEx
+
+<span class="c1"># Generate project buildsystem</span>
 cmake -H. <span class="se">\</span>
       -Bbuild <span class="se">\</span>
-      -DCPP_GITHUB_TOKEN<span class="o">=</span>&lt;your super-secret token&gt; <span class="se">\</span>
       -DCMAKE_TOOLCHAIN_FILE<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/../toolchain.cmake <span class="se">\</span>
-      -DCMAKE_PREFIX_PATH<span class="o">=</span>&lt;where/you/want/to/install&gt; <span class="se">\</span>
-      -DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;where/you/want/to/install&gt;
-<span class="nb">cd</span> build
-cmake --build .
-<span class="c1">#May need to run as an admin depending on where you are installing NWChemEx to</span>
-cmake --build . --target install
+      -DCMAKE_BUILD_TYPE<span class="o">=</span>Release <span class="se">\</span>
+     <span class="c1">#-DCMAKE_INSTALL_PREFIX=&lt;where/you/want/to/install&gt; # cannot install right now</span>
+      <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> tee <span class="s2">&quot;../OUTPUT.GEN&quot;</span>
+
+<span class="c1"># Build the project</span>
+cmake --build build <span class="se">\</span>
+     <span class="c1">#--target install \ # we cannot actually install yet</span>
+      <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> tee <span class="s2">&quot;../OUTPUT.BUILD&quot;</span>
+
+<span class="c1"># Run tests</span>
+<span class="nb">cd</span> build <span class="o">&amp;&amp;</span> ctest <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> tee <span class="s2">&quot;../../OUTPUT.TEST&quot;</span>
+
+<span class="c1"># Return to the top level directory</span>
 <span class="nb">cd</span> ../..
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The GitHub token is only necessary because, at the moment, various
-dependencies are hosted in
-private repositories (instructions for generating a token are <a class="reference external" href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line">here</a>).</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <cite>CMAKE_PREFIX_PATH</cite> need to be declared both in the <cite>toolchain.cmake</cite>
-file as well as on the CMake command line to propagate
-properly to a module and all of its dependencies.</p>
-</div>
-<p>For finer-grained control over the build we direct the reader to the more
-thorough CMakePP build instructions located <a class="reference external" href="https://cmakepackagingproject.readthedocs.io/en/latest/end_user/quick_start.html">here</a>
+<p>For finer-grained control over the build, we direct the reader to the more
+thorough CMaize build instructions located <a class="reference external" href="https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest">here</a>
 and note that NWChemEx depends on several other projects:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/NWChemEx-Project/TAMM">TAMM</a></p>
-<ul>
-<li><p><a class="reference external" href="https://github.com/NWChemEx-Project/CMakeBuild">CMakeBuild</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference external" href="https://github.com/bennybp/BPHash">bphash</a></p></li>
-<li><p><a class="reference external" href="https://github.com/USCiLab/cereal">cereal</a></p></li>
 <li><p><a class="reference external" href="https://github.com/catchorg/Catch2">Catch2</a> (for testing only)</p></li>
 </ul>
+</div>
+</div>
+</div>
 </div>
 
 
