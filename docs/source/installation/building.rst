@@ -20,9 +20,9 @@ NWChemEx also depends on a number of repositories listed below. Please visit the
 repositories and ensure that any additional packages that must be available
 before building are installed.
 
-#. `integrals <https://github.com/NWChemEx-Project/Integrals>`
-#. `SCF <https://github.com/NWChemEx-Project/SCF>`
-#. `MP2 <https://github.com/NWChemEx-Project/MP2>`
+#. integrals <https://github.com/NWChemEx-Project/Integrals>
+#. SCF <https://github.com/NWChemEx-Project/SCF>
+#. MP2 <https://github.com/NWChemEx-Project/MP2>
 
 BLAS/LAPACK/ScaLAPACK
 ^^^^^^^^^^^^^^^^^^^^^
@@ -42,16 +42,16 @@ paths are correct for your BLAS/LAPACK/ScaLAPACK installations.
 
 libint2
 ^^^^^^^
-
-**Important:** Boost must be installed and in your path prior to building
-libint2. This is not required by libint2, as libint2 will use its own
-internal build of Boost. However, when building NWChemEx, errors related
-to using this internal build of Boost have been observed (by Zach Crandall
-as of April 29, 2021).
+.. note::
+   **Important:** Boost must be installed and in your path prior to building
+   libint2. This is not required by libint2, as libint2 will use its own
+   internal build of Boost. However, when building NWChemEx, errors related
+   to using this internal build of Boost have been observed (by Zach Crandall
+   as of April 29, 2021).
 
 The libint2 build will take a long time (probably >2 hrs), and should be started
 well in advance. At the time of writing, libint v2.6.0 can be obtained from the
-`libint v2.6.0 release<https://github.com/evaleev/libint/releases/tag/v2.6.0>`_
+`libint v2.6.0 release <https://github.com/evaleev/libint/releases/tag/v2.6.0>`_
 page and built using instructions at
 `libint Wiki <https://github.com/evaleev/libint/wiki>`_ if a custom library is
 needed.
