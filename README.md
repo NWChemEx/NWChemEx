@@ -31,7 +31,9 @@ software suite in a number of ways.
 
 ## Building
 
-See [Build Instructions](https://nwchemex-project.github.io/NWChemEx/installation/building.html#) in the documentation.
+See
+[Build Instructions](https://nwchemex-project.github.io/NWChemEx/installation/building.html#)
+in the documentation.
 
 ## Running jobs
 
