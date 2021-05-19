@@ -16,7 +16,6 @@ using orb_map = property_types::type::orbital_map<canonical_mos>;
 TEST_CASE("DLPNO-MP2") {
     sde::ModuleManager mm;
     nwx::load_modules(mm);
-    libchemist::MoleculeManager mols;
 
     std::vector names{testing::molecule::h2, testing::molecule::h2o};
     for(const auto& name : names) {
@@ -29,7 +28,7 @@ TEST_CASE("DLPNO-MP2") {
             orb_map m{{"Occupied", C.at("Occupied")}};
 
             const auto [E_MP2] = mm.run_as<mp2_pt>("DLPNO-MP2", mol, aos, m);
-            std::cout << E_MP2 << std::endl;
+            std::cout << "DLPNO-MP2 Energy: " << E_MP2 << std::endl;
         }
     }
 }
