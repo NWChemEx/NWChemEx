@@ -13,7 +13,7 @@ TEST_CASE("Canonical MP2-F12") {
     sde::ModuleManager mm;
     nwx::load_modules(mm);
 
-    std::vector names{testing::molecule::h2}; //, testing::molecule::h2o};
+    std::vector names{testing::molecule::h2, testing::molecule::h2o};
     for(const auto& name : names) {
         SECTION(testing::as_string(name)) {
             auto mol       = testing::get_molecules().at(name);
