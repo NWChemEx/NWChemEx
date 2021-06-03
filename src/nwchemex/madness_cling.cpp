@@ -1,6 +1,12 @@
-#include "worldrmi.h"
-#include "nwchemex/madness_cling.hpp"
+namespace madness {
+  
+    class RMI {
+        static thread_local bool is_server_thread;
+        static bool* _cling_is_server_thread();
+    };
 
-bool madness::workaround_RMI_get_this_thread_is_server() {
-      return RMI::get_this_thread_is_server();
+    thread_local bool RMI::is_server_thread = false;
+
+    bool* RMI::_cling_is_server_thread() { return &is_server_thread; }
+
 }
