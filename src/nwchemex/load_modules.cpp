@@ -14,7 +14,8 @@ void set_scf_default_modules(sde::ModuleManager& mm) {
     mm.change_submod("DFJK", "3CERI Builder", "ERI3");
     mm.change_submod("DiagonalUpdate", "S Builder", "Overlap");
     mm.change_submod("MetricChol", "M Builder", "ERI2");
-    mm.change_submod("DIIS", "S Builder", "Overlap");
+    mm.change_submod("SCFDIIS", "Fock Improver", "DIIS");
+    mm.change_submod("SCFDIIS", "S Builder", "Overlap");
 
     using fock_type     = mp2::pt::dense_fock<double>;
     using coulomb_type  = mp2::pt::dense_j<double>;
