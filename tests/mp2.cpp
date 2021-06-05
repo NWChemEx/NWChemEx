@@ -17,5 +17,6 @@ TEST_CASE("Canonical MP2") {
     auto bs               = libchemist::apply_basis("cc-pvdz", mol);
     const auto [E_SCF, C] = mm.run_as<scf_pt>("SCFDIIS", mol, bs);
     const auto [E_MP2]    = mm.run_as<mp2_pt>("MP2", mol, bs, C);
-    std::cout << E_MP2 << std::endl;
+    std::cout << "Correlation Energy: " << E_MP2 << std::endl;
+    std::cout << "Canonical MP2 : " << E_MP2 + E_SCF << std::endl;
 }

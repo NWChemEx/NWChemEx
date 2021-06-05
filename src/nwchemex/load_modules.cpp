@@ -17,8 +17,16 @@ void set_scf_default_modules(sde::ModuleManager& mm) {
     mm.change_submod("SCFDIIS", "Fock Improver", "DIIS");
     mm.change_submod("SCFDIIS", "S Builder", "Overlap");
 
-    using fock_type = mp2::pt::dense_fock<double>;
+    using fock_type     = mp2::pt::dense_fock<double>;
+    using coulomb_type  = mp2::pt::dense_j<double>;
+    using exchange_type = mp2::pt::dense_k<double>;
+    using core_type     = mp2::pt::dense_h<double>;
     integrals::register_transformed_integral<fock_type>(mm, "Fock");
+    integrals::register_transformed_integral<core_type>(mm, "CoreH");
+    integrals::register_transformed_integral<coulomb_type>(mm, "CanJK");
+    mm.rename_module("Transformed CanJK", "Transformed Coulomb");
+    integrals::register_transformed_integral<exchange_type>(mm, "CanJK");
+    mm.rename_module("Transformed CanJK", "Transformed Exchange");
 }
 
 void set_mp2_default_modules(sde::ModuleManager& mm) {
@@ -37,6 +45,32 @@ void set_mp2_default_modules(sde::ModuleManager& mm) {
     mm.change_submod("Dense MP2 Amplitudes", "(ia|jb)", "Transformed ERI4");
     mm.change_submod("MP2", "(ia|jb)", "Transformed ERI4");
     mm.change_submod("MP2 Dipole", "dipole", "EDipole");
+    mm.change_submod("CABS", "Overlap", "Overlap");
+    mm.change_submod("RIBS", "Overlap", "Overlap");
+    mm.change_submod("MP2-F12 B Approx C", "(ia|f12|jb)",
+                     "Transformed STG 4 Center Correlation Factor");
+    mm.change_submod("MP2-F12 B Approx C", "(mn|df12*df12|ls)",
+                     "Transformed STG 4 Center dfdr Squared");
+    mm.change_submod("MP2-F12 B Approx C", "(mn|f12*f12|ls)",
+                     "Transformed STG 4 Center Correlation Factor Squared");
+    mm.change_submod("MP2-F12 B Approx C", "Core builder", "Transformed CoreH");
+    mm.change_submod("MP2-F12 B Approx C", "Coulomb builder",
+                     "Transformed Coulomb");
+    mm.change_submod("MP2-F12 B Approx C", "Exchange builder",
+                     "Transformed Exchange");
+    mm.change_submod("MP2-F12 B Approx C", "Fock builder", "Transformed Fock");
+    mm.change_submod("MP2-F12 Coupling", "(ai|f12|pj)",
+                     "Transformed STG 4 Center Correlation Factor");
+    mm.change_submod("MP2-F12 Coupling", "Fock builder", "Transformed Fock");
+    mm.change_submod("MP2-F12 V", "(ia|f12|jb)",
+                     "Transformed STG 4 Center Correlation Factor");
+    mm.change_submod("MP2-F12 V", "(mn|1/r|ls)", "Transformed ERI4");
+    mm.change_submod("MP2-F12 V", "(mn|f/r|ls)", "Transformed STG 4 Center GR");
+    mm.change_submod("MP2-F12 X", "(mn|f12*f12|ls)",
+                     "Transformed STG 4 Center Correlation Factor Squared");
+    mm.change_submod("MP2-F12 X", "(mn|r|ls)",
+                     "Transformed STG 4 Center Correlation Factor");
+    mm.change_submod("MP2-F12 X", "(m|f|n)", "Transformed Fock");
 }
 
 } // namespace
