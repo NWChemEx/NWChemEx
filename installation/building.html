@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Building the NWChemEx Package &mdash; NWChemEx 1.0.0 documentation</title>
@@ -13,6 +14,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -187,9 +191,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="building-the-nwchemex-package">
+  <section id="building-the-nwchemex-package">
 <h1>Building the NWChemEx Package<a class="headerlink" href="#building-the-nwchemex-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="prerequisites">
+<section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>To compile NWChemEx, some packages must be available on your system beforehand:</p>
 <ol class="arabic simple">
@@ -210,7 +214,7 @@ before building are installed.</p>
 <li><p>SCF &lt;<a class="reference external" href="https://github.com/NWChemEx-Project/SCF">https://github.com/NWChemEx-Project/SCF</a>&gt;</p></li>
 <li><p>MP2 &lt;<a class="reference external" href="https://github.com/NWChemEx-Project/MP2">https://github.com/NWChemEx-Project/MP2</a>&gt;</p></li>
 </ol>
-<div class="section" id="blas-lapack-scalapack">
+<section id="blas-lapack-scalapack">
 <h3>BLAS/LAPACK/ScaLAPACK<a class="headerlink" href="#blas-lapack-scalapack" title="Permalink to this headline">¶</a></h3>
 <p><strong>Intel MKL (Intel oneAPI MKL):</strong> Ensure that all required environment variables
 for the Intel MKL are set by executing <code class="docutils literal notranslate"><span class="pre">/path/to/intel/mkl/bin/mklvars.sh</span> <span class="pre">&lt;arch&gt;</span></code>,
@@ -220,8 +224,8 @@ automatically for all new terminal sessions:</p>
 <p><strong>Other BLAS/LAPACK/ScaLAPACK:</strong> If not using the Intel MKL, closely study the
 BLAS/LAPACK section of the NWChemEx <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code> file below to ensure all
 paths are correct for your BLAS/LAPACK/ScaLAPACK installations.</p>
-</div>
-<div class="section" id="libint2">
+</section>
+<section id="libint2">
 <h3>libint2<a class="headerlink" href="#libint2" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -261,16 +265,16 @@ cmake -S . <span class="se">\</span>
 cmake --build build --target install <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> tee OUTPUT.BUILD
 </pre></div>
 </div>
-</div>
-<div class="section" id="github-personal-access-token">
+</section>
+<section id="github-personal-access-token">
 <h3>GitHub Personal Access Token<a class="headerlink" href="#github-personal-access-token" title="Permalink to this headline">¶</a></h3>
 <p>A GitHub Personal Access Token (PAT) is necessary since, at the moment, NWChemEx
 and some dependencies are hosted in private repositories. To create a PAT,
 follow the instructions at GitHub’s <a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a>
 page. This PAT will be used when prompted for a password while cloning repositories.</p>
-</div>
-</div>
-<div class="section" id="building-nwchemex">
+</section>
+</section>
+<section id="building-nwchemex">
 <h2>Building NWChemEx<a class="headerlink" href="#building-nwchemex" title="Permalink to this headline">¶</a></h2>
 <p>The build instructions are given in the following sections based on a few
 assumptions:</p>
@@ -284,7 +288,7 @@ each in the sections below:</p>
 <li><p>CMake Toolchain File: <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code></p></li>
 <li><p>NWChemEx Build Script: <code class="docutils literal notranslate"><span class="pre">build_nwx.sh</span></code></p></li>
 </ol>
-<div class="section" id="cmake-toolchain-file">
+<section id="cmake-toolchain-file">
 <h3>CMake Toolchain File<a class="headerlink" href="#cmake-toolchain-file" title="Permalink to this headline">¶</a></h3>
 <p>NWChemEx requires knowledge of many packages and tools which may have system-
 specific installation locations. Inside the top level directory where NWChemEx
@@ -320,8 +324,8 @@ brackets (&lt;&gt;) for your system.</p>
 <span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS</span> <span class="s2">&quot;${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="nwchemex-build-script">
+</section>
+<section id="nwchemex-build-script">
 <h3>NWChemEx Build Script<a class="headerlink" href="#nwchemex-build-script" title="Permalink to this headline">¶</a></h3>
 <p>Create a new file named <code class="docutils literal notranslate"><span class="pre">build_nwx.sh</span></code> next to <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code> and paste
 the script below into it. This script will download, build, and install NWChemEx
@@ -363,9 +367,9 @@ and note that NWChemEx depends on several other projects:</p>
 <li><p><a class="reference external" href="https://github.com/catchorg/Catch2">Catch2</a> (for testing only)</p></li>
 </ul>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
