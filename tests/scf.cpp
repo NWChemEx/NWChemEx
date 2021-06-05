@@ -16,6 +16,6 @@ TEST_CASE("Direct SCF"){
     auto bs  = libchemist::apply_basis("cc-pvdz", mol);
     const auto [E, C] = mm.run_as<pt_type>("SCFDIIS", mol, bs);
 
-    std::cout << E << std::endl;
+    std::cout << "Direct SCF : " << E << std::endl;
 }
 
