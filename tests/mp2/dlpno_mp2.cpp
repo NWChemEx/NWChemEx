@@ -28,8 +28,7 @@ TEST_CASE("DLPNO-MP2") {
             orb_map m{{"Occupied", C.at("Occupied")}};
 
             const auto [E_MP2] = mm.run_as<mp2_pt>("DLPNO-MP2", mol, aos, m);
-            std::cout << "Correlation Energy: " << E_MP2 << std::endl;
-            std::cout << "DLPNO-MP2 Energy: " << E_MP2 + E_SCF << std::endl;
+            std::cout << "DLPNO-MP2 Energy: " << E_MP2 << std::endl;
         }
     }
 }
