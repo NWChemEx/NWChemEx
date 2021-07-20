@@ -1,22 +1,40 @@
-Building the documentation
-==========================
+Source Files for NWChemEx Documentation
+=======================================
 
-Building the documentation is done by running:
+This directory contains the source files for generating the documentation for  NWChemEx.
 
-```
-python3 build_docs.py
-```
+Obtaining the Documentation's Dependencies
+------------------------------------------
 
-in the `NWChemEx/docs` directory. If this runs successfully you will get two
-additional directories: `build` and `doxyoutput`. The actual documentation can
-be viewed by opening `docs/build/html/index.html` in a web browser.
+The documentation has several dependencies. The dependencies can all be
+installed via Python's `pip` command. To install the dependencies follow the
+instructions for your operating system.
 
-If the build did not run successfully check that you have installed the
-following Python packages (all available in `pip`):
+Linux:
 
-- sphinx_rtd_theme (The Read-The-Docs theme for sphinx)
-- sphinx (The thing that makes the documenation)
-- breathe (Dependency of exhale, may get installed by it)
-- exhale (The thing that turns Doxygen output into ReST)
+~~~.sh
+#These first two steps are strongly recommended, but not required
+python3 -m venv venv
+. venv/bin/activate
+pip3 install -r requirements.txt
+~~~
 
-You also will need Doxygen.
+Building the Documentation
+--------------------------
+
+With the dependencies installed the documentation is built by running the build
+command for your operating system (commands are assumed to be run in the same directory as this README file).
+
+Linux:
+
+~~~.sh
+make html BUILDDIR=${BUILDDIR}
+~~~
+
+where `${BUILDDIR}` is the directory where you want the resulting HTML to be
+placed.
+
+After building the main index of the resulting HTML will be located at
+`${BUILDDIR}/html/index.html` and can be viewed by directing your web browser of
+choice to that file (this is done by using `file:///path/to/index.html` as the
+URL).
