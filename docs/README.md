@@ -1,7 +1,8 @@
 Source Files for NWChemEx Documentation
 =======================================
 
-This directory contains the source files for generating the documentation for  NWChemEx.
+This directory contains the source files for generating the documentation for
+NWChemEx.
 
 Obtaining the Documentation's Dependencies
 ------------------------------------------
@@ -23,7 +24,8 @@ Building the Documentation
 --------------------------
 
 With the dependencies installed the documentation is built by running the build
-command for your operating system (commands are assumed to be run in the same directory as this README file).
+command for your operating system (commands are assumed to be run in the same
+directory as this README file).
 
 Linux:
 
