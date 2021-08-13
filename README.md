@@ -31,39 +31,11 @@ software suite in a number of ways.
 
 ## Building
 
-TODO: Turn into more formal instructions
+See
+[Build Instructions](https://nwchemex-project.github.io/NWChemEx/installation/building.html#)
+in the documentation.
 
-### Prerequisite: Dependenciess
-
-NWX depends on Boost, BLAS, LAPACK, MPI, and Libint2 and is not capable of
-building these depdencies on its own. Thus you will need to build and install
-them on your machine prior to attempting to build NWX.
-
-- Boost is used by TiledArray
-- BLAS/LAPACK are detected by MADNESS through TiledArray. Instructions are
-  located
-  [here](https://github.com/ValeevGroup/tiledarray/blob/master/INSTALL.md).
-- Path to Libint2 is passed to CMake by including it in CMAKE_PREFIX_PATH
-
-### Recomendations: Toolchain File
-
-It is strongly recommended that you put all options you need to pass to CMake in
-a toolchain file and tell CMake to use that file, *e.g*, if you have the
-toolchain file:
-
-```.cmake
-set(CMAKE_C_COMPILER /usr/bin/gcc)
-set(CMAKE_CPP_COMPILER /usr/bin/g++)
-#Lots of other CMake options follow
-```
-
-that has path `/path/to/my_toolchain.cmake` tell CMake about it like:
-
-```.sh
-cmake -DCMAKE_TOOLCHAIN_FILE=/path/to/my_toolchain.cmake
-```
-
-### Running jobs
+## Running jobs
 
 NWX is really designed to be driven from Python. At the moment the Python API is
 a work in progress and NWX can only be reliably driven from C++. The easiest way

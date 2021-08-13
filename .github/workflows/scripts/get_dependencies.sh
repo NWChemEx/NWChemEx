@@ -161,6 +161,14 @@ get_lapacke() {
   ${APT_GET_COMMAND} install liblapacke liblapacke-dev
 }
 
+# Wraps installing numpy
+#
+# Usage:
+#   get_numpy
+get_numpy() {
+  ${PIP_COMMAND} install numpy
+}
+
 # Wraps installing OpenBLAS
 #
 # Usage:
@@ -202,6 +210,14 @@ get_sphinx() {
   ${PIP_COMMAND} install sphinx sphinx_rtd_theme
 }
 
+# Wraps installing the Togglebutton Sphinx Extension
+#
+# Usage:
+#   get_togglebutton
+get_togglebutton() {
+  ${PIP_COMMAND} install sphinx-togglebutton
+}
+
 ################################################################################
 #                               Main Script                                    #
 ################################################################################
@@ -232,6 +248,8 @@ for depend in "$@"; do
     get_gcovr
   elif [ "${depend}" = "lapacke" ]; then
     get_lapacke
+  elif [ "${depend}" = "numpy" ]; then
+    get_numpy
   elif [ "${depend}" = "openblas" ]; then
     get_openblas
   elif [ "${depend}" = "openmpi" ]; then
@@ -240,6 +258,8 @@ for depend in "$@"; do
     get_scalapack
   elif [ "${depend}" = "sphinx" ]; then
     get_sphinx
+  elif [ "${depend}" = "togglebutton" ]; then
+    get_togglebutton
   else
     echo "Unrecognized dependency: ${depend}"
     exit 99
