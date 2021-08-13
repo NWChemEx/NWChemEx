@@ -1,5 +1,5 @@
 #pragma once
-#include <sde/module_manager.hpp>
+#include <pluginplay/pluginplay.hpp>
 
 namespace nwx {
 
@@ -11,6 +11,6 @@ namespace nwx {
  *  @throw std::bad_alloc if there is insufficient memory to create the new
  *                        modules. Weak throw guarantee.
  */
-void load_modules(sde::ModuleManager& mm);
+void load_modules(pluginplay::ModuleManager& mm);
 
 } // namespace nwx
