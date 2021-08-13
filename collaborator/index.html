@@ -8,7 +8,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>&lt;no title&gt; &mdash; NWChemEx 1.0.0 documentation</title>
+  <title>Collaborator Documentation &mdash; NWChemEx 1.0.0 documentation</title>
   
 
   
@@ -42,8 +42,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Building the NWChemEx Package" href="building.html" />
-    <link rel="prev" title="Getting Started with NWChemEx" href="../getting_started.html" /> 
+    <link rel="next" title="SDE Primer" href="sde_primer.html" />
+    <link rel="prev" title="Building the NWChemEx Package" href="../installation/building.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -93,10 +93,15 @@
             
             
               <p class="caption" role="heading"><span class="caption-text">Project-wide Documentation:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started with NWChemEx</a></li>
-<li class="toctree-l1"><a class="reference internal" href="building.html">Building the NWChemEx Package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../collaborator/index.html">Collaborator Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/building.html">Building the NWChemEx Package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Collaborator Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sde_primer.html">SDE Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_sde.html">Advanced SDE Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faqs.html">Collaboration FAQs</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html">C++ API</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">NWX Infrastructure Documentation</span></p>
@@ -159,13 +164,13 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>&lt;no title&gt;</li>
+      <li>Collaborator Documentation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/installation/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/collaborator/index.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -178,16 +183,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="toctree-wrapper compound">
+  <section id="collaborator-documentation">
+<h1>Collaborator Documentation<a class="headerlink" href="#collaborator-documentation" title="Permalink to this headline">¶</a></h1>
+<p>In the context of NWChemEx, collaborators are developers who have existing
+source code, which does not use NWChemEx’s infrastructure, <strong>i.e.</strong>, the code
+does not use the SDE, LibChemist, or PropertyTypes. The topics in this part
+are targeted at collaborators.</p>
+<div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="building.html">Building the NWChemEx Package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="building.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="building.html#building-nwchemex">Building NWChemEx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sde_primer.html">SDE Primer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sde_primer.html#writing-a-module">Writing a module</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_sde.html">Advanced SDE Primer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced_sde.html#additional-parameters">Additional Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faqs.html">Collaboration FAQs</a></li>
 </ul>
 </div>
+</section>
 
 
            </div>
@@ -195,8 +211,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="building.html" class="btn btn-neutral float-right" title="Building the NWChemEx Package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../getting_started.html" class="btn btn-neutral float-left" title="Getting Started with NWChemEx" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sde_primer.html" class="btn btn-neutral float-right" title="SDE Primer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../installation/building.html" class="btn btn-neutral float-left" title="Building the NWChemEx Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
