@@ -218,71 +218,71 @@ call it <code class="docutils literal notranslate"><span class="pre">DeepOverlap
 the library <code class="docutils literal notranslate"><span class="pre">DeepIntegrals</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">DeepIntegrals</span></code> needs a very simple header file, <code class="docutils literal notranslate"><span class="pre">deep_integrals.hpp</span></code>:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma once           </span><span class="c1">// Header guard; avoids multiple inclusions</span>
-<span class="cp">#include</span> <span class="cpf">&lt;sde/sde.hpp&gt;</span><span class="c1"> // Makes SDE visible to your module</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sde/sde.hpp&gt;</span><span class="c1"> // Makes SDE visible to your module</span><span class="cp"></span>
 
-<span class="k">namespace</span> <span class="nn">deep_integrals</span> <span class="p">{</span>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">deep_integrals</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-<span class="n">DECLARE_MODULE</span><span class="p">(</span><span class="n">DeepOverlap</span><span class="p">);</span>
+<span class="n">DECLARE_MODULE</span><span class="p">(</span><span class="n">DeepOverlap</span><span class="p">);</span><span class="w"></span>
 
 <span class="c1">// if your library provides more than one module, other DECLARE_MODULE</span>
 <span class="c1">// statements would show up here</span>
 
 <span class="c1">// This is the hook NWChemEx uses to enter your library</span>
-<span class="kt">void</span> <span class="nf">load_modules</span><span class="p">(</span><span class="n">sde</span><span class="o">::</span><span class="n">ModuleManager</span><span class="o">&amp;</span> <span class="n">mm</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">load_modules</span><span class="p">(</span><span class="n">sde</span><span class="o">::</span><span class="n">ModuleManager</span><span class="o">&amp;</span><span class="w"> </span><span class="n">mm</span><span class="p">);</span><span class="w"></span>
 
-<span class="p">}</span> <span class="c1">// namespace deep_integrals</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace deep_integrals</span>
 </pre></div>
 </div>
 <p>Overlap integrals are of type <code class="docutils literal notranslate"><span class="pre">property_types::ao_integrals::Overlap&lt;T&gt;</span></code>
 where <code class="docutils literal notranslate"><span class="pre">T</span></code> is a floating-point type (<strong>e.g.</strong>, <code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">double</span></code>). The
 definition of <code class="docutils literal notranslate"><span class="pre">DeepOverlap</span></code> will look something like:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;path/to/deep_integrals.hpp&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;property_types/ao_integrals/overlap.hpp&gt;</span><span class="cp"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;path/to/deep_integrals.hpp&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;property_types/ao_integrals/overlap.hpp&gt;</span><span class="cp"></span>
 
 <span class="c1">// Typedef of the Overlap property type for readability</span>
-<span class="k">using</span> <span class="n">pt</span> <span class="o">=</span> <span class="n">property_types</span><span class="o">::</span><span class="n">ao_integrals</span><span class="o">::</span><span class="n">Overlap</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="n">pt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property_types</span><span class="o">::</span><span class="n">ao_integrals</span><span class="o">::</span><span class="n">Overlap</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
 
-<span class="k">namespace</span> <span class="nn">deep_integrals</span> <span class="p">{</span>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">deep_integrals</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-<span class="n">MODULE_CTOR</span><span class="p">(</span><span class="n">DeepOverlap</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">MODULE_CTOR</span><span class="p">(</span><span class="n">DeepOverlap</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-    <span class="c1">// Register that your module satisfies the Overlap property type</span>
-    <span class="n">satisfies_property_type</span><span class="o">&lt;</span><span class="n">pt</span><span class="o">&gt;</span><span class="p">();</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="c1">// Register that your module satisfies the Overlap property type</span>
+<span class="w">    </span><span class="n">satisfies_property_type</span><span class="o">&lt;</span><span class="n">pt</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="n">MODULE_RUN</span><span class="p">(</span><span class="n">DeepOverlap</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">MODULE_RUN</span><span class="p">(</span><span class="n">DeepOverlap</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-    <span class="c1">// This is boilerplate for unwrapping the inputs provided to the module</span>
-    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="p">[</span><span class="n">bra</span><span class="p">,</span> <span class="n">ket</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">::</span><span class="n">unwrap_inputs</span><span class="p">(</span><span class="n">inputs</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// This is boilerplate for unwrapping the inputs provided to the module</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="p">[</span><span class="n">bra</span><span class="p">,</span><span class="w"> </span><span class="n">ket</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pt</span><span class="o">::</span><span class="n">unwrap_inputs</span><span class="p">(</span><span class="n">inputs</span><span class="p">);</span><span class="w"></span>
 
-    <span class="c1">// Step 1: Translate the AO basis sets for the bra and ket to your</span>
-    <span class="c1">// library&#39;s native format</span>
+<span class="w">    </span><span class="c1">// Step 1: Translate the AO basis sets for the bra and ket to your</span>
+<span class="w">    </span><span class="c1">// library&#39;s native format</span>
 
-    <span class="c1">// Step 2: Compute the overlap integral tensor</span>
+<span class="w">    </span><span class="c1">// Step 2: Compute the overlap integral tensor</span>
 
-    <span class="c1">// Step 3: Convert the overlap integral tensor from your library&#39;s format</span>
-    <span class="c1">// to NWChemEx&#39;s tensor format</span>
-    <span class="k">auto</span> <span class="n">S</span> <span class="o">=</span> <span class="n">get_overlap_integral_in_NWX_format</span><span class="p">();</span>
+<span class="w">    </span><span class="c1">// Step 3: Convert the overlap integral tensor from your library&#39;s format</span>
+<span class="w">    </span><span class="c1">// to NWChemEx&#39;s tensor format</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_overlap_integral_in_NWX_format</span><span class="p">();</span><span class="w"></span>
 
-    <span class="c1">// This is boilerplate for wrapping and returning the results</span>
-    <span class="k">auto</span> <span class="n">rv</span> <span class="o">=</span> <span class="n">results</span><span class="p">();</span>
-    <span class="k">return</span> <span class="n">pt</span><span class="o">::</span><span class="n">wrap_results</span><span class="p">(</span><span class="n">rv</span><span class="p">,</span> <span class="n">S</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="c1">// This is boilerplate for wrapping and returning the results</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">rv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">results</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pt</span><span class="o">::</span><span class="n">wrap_results</span><span class="p">(</span><span class="n">rv</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="p">}</span> <span class="c1">// namespace your_library_namespace</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace your_library_namespace</span>
 </pre></div>
 </div>
 <p>Finally we need to define the <code class="docutils literal notranslate"><span class="pre">load_modules</span></code> function, which we do in its own
 source file:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;path/to/deep_integrals.hpp&quot;</span><span class="cp"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;path/to/deep_integrals.hpp&quot;</span><span class="cp"></span>
 
-<span class="k">namespace</span> <span class="nn">deep_integrals</span> <span class="p">{</span>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">deep_integrals</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-<span class="kt">void</span> <span class="nf">load_modules</span><span class="p">(</span><span class="n">libchemist</span><span class="o">::</span><span class="n">ModuleManager</span><span class="o">&amp;</span> <span class="n">mm</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">mm</span><span class="p">.</span><span class="n">add_module</span><span class="o">&lt;</span><span class="n">DeepOverlap</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;Deep Overlap&quot;</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">load_modules</span><span class="p">(</span><span class="n">libchemist</span><span class="o">::</span><span class="n">ModuleManager</span><span class="o">&amp;</span><span class="w"> </span><span class="n">mm</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">mm</span><span class="p">.</span><span class="n">add_module</span><span class="o">&lt;</span><span class="n">DeepOverlap</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;Deep Overlap&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="p">}</span> <span class="c1">// namespace deep_integrals</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace deep_integrals</span>
 </pre></div>
 </div>
 </section>
