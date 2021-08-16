@@ -11,6 +11,9 @@ TEST_CASE("Direct SCF") {
     const auto bs   = mokup::basis_set::sto3g;
     auto mol        = mokup::get_molecules().at(name);
     auto aos        = mokup::get_bases().at(name).at(bs);
-    auto H_e        = mokup::electronic_hamiltonian(name);
-    auto [phi0]     = mod.run_as<simde::CanonicalReference>(H_e, aos);
+    auto H          = mokup::hamiltonian(name);
+    simde::type::els_hamiltonian H_e(H);
+    auto [phi0] = mod.run_as<simde::CanonicalReference>(H_e, aos);
+    auto [E]    = mm.at("SCF Energy").run_as<simde::WfEnergy>(phi0, H, phi0);
+    std::cout << "Total SCF Energy: " << E << std::endl;
 }
