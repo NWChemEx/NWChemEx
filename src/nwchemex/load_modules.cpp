@@ -6,6 +6,11 @@
 
 namespace {
 
+void set_integrals_default_modules(pluginplay::ModuleManager& mm) {
+    mm.change_submod("Transformed K", "integral kernel", "CanJK");
+    mm.change_submod("Transformed Fock", "integral kernel", "Fock Matrix");
+}
+
 void set_scf_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("CanJK", "ERI Builder", "ERI4");
     mm.change_submod("CanJ", "ERI Builder", "ERI4");
@@ -24,6 +29,22 @@ void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("MP1 Wavefunction", "Transformed ERIS",
                      "Transformed ERI4");
     mm.change_submod("MP2", "Transformed ERIs", "Transformed ERI4");
+
+    mm.change_submod("CABS", "Overlap", "Overlap");
+    mm.change_submod("RIBS", "Overlap", "Overlap");
+    mm.change_submod("MP2-F12 Coupling", "Fock builder", "Transformed Fock");
+    mm.change_submod("MP2-F12 Coupling", "(ai|f12|pj)", "Transformed STG4");
+    mm.change_submod("MP2-F12 V", "(mn|f/r|ls)", "Transformed Yukawa4");
+    mm.change_submod("MP2-F12 V", "(mn|1/r|ls)", "Transformed ERI4");
+    mm.change_submod("MP2-F12 V", "(ia|f12|jb)", "Transformed STG4");
+    mm.change_submod("MP2-F12 X", "(mn|r|ls)", "Transformed STG4");
+    mm.change_submod("MP2-F12 X", "(m|f|n)", "Transformed Fock");
+    mm.change_submod("MP2-F12 B Approx C", "(mn|df12*df12|ls)",
+                     "Transformed STG 4 Center dfdr Squared");
+    mm.change_submod("MP2-F12 B Approx C", "Exchange builder", "Transformed K");
+    mm.change_submod("MP2-F12 B Approx C", "Fock builder", "Transformed Fock");
+    mm.change_submod("MP2-F12 B Approx C", "(ia|f12|jb)", "Transformed STG4");
+
     //     mm.change_submod("DOI SparseMap Builder", "dois", "DOI");
     //     mm.change_submod("LMO 2 AO", "dois", "DOI");
     //     mm.change_submod("AO 2 Aux", "dois", "DOI");
@@ -51,6 +72,7 @@ void load_modules(pluginplay::ModuleManager& mm) {
 
     mm.add_module<SystemHamiltonian>("SystemHamiltonian");
 
+    set_integrals_default_modules(mm);
     set_scf_default_modules(mm);
     set_mp2_default_modules(mm);
 }
