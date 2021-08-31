@@ -23,13 +23,12 @@ TEST_CASE("Canonical MP2-F12") {
 
     mm.change_input("CABS", "F12 fitting basis", aux);
 
-    mm.at("MP2-F12 B Approx C").change_submod("Exchange builder", k_mod);
     auto scf_wf_mod    = mm.at("SCF");
     auto mp1_wf_mod    = mm.at("MP1 Wavefunction");
     auto mp2_f12_e_mod = mm.at("Dense MP2-F12");
 
     auto [scf_wf] = scf_wf_mod.run_as<scf_wf_pt>(H_e, aos);
     auto [mp1_wf] = mp1_wf_mod.run_as<mp1_wf_pt>(H_e, scf_wf);
-    // auto [E]      = mp2_f12_e_mod.run_as<mp2_f12_e_pt>(scf_wf, H_e, mp1_wf);
-    // std::cout << "MP2-F12/STO-3G Correlation Energy: " << E << std::endl;
+    auto [E]      = mp2_f12_e_mod.run_as<mp2_f12_e_pt>(scf_wf, H_e, mp1_wf);
+    std::cout << "MP2-F12/STO-3G Correlation Energy: " << E << std::endl;
 }
