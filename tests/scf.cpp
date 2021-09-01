@@ -16,6 +16,6 @@ TEST_CASE("Direct SCF") {
     auto H          = mokup::hamiltonian(name);
     simde::type::els_hamiltonian H_e(H);
     auto [phi0] = mod.run_as<simde::CanonicalReference>(H_e, aos);
-    auto [E]    = mm.at("SCF Energy").run_as<pt>(phi0, H, phi0);
+    auto [E]    = mm.at("Total Energy").run_as<pt>(phi0, H, phi0);
     std::cout << "Total SCF Energy: " << E << std::endl;
 }
