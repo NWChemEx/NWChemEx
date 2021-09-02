@@ -1,30 +1,34 @@
-// #include <catch2/catch.hpp>
-// #include <libchemist/libchemist.hpp>
-// #include <nwchemex/load_modules.hpp>
-// #include <property_types/correlation_energy.hpp>
-// #include <property_types/reference_wavefunction.hpp>
-// #include <testing/testing.hpp>
+#include "nwchemex/nwchemex.hpp"
+#include <catch2/catch.hpp>
+#include <mokup/mokup.hpp>
 
-// using canonical_mos = property_types::type::canonical_space_t<double>;
-// using scf_pt = property_types::ReferenceWavefunction<double, canonical_mos>;
-// using mp2_pt = property_types::CorrelationEnergy<double, canonical_mos>;
+using scf_wf_pt    = simde::CanonicalReference;
+using mp1_wf_pt    = simde::CanonicalManyBodyWf;
+using mp2_f12_e_pt = simde::CanonicalCorrelationEnergy;
+using k_pt         = simde::TransformedExchange;
 
-// TEST_CASE("Canonical MP2-F12") {
-//     sde::ModuleManager mm;
-//     nwx::load_modules(mm);
+TEST_CASE("Canonical MP2-F12") {
+    auto& world = TA::get_default_world();
+    pluginplay::ModuleManager mm;
+    nwx::load_modules(mm);
 
-//     std::vector names{testing::molecule::h2, testing::molecule::h2o};
-//     for(const auto& name : names) {
-//         SECTION(testing::as_string(name)) {
-//             auto mol       = testing::get_molecules().at(name);
-//             const auto aos = libchemist::apply_basis("cc-pvdz", mol);
-//             const auto aux = libchemist::apply_basis("cc-pvdz-f12_optri",
-//             mol); mm.change_input("CABS", "F12 fitting basis", aux); const
-//             auto [E_SCF, C] = mm.run_as<scf_pt>("SCFDIIS", mol, aos); const
-//             auto [E_MP2] =
-//               mm.run_as<mp2_pt>("Dense MP2-F12", mol, aos, C);
-//             std::cout << "Correlation Energy: " << E_MP2 << std::endl;
-//             std::cout << "MP2-F12 Energy: " << E_SCF + E_MP2 << std::endl;
-//         }
-//     }
-// }
+    const auto name   = mokup::molecule::h2;
+    const auto bs     = mokup::basis_set::ccpvdz;
+    const auto aux_bs = mokup::basis_set::ccpvdzf12optri;
+    auto mol          = mokup::get_molecules().at(name);
+    auto aos          = mokup::get_bases().at(name).at(bs);
+    const auto aux    = mokup::get_bases().at(name).at(aux_bs);
+    auto H            = mokup::hamiltonian(name);
+    simde::type::els_hamiltonian H_e(H);
+
+    mm.change_input("CABS", "F12 fitting basis", aux);
+
+    auto scf_wf_mod    = mm.at("SCF");
+    auto mp1_wf_mod    = mm.at("MP1 Wavefunction");
+    auto mp2_f12_e_mod = mm.at("Dense MP2-F12");
+
+    auto [scf_wf] = scf_wf_mod.run_as<scf_wf_pt>(H_e, aos);
+    auto [mp1_wf] = mp1_wf_mod.run_as<mp1_wf_pt>(H_e, scf_wf);
+    auto [E]      = mp2_f12_e_mod.run_as<mp2_f12_e_pt>(scf_wf, H_e, mp1_wf);
+    std::cout << "MP2-F12/STO-3G Correlation Energy: " << E << std::endl;
+}

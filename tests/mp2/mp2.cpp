@@ -22,5 +22,5 @@ TEST_CASE("Canonical MP2") {
     auto [scf_wf]   = scf_wf_mod.run_as<scf_wf_pt>(H_e, aos);
     auto [mp1_wf]   = mp1_wf_mod.run_as<mp1_wf_pt>(H_e, scf_wf);
     auto [E]        = mm.run_as<mp2_e_pt>("MP2", scf_wf, H_e, mp1_wf);
-    std::cout << E << std::endl;
+    std::cout << "MP2/STO-3G Correlation Energy: " << E << std::endl;
 }
