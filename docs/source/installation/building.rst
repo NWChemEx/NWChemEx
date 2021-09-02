@@ -37,9 +37,9 @@ automatically for all new terminal sessions:
 
    . /path/to/intel/mkl/bin/mklvars.sh <arch>
 
-**Other BLAS/LAPACK/ScaLAPACK:** If not using the Intel MKL, closely study the
-BLAS/LAPACK section of the NWChemEx ``toolchain.cmake`` file below to ensure all
-paths are correct for your BLAS/LAPACK/ScaLAPACK installations.
+**Other BLAS/LAPACK/ScaLAPACK:** If not using the Intel MKL, ensure that 
+environment variables for the packages are set up correctly according to the
+package-specific instructions.
 
 libint2
 ^^^^^^^
