@@ -16,8 +16,8 @@ To compile NWChemEx, some packages must be available on your system beforehand:
 If necessary, more installation details for a package will be provided in the
 subsections below.
 
-NWChemEx also depends on a number of repositories listed below. Please visit the
-repositories and ensure that any additional packages that must be available
+NWChemEx also depends on a number of repositories listed below. Please visit 
+the repositories and ensure that any additional packages that must be available
 before building are installed.
 
 #. integrals <https://github.com/NWChemEx-Project/Integrals>
@@ -27,11 +27,11 @@ before building are installed.
 BLAS/LAPACK/ScaLAPACK
 ^^^^^^^^^^^^^^^^^^^^^
 
-**Intel MKL (Intel oneAPI MKL):** Ensure that all required environment variables
-for the Intel MKL are set by executing ``/path/to/intel/mkl/bin/mklvars.sh <arch>``,
-where ``<arch>`` must be either ``ia32`` or ``intel64``. The following command
-can be added to your ``.bashrc`` to set the required environment variables
-automatically for all new terminal sessions:
+**Intel MKL (Intel oneAPI MKL):** Ensure that all required environment 
+variables for the Intel MKL are set by executing ``/path/to/intel/mkl/bin/
+mklvars.sh <arch>``, where ``<arch>`` must be either ``ia32`` or ``intel64``.
+The following command can be added to your ``.bashrc`` to set the required 
+environment variables automatically for all new terminal sessions:
 
 .. code-block:: bash
 
@@ -50,23 +50,21 @@ libint2
    to using this internal build of Boost have been observed (by Zach Crandall
    as of April 29, 2021).
 
-The libint2 build will take a long time (probably >2 hrs), and should be started
-well in advance. At the time of writing, libint v2.6.0 can be obtained from the
-`libint v2.6.0 release <https://github.com/evaleev/libint/releases/tag/v2.6.0>`__
-page and built using instructions at
-`libint Wiki <https://github.com/evaleev/libint/wiki>`__ if a custom library is
-needed.
+The libint2 build will take a long time (probably >2 hrs), and should be 
+started well in advance. At the time of writing, libint v2.6.0 can be obtained 
+from the `libint v2.6.0 release <https://github.com/evaleev/libint/releases/
+tag/v2.6.0>`__ page and built using instructions at `libint Wiki 
+<https://github.com/evaleev/libint/wiki>`__ if a custom library is needed.
 
 The following build script can be used to build and install the libint2
 pre-generated library "lmax=6 library (standard ints only)", which can be
 downloaded from the
-`libint v2.6.0 release <https://github.com/evaleev/libint/releases/tag/v2.6.0>`__
-page or directly from
-`here <https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz>`__.
-Download and extract the pre-generated libint v2.6.0 library. Inside the newly
-extracted libint-2.6.0 directory, create a file named ``build.sh`` and paste the
-below contents, modifying everything in angled brackets (<>) to be correct for
-your system.
+`libint v2.6.0 release <https://github.com/evaleev/libint/releases/tag/
+v2.6.0>`__ page or directly from `here <https://github.com/evaleev/libint/
+releases/download/v2.6.0/libint-2.6.0.tgz>`__. Download and extract the 
+pre-generated libint v2.6.0 library. Inside the newly extracted libint-2.6.0 
+directory, create a file named ``build.sh`` and paste the below contents, 
+modifying everything in angled brackets (<>) to be correct for your system.
 
 .. code-block:: bash
 
@@ -86,11 +84,12 @@ your system.
 GitHub Personal Access Token
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A GitHub Personal Access Token (PAT) is necessary since, at the moment, NWChemEx
-and some dependencies are hosted in private repositories. To create a PAT,
-follow the instructions at GitHub's `Creating a personal access token
-<https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token>`_
-page. This PAT will be used when prompted for a password while cloning repositories.
+A GitHub Personal Access Token (PAT) is necessary since, at the moment, 
+NWChemEx and some dependencies are hosted in private repositories. To create a 
+PAT, follow the instructions at GitHub's `Creating a personal access token
+<https://docs.github.com/en/github/authenticating-to-github/
+creating-a-personal-access-token>`_ page. This PAT will be used when prompted 
+for a password while cloning repositories.
 
 
 Building NWChemEx
