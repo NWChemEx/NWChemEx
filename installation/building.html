@@ -208,8 +208,8 @@
 </ol>
 <p>If necessary, more installation details for a package will be provided in the
 subsections below.</p>
-<p>NWChemEx also depends on a number of repositories listed below. Please visit the
-repositories and ensure that any additional packages that must be available
+<p>NWChemEx also depends on a number of repositories listed below. Please visit
+the repositories and ensure that any additional packages that must be available
 before building are installed.</p>
 <ol class="arabic simple">
 <li><p>integrals &lt;<a class="reference external" href="https://github.com/NWChemEx-Project/Integrals">https://github.com/NWChemEx-Project/Integrals</a>&gt;</p></li>
@@ -218,14 +218,17 @@ before building are installed.</p>
 </ol>
 <section id="blas-lapack-scalapack">
 <h3>BLAS/LAPACK/ScaLAPACK<a class="headerlink" href="#blas-lapack-scalapack" title="Permalink to this headline">¶</a></h3>
-<p><strong>Intel MKL (Intel oneAPI MKL):</strong> Ensure that all required environment variables
-for the Intel MKL are set by executing <code class="docutils literal notranslate"><span class="pre">/path/to/intel/mkl/bin/mklvars.sh</span> <span class="pre">&lt;arch&gt;</span></code>,
-where <code class="docutils literal notranslate"><span class="pre">&lt;arch&gt;</span></code> must be either <code class="docutils literal notranslate"><span class="pre">ia32</span></code> or <code class="docutils literal notranslate"><span class="pre">intel64</span></code>. The following command
-can be added to your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> to set the required environment variables
-automatically for all new terminal sessions:</p>
-<p><strong>Other BLAS/LAPACK/ScaLAPACK:</strong> If not using the Intel MKL, closely study the
-BLAS/LAPACK section of the NWChemEx <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code> file below to ensure all
-paths are correct for your BLAS/LAPACK/ScaLAPACK installations.</p>
+<p><strong>Intel MKL (Intel oneAPI MKL):</strong> Ensure that all required environment
+variables for the Intel MKL are set by executing <code class="docutils literal notranslate"><span class="pre">/path/to/intel/mkl/bin/</span>
+<span class="pre">mklvars.sh</span> <span class="pre">&lt;arch&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;arch&gt;</span></code> must be either <code class="docutils literal notranslate"><span class="pre">ia32</span></code> or <code class="docutils literal notranslate"><span class="pre">intel64</span></code>.
+The following command can be added to your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> to set the required
+environment variables automatically for all new terminal sessions:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>. /path/to/intel/mkl/bin/mklvars.sh &lt;arch&gt;
+</pre></div>
+</div>
+<p><strong>Other BLAS/LAPACK/ScaLAPACK:</strong> If not using the Intel MKL, ensure that
+environment variables for the packages are set up correctly according to the
+package-specific instructions.</p>
 </section>
 <section id="libint2">
 <h3>libint2<a class="headerlink" href="#libint2" title="Permalink to this headline">¶</a></h3>
@@ -237,22 +240,16 @@ internal build of Boost. However, when building NWChemEx, errors related
 to using this internal build of Boost have been observed (by Zach Crandall
 as of April 29, 2021).</p>
 </div>
-<p>The libint2 build will take a long time (probably &gt;2 hrs), and should be started
-well in advance. At the time of writing, libint v2.6.0 can be obtained from the
-<a class="reference external" href="https://github.com/evaleev/libint/releases/tag/v2.6.0">libint v2.6.0 release</a>
-page and built using instructions at
-<a class="reference external" href="https://github.com/evaleev/libint/wiki">libint Wiki</a> if a custom library is
-needed.</p>
+<p>The libint2 build will take a long time (probably &gt;2 hrs), and should be
+started well in advance. At the time of writing, libint v2.6.0 can be obtained
+from the <a class="reference external" href="https://github.com/evaleev/libint/releases/tag/v2.6.0">libint v2.6.0 release</a> page and built using instructions at <a class="reference external" href="https://github.com/evaleev/libint/wiki">libint Wiki</a> if a custom library is needed.</p>
 <p>The following build script can be used to build and install the libint2
 pre-generated library “lmax=6 library (standard ints only)”, which can be
 downloaded from the
-<a class="reference external" href="https://github.com/evaleev/libint/releases/tag/v2.6.0">libint v2.6.0 release</a>
-page or directly from
-<a class="reference external" href="https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz">here</a>.
-Download and extract the pre-generated libint v2.6.0 library. Inside the newly
-extracted libint-2.6.0 directory, create a file named <code class="docutils literal notranslate"><span class="pre">build.sh</span></code> and paste the
-below contents, modifying everything in angled brackets (&lt;&gt;) to be correct for
-your system.</p>
+<a class="reference external" href="https://github.com/evaleev/libint/releases/tag/v2.6.0">libint v2.6.0 release</a> page or directly from <a class="reference external" href="https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz">here</a>. Download and extract the
+pre-generated libint v2.6.0 library. Inside the newly extracted libint-2.6.0
+directory, create a file named <code class="docutils literal notranslate"><span class="pre">build.sh</span></code> and paste the below contents,
+modifying everything in angled brackets (&lt;&gt;) to be correct for your system.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
 
 cmake -S . <span class="se">\</span>
@@ -270,10 +267,10 @@ cmake --build build --target install <span class="m">2</span>&gt;<span class="p"
 </section>
 <section id="github-personal-access-token">
 <h3>GitHub Personal Access Token<a class="headerlink" href="#github-personal-access-token" title="Permalink to this headline">¶</a></h3>
-<p>A GitHub Personal Access Token (PAT) is necessary since, at the moment, NWChemEx
-and some dependencies are hosted in private repositories. To create a PAT,
-follow the instructions at GitHub’s <a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a>
-page. This PAT will be used when prompted for a password while cloning repositories.</p>
+<p>A GitHub Personal Access Token (PAT) is necessary since, at the moment,
+NWChemEx and some dependencies are hosted in private repositories. To create a
+PAT, follow the instructions at GitHub’s <a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a> page. This PAT will be used when prompted
+for a password while cloning repositories.</p>
 </section>
 </section>
 <section id="building-nwchemex">
@@ -315,14 +312,6 @@ brackets (&lt;&gt;) for your system.</p>
 
 <span class="c"># BLAS/LAPACK</span>
 <span class="nb">set</span><span class="p">(</span><span class="s">ENABLE_SCALAPACK</span> <span class="s">ON</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">MKLROOT</span> <span class="o">$ENV{</span><span class="nv">MKLROOT</span><span class="o">}</span><span class="p">)</span> <span class="c"># Environment variable set through your MKL install or a script</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">LAPACK_LIBRARIES</span> <span class="s2">&quot;-L${MKLROOT}/lib/intel64 -Wl,--no-as-needed -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl&quot;</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">LAPACK_INCLUDE_DIRS</span> <span class="s2">&quot;${MKLROOT}/include&quot;</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">lapack_LIBRARIES</span> <span class="o">${</span><span class="nv">LAPACK_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">SCALAPACK_LIBRARIES</span>  <span class="s">-L</span><span class="o">${</span><span class="nv">MKLROOT</span><span class="o">}</span><span class="s">/lib/intel64</span> <span class="s">-Wl,--no-as-needed</span> <span class="s">-lmkl_scalapack_lp64</span> <span class="s">-lmkl_intel_lp64</span> <span class="s">-lmkl_sequential</span> <span class="s">-lmkl_core</span> <span class="s">-lmkl_blacs_openmpi_lp64</span> <span class="s">-lpthread</span> <span class="s">-lm</span> <span class="s">-ldl</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">blacs_LIBRARIES</span> <span class="o">${</span><span class="nv">SCALAPACK_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">scalapack_LIBRARIES</span> <span class="o">${</span><span class="nv">SCALAPACK_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">lapack_LIBRARIES</span> <span class="o">${</span><span class="nv">LAPACK_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
 <span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS</span> <span class="s2">&quot;${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
