@@ -1,15 +1,11 @@
+#include "nwchemex/nwchemex.hpp"
 #include <catch2/catch.hpp>
-#include <libchemist/libchemist.hpp>
-#include <nwchemex/load_modules.hpp>
-
-// 2. Include the property type for the module you want to run
-#include <property_types/ao_integrals/ao_integrals.hpp>
 
 // 3. Change this to the property type you want to run as
-using pt_type = property_types::CoreHamiltonian<double>;
+using pt_type = simde::CoreH;
 
 TEST_CASE("Driving NWX from C++") {
-    sde::ModuleManager mm;
+    pluginplay::ModuleManager mm;
     nwx::load_modules(mm);
     libchemist::MoleculeManager mols;
 
@@ -21,5 +17,5 @@ TEST_CASE("Driving NWX from C++") {
     // 5. (Optional) Change options
 
     // 6. Run the module
-    const auto& [H] = mm.run_as<pt_type>(module_key, mol, bs, bs);
+    // const auto& [H] = mm.run_as<pt_type>(module_key, bs, bs);
 }

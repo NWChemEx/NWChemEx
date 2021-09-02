@@ -14,7 +14,7 @@ nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/nwchemex")
 
 ### Options ###
 option(BUILD_TESTING "Should we build the tests?" OFF)
-option(BUILD_PYBINDINGS "Should we build Python3 bindings?" ON)
+option(BUILD_PYBINDINGS "Should we build Python3 bindings?" OFF)
 
 cpp_find_or_build_dependency(
         integrals
@@ -35,12 +35,12 @@ cpp_find_or_build_dependency(
 )
 
 cpp_find_or_build_dependency(
-       mp2
-       URL github.com/NWChemEx-Project/MP2
-       PRIVATE TRUE
-       BUILD_TARGET mp2
-       FIND_TARGET nwx::mp2
-       CMAKE_ARGS BUILD_TESTING=OFF
+        mp2
+        URL github.com/NWChemEx-Project/MP2
+        PRIVATE TRUE
+        BUILD_TARGET mp2
+        FIND_TARGET nwx::mp2
+        CMAKE_ARGS BUILD_TESTING=OFF
 )
 
 
@@ -48,7 +48,7 @@ cpp_add_library(
         nwchemex
         SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
         INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include/nwchemex"
-        DEPENDS nwx::mp2 nwx::scf nwx::integrals
+        DEPENDS nwx::scf nwx::integrals nwx::mp2
 )
 
 if(BUILD_PYBINDINGS)
@@ -70,17 +70,17 @@ if("${BUILD_TESTING}")
             FIND_TARGET Catch2::Catch2
     )
     cpp_find_or_build_dependency(
-            testing
-            URL github.com/NWChemEx-Project/testing
+            mokup
+            URL github.com/NWChemEx-Project/mokup
             PRIVATE
-            BUILD_TARGET testing
-            FIND_TARGET nwx::testing
+            BUILD_TARGET mokup
+            FIND_TARGET nwx::mokup
     )
     cpp_add_tests(
        test_nwchemex
        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests"
        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
-       DEPENDS Catch2::Catch2 nwchemex nwx::testing
+       DEPENDS Catch2::Catch2 nwchemex nwx::mokup
     )
     if(BUILD_PYBINDINGS)
        add_test(
@@ -89,7 +89,7 @@ if("${BUILD_TESTING}")
                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_python.py
        )
        set_tests_properties(
-           test_python 
+           test_python
            PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}"
        )
     endif()
