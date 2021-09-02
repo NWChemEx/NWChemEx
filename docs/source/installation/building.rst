@@ -34,6 +34,7 @@ can be added to your ``.bashrc`` to set the required environment variables
 automatically for all new terminal sessions:
 
 .. code-block:: bash
+
    . /path/to/intel/mkl/bin/mklvars.sh <arch>
 
 **Other BLAS/LAPACK/ScaLAPACK:** If not using the Intel MKL, closely study the
@@ -51,17 +52,17 @@ libint2
 
 The libint2 build will take a long time (probably >2 hrs), and should be started
 well in advance. At the time of writing, libint v2.6.0 can be obtained from the
-`libint v2.6.0 release <https://github.com/evaleev/libint/releases/tag/v2.6.0>`_
+`libint v2.6.0 release <https://github.com/evaleev/libint/releases/tag/v2.6.0>`__
 page and built using instructions at
-`libint Wiki <https://github.com/evaleev/libint/wiki>`_ if a custom library is
+`libint Wiki <https://github.com/evaleev/libint/wiki>`__ if a custom library is
 needed.
 
 The following build script can be used to build and install the libint2
 pre-generated library "lmax=6 library (standard ints only)", which can be
 downloaded from the
-`libint v2.6.0 release <https://github.com/evaleev/libint/releases/tag/v2.6.0>`_
+`libint v2.6.0 release <https://github.com/evaleev/libint/releases/tag/v2.6.0>`__
 page or directly from
-`here <https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz>`_.
+`here <https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz>`__.
 Download and extract the pre-generated libint v2.6.0 library. Inside the newly
 extracted libint-2.6.0 directory, create a file named ``build.sh`` and paste the
 below contents, modifying everything in angled brackets (<>) to be correct for
@@ -136,14 +137,6 @@ brackets (<>) for your system.
 
    # BLAS/LAPACK
    set(ENABLE_SCALAPACK ON)
-   set(MKLROOT $ENV{MKLROOT}) # Environment variable set through your MKL install or a script
-   set(LAPACK_LIBRARIES "-L${MKLROOT}/lib/intel64 -Wl,--no-as-needed -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl")
-   set(LAPACK_INCLUDE_DIRS "${MKLROOT}/include")
-   set(lapack_LIBRARIES ${LAPACK_LIBRARIES})
-   set(SCALAPACK_LIBRARIES  -L${MKLROOT}/lib/intel64 -Wl,--no-as-needed -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_openmpi_lp64 -lpthread -lm -ldl)
-   set(blacs_LIBRARIES ${SCALAPACK_LIBRARIES})
-   set(scalapack_LIBRARIES ${SCALAPACK_LIBRARIES})
-   set(lapack_LIBRARIES ${LAPACK_LIBRARIES})
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX")
 
 
