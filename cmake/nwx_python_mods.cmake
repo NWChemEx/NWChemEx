@@ -18,9 +18,16 @@
 #
 function(cppyy_make_python_package)
     #---------------------------------------------------------------------------
-    #-----------------------Make sure we have cppyy installed-------------------
+    #----------------------Check if Python bindings need to be build------------
     #---------------------------------------------------------------------------
     if (NOT BUILD_PYBINDINGS)
+        return()
+    endif()
+    #---------------------------------------------------------------------------
+    #----------------------Do not build bindings if shared_libs is off----------
+    #---------------------------------------------------------------------------
+    if (NOT BUILD_SHARED_LIBS)
+        message(WARNING, "BUILD_SHARED_LIBS is OFF, and Python needs shared libraries")
         return()
     endif()
     #---------------------------------------------------------------------------
