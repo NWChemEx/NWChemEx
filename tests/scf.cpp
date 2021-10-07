@@ -11,8 +11,7 @@ TEST_CASE("Direct SCF") {
 
     const auto name = mokup::molecule::h2o;
     const auto bs   = mokup::basis_set::sto3g;
-    auto mol        = mokup::get_molecules().at(name);
-    auto aos        = mokup::get_bases().at(name).at(bs);
+    auto aos        = mokup::get_bases(name, bs);
     auto H          = mokup::hamiltonian(name);
     simde::type::els_hamiltonian H_e(H);
     auto [phi0] = mod.run_as<simde::CanonicalReference>(H_e, aos);

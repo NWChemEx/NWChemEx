@@ -11,7 +11,7 @@ TEST_CASE("System Hamiltonian") {
     auto mod = mm.at("SystemHamiltonian");
 
     auto name   = mokup::molecule::h2o;
-    auto mol    = mokup::get_molecules().at(name);
+    auto mol    = mokup::get_molecule(name);
     auto H_corr = mokup::hamiltonian(name);
 
     chemical_system sys{mol, 10};
