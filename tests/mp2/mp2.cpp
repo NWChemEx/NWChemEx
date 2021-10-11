@@ -13,8 +13,7 @@ TEST_CASE("Canonical MP2") {
 
     const auto name = mokup::molecule::h2o;
     const auto bs   = mokup::basis_set::sto3g;
-    auto mol        = mokup::get_molecules().at(name);
-    auto aos        = mokup::get_bases().at(name).at(bs);
+    auto aos        = mokup::get_bases(name, bs);
     auto H          = mokup::hamiltonian(name);
     simde::type::els_hamiltonian H_e(H);
     auto scf_wf_mod = mm.at("SCF");

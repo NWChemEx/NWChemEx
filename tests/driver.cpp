@@ -5,15 +5,15 @@
 using pt_type = simde::CoreH;
 
 TEST_CASE("Driving NWX from C++") {
-    pluginplay::ModuleManager mm;
-    nwx::load_modules(mm);
-    libchemist::MoleculeManager mols;
+    // pluginplay::ModuleManager mm;
+    // nwx::load_modules(mm);
+    // libchemist::MoleculeManager mols;
 
-    auto mol = mols.at("water");
-    auto bs  = libchemist::apply_basis("cc-pvdz", mol);
+    // auto mol = mols.at("water");
+    // auto bs  = libchemist::apply_basis("cc-pvdz", mol);
 
     // 4. Change to the module key you want to run
-    const auto module_key = "CoreH";
+    // const auto module_key = "CoreH";
     // 5. (Optional) Change options
 
     // 6. Run the module

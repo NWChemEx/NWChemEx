@@ -15,9 +15,9 @@ TEST_CASE("Canonical MP2-F12") {
     const auto name   = mokup::molecule::h2;
     const auto bs     = mokup::basis_set::ccpvdz;
     const auto aux_bs = mokup::basis_set::ccpvdzf12optri;
-    auto mol          = mokup::get_molecules().at(name);
-    auto aos          = mokup::get_bases().at(name).at(bs);
-    const auto aux    = mokup::get_bases().at(name).at(aux_bs);
+    auto mol          = mokup::get_molecule(name);
+    auto aos          = mokup::get_bases(name, bs);
+    const auto aux    = mokup::get_bases(name, aux_bs);
     auto H            = mokup::hamiltonian(name);
     simde::type::els_hamiltonian H_e(H);
 
