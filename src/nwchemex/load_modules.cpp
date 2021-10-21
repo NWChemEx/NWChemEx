@@ -29,6 +29,11 @@ void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("MP1 Wavefunction", "Transformed ERIS",
                      "Transformed ERI4");
     mm.change_submod("MP2", "Transformed ERIs", "Transformed ERI4");
+    mm.change_submod("PAOs", "S Builder", "Overlap");
+    mm.change_submod("QC LMOs", "Fock builder", "Transformed Fock");
+    mm.change_submod("QC PAOs", "Fock builder", "Transformed Fock");
+    mm.change_submod("MP2 Dipole", "dipole", "EDipole");
+    mm.change_submod("L(LMO->LMO) (prescreening)", "DOIs", "DOI");
 
     mm.change_submod("CABS", "Overlap", "Overlap");
     mm.change_submod("RIBS", "Overlap", "Overlap");
@@ -44,21 +49,6 @@ void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("MP2-F12 B Approx C", "Exchange builder", "Transformed K");
     mm.change_submod("MP2-F12 B Approx C", "Fock builder", "Transformed Fock");
     mm.change_submod("MP2-F12 B Approx C", "(ia|f12|jb)", "Transformed STG4");
-
-    //     mm.change_submod("DOI SparseMap Builder", "dois", "DOI");
-    //     mm.change_submod("LMO 2 AO", "dois", "DOI");
-    //     mm.change_submod("AO 2 Aux", "dois", "DOI");
-    //     mm.change_submod("DLPNO", "Fock Builder", "Fock");
-    //     mm.change_submod("Dipole Center", "Dipole Builder", "EDipole");
-    //     mm.change_submod("Transition Dipole", "Dipole Builder", "EDipole");
-    //     mm.change_submod("MP2 3-Center K", "(P | mu nu)", "ERI3");
-    //     mm.change_submod("MP2 3-Center K", "(Q | P)", "MetricChol");
-    //     mm.change_submod("MP2 3-Center Sparse K", "(Q | P)", "Sparse DF
-    //     Coefs"); mm.change_submod("MP2 3-Center Sparse K", "(P | mu nu)",
-    //     "ERI3"); mm.change_submod("MP2 4-Center K", "(mu nu | lambda sigma)",
-    //     "ERI4"); mm.change_submod("MP2 4-Center Sparse K", "(mu nu | lambda
-    //     sigma)", "ERI4"); mm.change_submod("Sparse DF Coefs", "M Builder",
-    //     "ERI2");
 }
 
 } // namespace
