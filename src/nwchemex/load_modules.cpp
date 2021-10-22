@@ -34,6 +34,7 @@ void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("QC PAOs", "Fock builder", "Transformed Fock");
     mm.change_submod("MP2 Dipole", "dipole", "EDipole");
     mm.change_submod("L(LMO->LMO) (prescreening)", "DOIs", "DOI");
+    mm.change_submod("DOI Sparsity", "DOIs", "DOI");
 
     mm.change_submod("CABS", "Overlap", "Overlap");
     mm.change_submod("RIBS", "Overlap", "Overlap");
