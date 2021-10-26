@@ -43,12 +43,22 @@ cpp_find_or_build_dependency(
         CMAKE_ARGS BUILD_TESTING=OFF
 )
 
+cpp_find_or_build_dependency(
+        chemcache
+        URL github.com/NWChemEx-Project/ChemCache
+        PRIVATE TRUE
+        BUILD_TARGET chemcache
+        FIND_TARGET nwx::chemcache
+        VERSION generated_data
+        CMAKE_ARGS BUILD_TESTING=OFF
+)
+
 
 cpp_add_library(
         nwchemex
         SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
         INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include/nwchemex"
-        DEPENDS nwx::scf nwx::integrals nwx::mp2
+        DEPENDS nwx::scf nwx::integrals nwx::mp2 nwx::chemcache
 )
 
 if(BUILD_PYBINDINGS)
