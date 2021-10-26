@@ -8,7 +8,7 @@
 using namespace libchemist;
 using coord_type = std::array<double, 3>;
 
-inline auto corr_bs() {
+inline auto corr_bs(const Molecule& mol) {
     AOBasisSet<double> rv;
     auto man = chemcache::nwx_basis_set_manager();
     auto O   = man.get_basis("sto-3g", 8);
@@ -30,6 +30,6 @@ TEST_CASE("Convenience Functions") {
         std::cout.precision(std::numeric_limits<double>::max_digits10);
         MoleculeManager mm = chemcache::nwx_molecule_manager();
         Molecule water     = mm.at("water");
-        REQUIRE(nwx::apply_basis("sto-3g", water).basis_set() == corr_bs());
+        REQUIRE(nwx::apply_basis("sto-3g", water).basis_set() == corr_bs(water));
     }
 }
