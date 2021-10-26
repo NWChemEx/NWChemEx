@@ -30,6 +30,7 @@ TEST_CASE("Convenience Functions") {
         std::cout.precision(std::numeric_limits<double>::max_digits10);
         MoleculeManager mm = chemcache::nwx_molecule_manager();
         Molecule water     = mm.at("water");
-        REQUIRE(nwx::apply_basis("sto-3g", water).basis_set() == corr_bs(water));
+        REQUIRE(nwx::apply_basis("sto-3g", water).basis_set() ==
+                corr_bs(water));
     }
 }
