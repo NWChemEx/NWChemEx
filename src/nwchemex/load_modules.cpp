@@ -14,15 +14,16 @@ void set_integrals_default_modules(pluginplay::ModuleManager& mm) {
 void set_scf_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("CanJK", "ERI Builder", "ERI4");
     mm.change_submod("CanJ", "ERI Builder", "ERI4");
+    mm.change_submod("DFJ", "ERI Builder", "Transformed ERI3");
+    mm.change_submod("DFJK", "ERI Builder", "Transformed ERI3");
+    mm.change_submod("MetricChol", "M Builder", "ERI2");
     mm.change_submod("CoreH", "Kinetic Energy", "Kinetic");
     mm.change_submod("CoreH", "Electron-Nuclear Attraction", "Nuclear");
     mm.change_submod("CoreGuess", "Overlap", "Overlap");
     mm.change_submod("SCF", "Overlap", "Overlap");
-    // mm.change_submod("DFJ", "3CERI Builder", "ERI3");
-    // mm.change_submod("DFJK", "3CERI Builder", "ERI3");
+    mm.change_submod("DIIS Fock Matrix", "Overlap", "Overlap");
+    mm.change_submod("SCFDIIS", "Overlap", "Overlap");
     // mm.change_submod("DiagonalUpdate", "S Builder", "Overlap");
-    // mm.change_submod("MetricChol", "M Builder", "ERI2");
-    // mm.change_submod("SCFDIIS", "S Builder", "Overlap");
 }
 
 void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
