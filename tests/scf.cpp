@@ -15,9 +15,9 @@ TEST_CASE("Direct SCF") {
     nwx::load_modules(mm);
 
     // For density fitted. STO-3G is a terrible fitting set.
-//    mm.change_input("DFJK", "Fitting Basis", aos);
-//    mm.change_submod("Fock Matrix", "J Builder", "DFJK");
-//    mm.change_submod("Fock Matrix", "K Builder", "DFJK");
+    //    mm.change_input("DFJK", "Fitting Basis", aos);
+    //    mm.change_submod("Fock Matrix", "J Builder", "DFJK");
+    //    mm.change_submod("Fock Matrix", "K Builder", "DFJK");
 
     auto& mod = mm.at("SCF");
 
