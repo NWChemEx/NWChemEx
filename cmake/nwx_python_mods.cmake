@@ -86,6 +86,9 @@ function(cppyy_make_python_package)
     if(ENABLE_SCALAPACK)
        list(APPEND include_dirs ${blacspp_SOURCE_DIR}/include ${scalapackpp_SOURCE_DIR}/include)
     endif()
+    if("${install_data_PACKAGE}" STREQUAL "chemist")
+       list(APPEND include_dirs ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+    endif()
     file(GENERATE OUTPUT ${python_defines_file} CONTENT "${python_defines}")
     #---------------------------------------------------------------------------
     #-----------------Generate _init__.py file contents------------------------
