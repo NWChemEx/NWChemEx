@@ -10,8 +10,8 @@ class NWChemExTestCase(unittest.TestCase):
 
         mm = sde.ModuleManager()
         nwx.load_modules(mm)
-        molecule = libchemist.MoleculeManager().at("water")
-        basis = libchemist.apply_basis("sto-3g", molecule)
+        molecule = chemist.MoleculeManager().at("water")
+        basis = chemist.apply_basis("sto-3g", molecule)
         canonical_mos = property_types.type.canonical_space_t["double"]
         pt_type = property_types.ReferenceWavefunction["double", canonical_mos]
 
@@ -24,8 +24,8 @@ class NWChemExTestCase(unittest.TestCase):
 
         mm = sde.ModuleManager()
         nwx.load_modules(mm)
-        molecule = libchemist.MoleculeManager().at("water")
-        basis = libchemist.apply_basis("cc-pvdz", molecule)
+        molecule = chemist.MoleculeManager().at("water")
+        basis = chemist.apply_basis("cc-pvdz", molecule)
         canonical_mos = property_types.type.canonical_space_t["double"]
         pt_type = property_types.ReferenceWavefunction["double", canonical_mos]
         mp2_pt = property_types.CorrelationEnergy["double", canonical_mos]
@@ -45,11 +45,11 @@ class NWChemExTestCase(unittest.TestCase):
         mm = sde.ModuleManager()
         nwx.load_modules(mm)
   
-        O   = libchemist.Atom(AtomName="O", Coordinates=[0.0, -0.1432223429807816, 0.0], AtomicNumber=8)
-        H_1 = libchemist.Atom(AtomName="H", Coordinates=[1.6380335020342418, 1.1365568803584036, 0.0], AtomicNumber=1)
-        H_2 = libchemist.Atom(AtomName="H", Coordinates=[-1.6380335020342418, 1.1365568803584036, 0.0], AtomicNumber=1)
-        molecule = libchemist.Molecule(O, H_1, H_2, Charge=0, Multiplicity=1)
-        basis = libchemist.apply_basis("sto-3g", molecule)
+        O   = chemist.Atom(AtomName="O", Coordinates=[0.0, -0.1432223429807816, 0.0], AtomicNumber=8)
+        H_1 = chemist.Atom(AtomName="H", Coordinates=[1.6380335020342418, 1.1365568803584036, 0.0], AtomicNumber=1)
+        H_2 = chemist.Atom(AtomName="H", Coordinates=[-1.6380335020342418, 1.1365568803584036, 0.0], AtomicNumber=1)
+        molecule = chemist.Molecule(O, H_1, H_2, Charge=0, Multiplicity=1)
+        basis = chemist.apply_basis("sto-3g", molecule)
   
         canonical_mos = property_types.type.canonical_space_t["double"]
         scf_pt = property_types.ReferenceWavefunction["double", canonical_mos]
