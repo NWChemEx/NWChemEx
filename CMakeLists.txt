@@ -53,7 +53,6 @@ cpp_find_or_build_dependency(
         CMAKE_ARGS BUILD_TESTING=OFF
 )
 
-
 cpp_add_library(
         nwchemex
         SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
@@ -61,15 +60,8 @@ cpp_add_library(
         DEPENDS nwx::scf nwx::integrals nwx::mp2 nwx::chemcache
 )
 
-if(BUILD_PYBINDINGS)
-    if(NOT ${BUILD_SHARED_LIBS})
-       message(FATAL_ERROR "BUILD_SHARED_LIBS needs to be ON as Python needs shared libraries")
-    endif()
-    find_package(Python3 REQUIRED)
-    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
-    find_package(Cppyy REQUIRED)
-    cppyy_make_python_package(nwchemex NAMESPACE nwchemex PREFIX nwchemex)
-endif()
+include(nwx_python_mods)
+cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwchemex DEPPACKAGES integrals scf mp2 chemcache )
 
 if("${BUILD_TESTING}")
     cpp_find_or_build_dependency(
@@ -92,15 +84,15 @@ if("${BUILD_TESTING}")
        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
        DEPENDS Catch2::Catch2 nwchemex nwx::mokup
     )
-    if(BUILD_PYBINDINGS)
-       add_test(
-           NAME test_python
-           COMMAND Python3::Interpreter
-                   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_python.py
-       )
-       set_tests_properties(
-           test_python
-           PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}"
-       )
-    endif()
+#    if(BUILD_PYBINDINGS)
+#       add_test(
+#           NAME test_python
+#           COMMAND Python3::Interpreter
+#                   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_python.py
+#       )
+#       set_tests_properties(
+#           test_python
+#           PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}"
+#       )
+#    endif()
 endif()
