@@ -12,7 +12,7 @@ TEST_CASE("Direct SCF") {
     simde::type::els_hamiltonian H_e(H);
 
     pluginplay::ModuleManager mm;
-    nwx::load_modules(mm);
+    nwchemex::load_modules(mm);
 
     // For density fitted. STO-3G is a terrible fitting set.
     //    mm.change_input("DFJK", "Fitting Basis", aos);

@@ -9,7 +9,7 @@ using mp2_e_pt  = simde::CanonicalCorrelationEnergy;
 TEST_CASE("Canonical MP2") {
     auto& world = TA::get_default_world();
     pluginplay::ModuleManager mm;
-    nwx::load_modules(mm);
+    nwchemex::load_modules(mm);
 
     const auto name = mokup::molecule::h2o;
     const auto bs   = mokup::basis_set::sto3g;

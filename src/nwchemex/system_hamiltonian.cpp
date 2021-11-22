@@ -1,7 +1,7 @@
 #include "modules.hpp"
 #include <simde/simde.hpp>
 
-namespace nwx {
+namespace nwchemex {
 
 using simde::type::els_coulomb;
 using simde::type::els_kinetic;

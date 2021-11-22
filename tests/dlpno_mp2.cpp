@@ -12,7 +12,7 @@
 
 // TEST_CASE("DLPNO-MP2") {
 //     // sde::ModuleManager mm;
-//     // nwx::load_modules(mm);
+//     // nwchemex::load_modules(mm);
 //     // libchemist::MoleculeManager mols;
 
 //     // auto mol = mols.at("water");

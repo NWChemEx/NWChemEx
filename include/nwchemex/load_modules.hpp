@@ -1,7 +1,7 @@
 #pragma once
 #include <pluginplay/pluginplay.hpp>
 
-namespace nwx {
+namespace nwchemex {
 
 /** @brief Convenience function for loading all of NWChemEx's modules into an
  *         existing ModuleManager instance.

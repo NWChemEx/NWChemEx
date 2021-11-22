@@ -6,7 +6,7 @@ using pt_type = simde::CoreH;
 
 TEST_CASE("Driving NWX from C++") {
     // pluginplay::ModuleManager mm;
-    // nwx::load_modules(mm);
+    // nwchemex::load_modules(mm);
     // libchemist::MoleculeManager mols;
 
     // auto mol = mols.at("water");
