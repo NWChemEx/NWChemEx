@@ -14,7 +14,7 @@ nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/nwchemex")
 
 ### Options ###
 option(BUILD_TESTING "Should we build the tests?" OFF)
-option(BUILD_PYBINDINGS "Should we build Python3 bindings?" OFF)
+option(BUILD_PYBINDINGS "Should we build Python3 bindings?" ON)
 
 cpp_find_or_build_dependency(
         integrals
@@ -61,7 +61,7 @@ cpp_add_library(
 )
 
 include(nwx_python_mods)
-cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwchemex DEPPACKAGES integrals scf mp2 chemcache )
+cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwx DEPPACKAGES integrals scf mp2 chemcache )
 
 if("${BUILD_TESTING}")
     cpp_find_or_build_dependency(
