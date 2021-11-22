@@ -100,7 +100,7 @@ source file:
 
    namespace deep_integrals {
 
-   void load_modules(libchemist::ModuleManager& mm) {
+   void load_modules(chemist::ModuleManager& mm) {
        mm.add_module<DeepOverlap>("Deep Overlap");
    }
 
