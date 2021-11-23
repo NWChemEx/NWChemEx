@@ -81,17 +81,17 @@ if("${BUILD_TESTING}")
        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
        DEPENDS Catch2::Catch2 nwchemex nwx::mokup
     )
-#    if(BUILD_PYBINDINGS)
-#       add_test(
-#           NAME test_python
-#           COMMAND Python3::Interpreter
-#                   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_python.py
-#       )
-#       set_tests_properties(
-#           test_python
-#           PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}"
-#       )
-#    endif()
+    if(BUILD_PYBINDINGS)
+       add_test(
+           NAME test_python
+           COMMAND Python3::Interpreter
+                   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_python.py
+       )
+       set_tests_properties(
+           test_python
+           PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/Python"
+       )
+    endif()
 endif()
 
 include(nwx_python_mods)
