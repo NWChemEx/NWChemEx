@@ -60,9 +60,6 @@ cpp_add_library(
         DEPENDS nwx::scf nwx::integrals nwx::mp2 nwx::chemcache
 )
 
-include(nwx_python_mods)
-cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwx DEPPACKAGES integrals scf mp2 chemcache )
-
 if("${BUILD_TESTING}")
     cpp_find_or_build_dependency(
             Catch2
@@ -95,4 +92,11 @@ if("${BUILD_TESTING}")
 #           PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}"
 #       )
 #    endif()
+endif()
+
+include(nwx_python_mods)
+if("${BUILD_TESTING}")
+    cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwx DEPPACKAGES integrals scf mp2 chemcache mokup )
+else()
+    cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwx DEPPACKAGES integrals scf mp2 chemcache )
 endif()
