@@ -31,4 +31,4 @@ MODULE_RUN(SystemHamiltonian) {
     return ptype::wrap_results(rv, H);
 }
 
-} // namespace nwx
+} // namespace nwchemex
