@@ -1,5 +1,5 @@
 // #include <catch2/catch.hpp>
-// #include <libchemist/libchemist.hpp>
+// #include <chemist/chemist.hpp>
 // #include <nwchemex/load_modules.hpp>
 // #include <property_types/correlation_energy.hpp>
 // #include <property_types/reference_wavefunction.hpp>
@@ -13,10 +13,10 @@
 // TEST_CASE("DLPNO-MP2") {
 //     // sde::ModuleManager mm;
 //     // nwchemex::load_modules(mm);
-//     // libchemist::MoleculeManager mols;
+//     // chemist::MoleculeManager mols;
 
 //     // auto mol = mols.at("water");
-//     // auto bs  = libchemist::apply_basis("cc-pvdz", mol);
+//     // auto bs  = chemist::apply_basis("cc-pvdz", mol);
 
 //     // const auto [E_SCF, C] = mm.run_as<scf_pt>("SCFDIIS", mol, bs);
 //     // property_types::type::orbital_map<orthogonal_mos> m{

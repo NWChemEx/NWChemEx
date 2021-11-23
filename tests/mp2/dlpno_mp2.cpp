@@ -1,5 +1,5 @@
 // #include <catch2/catch.hpp>
-// #include <libchemist/libchemist.hpp>
+// #include <chemist/chemist.hpp>
 // #include <mp2/mp2.hpp>
 // #include <nwchemex/load_modules.hpp>
 // #include <property_types/correlation_energy.hpp>
