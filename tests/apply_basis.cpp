@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 #include <chemcache/chemcache.hpp>
-#include <iostream>
 #include <chemist/chemist.hpp>
+#include <iostream>
 #include <limits>
 #include <nwchemex/nwchemex.hpp>
 
