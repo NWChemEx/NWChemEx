@@ -1,5 +1,5 @@
 #include <chemcache/chemcache.hpp>
-#include <libchemist/libchemist.hpp>
+#include <chemist/chemist.hpp>
 
 namespace nwchemex {
 
@@ -15,9 +15,9 @@ namespace nwchemex {
  *                       set. Strong throw guarantee.
  */
 inline auto apply_basis(
-  const std::string& name, const libchemist::Molecule& mol,
-  const libchemist::BasisSetManager& man = chemcache::nwx_basis_set_manager()) {
-    libchemist::AOBasisSet<double> aos;
+  const std::string& name, const chemist::Molecule& mol,
+  const chemist::BasisSetManager& man = chemcache::nwx_basis_set_manager()) {
+    chemist::AOBasisSet<double> aos;
 
     for(const auto& ai : mol) {
         auto ci = man.get_basis(name, ai.Z());
@@ -25,7 +25,7 @@ inline auto apply_basis(
         aos.add_center(ci);
     }
 
-    return libchemist::orbital_space::AOSpaceD(aos);
+    return chemist::orbital_space::AOSpaceD(aos);
 }
 
 } // namespace nwchemex

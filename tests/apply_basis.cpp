@@ -1,11 +1,11 @@
 #include <catch2/catch.hpp>
 #include <chemcache/chemcache.hpp>
 #include <iostream>
-#include <libchemist/libchemist.hpp>
+#include <chemist/chemist.hpp>
 #include <limits>
 #include <nwchemex/nwchemex.hpp>
 
-using namespace libchemist;
+using namespace chemist;
 using coord_type = std::array<double, 3>;
 
 inline auto corr_bs(const Molecule& mol) {
