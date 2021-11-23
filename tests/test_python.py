@@ -3,14 +3,17 @@ from nwchemex import *
 
 unittest.TestLoader.sortTestMethodsUsing = None
 
+from ctypes import c_int
+world = TA.initialize(c_int(0),c_int(0),True)
+
 class NWChemExTestCase(unittest.TestCase):
 
     def test_scf_energy(self):
         ref_scf = -74.9420800576956339
 
-        name  = mokup.molecule.h2o()
-        basis = mokup.basis_set.sto3g()
-        aos   = mokup.get_bases(name, bs)
+        name  = mokup.molecule.h2o
+        basis = mokup.basis_set.sto3g
+        aos   = mokup.get_bases(name, basis)
         H     = mokup.hamiltonian(name)
         H_e   = simde.type.els_hamiltonian(H)
 
