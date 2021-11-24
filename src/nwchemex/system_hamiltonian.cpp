@@ -1,7 +1,7 @@
 #include "modules.hpp"
 #include <simde/simde.hpp>
 
-namespace nwx {
+namespace nwchemex {
 
 using simde::type::els_coulomb;
 using simde::type::els_kinetic;
@@ -31,4 +31,4 @@ MODULE_RUN(SystemHamiltonian) {
     return ptype::wrap_results(rv, H);
 }
 
-} // namespace nwx
+} // namespace nwchemex

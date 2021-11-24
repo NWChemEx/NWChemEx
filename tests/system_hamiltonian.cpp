@@ -7,7 +7,7 @@ using ptype = simde::SystemHamiltonian;
 
 TEST_CASE("System Hamiltonian") {
     pluginplay::ModuleManager mm;
-    nwx::load_modules(mm);
+    nwchemex::load_modules(mm);
     auto mod = mm.at("SystemHamiltonian");
 
     auto name   = mokup::molecule::h2o;

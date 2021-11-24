@@ -15,7 +15,7 @@
 
 // TEST_CASE("DLPNO-MP2") {
 //     sde::ModuleManager mm;
-//     nwx::load_modules(mm);
+//     nwchemex::load_modules(mm);
 
 //     std::vector names{testing::molecule::h2, testing::molecule::h2o};
 //     for(const auto& name : names) {

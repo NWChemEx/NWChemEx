@@ -64,7 +64,7 @@ void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
 
 } // namespace
 
-namespace nwx {
+namespace nwchemex {
 
 void load_modules(pluginplay::ModuleManager& mm) {
     integrals::load_modules(mm);
@@ -78,4 +78,4 @@ void load_modules(pluginplay::ModuleManager& mm) {
     set_mp2_default_modules(mm);
 }
 
-} // namespace nwx
+} // namespace nwchemex

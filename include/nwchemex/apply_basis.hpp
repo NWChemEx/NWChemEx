@@ -1,7 +1,7 @@
 #include <chemcache/chemcache.hpp>
 #include <chemist/chemist.hpp>
 
-namespace nwx {
+namespace nwchemex {
 
 /**
  * @brief Convenience function for applying a basis set to a molecule
@@ -28,4 +28,4 @@ inline auto apply_basis(
     return chemist::orbital_space::AOSpaceD(aos);
 }
 
-} // namespace nwx
+} // namespace nwchemex
