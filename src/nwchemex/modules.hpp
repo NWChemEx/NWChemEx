@@ -1,7 +1,7 @@
 #pragma once
 #include <pluginplay/pluginplay.hpp>
 
-namespace nwx {
+namespace nwchemex {
 
 DECLARE_MODULE(SystemHamiltonian);
 

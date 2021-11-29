@@ -1,5 +1,5 @@
 // #include <catch2/catch.hpp>
-// #include <libchemist/libchemist.hpp>
+// #include <chemist/chemist.hpp>
 // #include <mp2/mp2.hpp>
 // #include <nwchemex/load_modules.hpp>
 // #include <property_types/correlation_energy.hpp>
@@ -15,7 +15,7 @@
 
 // TEST_CASE("DLPNO-MP2") {
 //     sde::ModuleManager mm;
-//     nwx::load_modules(mm);
+//     nwchemex::load_modules(mm);
 
 //     std::vector names{testing::molecule::h2, testing::molecule::h2o};
 //     for(const auto& name : names) {
