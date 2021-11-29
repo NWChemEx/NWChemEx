@@ -5,11 +5,11 @@
 using ham_pt   = simde::SystemHamiltonian;
 using local_pt = simde::NoncanonicalToLocal;
 
-using libchemist::wavefunction::make_wavefunction;
+using chemist::wavefunction::make_wavefunction;
 
 TEST_CASE("MP2 Dipole Approximation") {
     pluginplay::ModuleManager mm;
-    nwx::load_modules(mm);
+    nwchemex::load_modules(mm);
 
     // Basic input
     const auto name       = mokup::molecule::h2o;
