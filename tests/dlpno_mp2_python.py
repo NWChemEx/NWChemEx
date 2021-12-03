@@ -65,8 +65,7 @@ class NWChemExTestCase(unittest.TestCase):
         [eij] = dip_mod.run_as[simde.SparsePairEnergy](lmos_i, paos_i)
         print("MP2 Dipole: ", eij)
         eij_vec = chemist.tensor.to_vector(eij)
-        self.assertAlmostEqual(ref_dip, eij_vec, places=8)
-        #[self.assertAlmostEqual(ref_dip[i], eij_vec[i], places=8) for i in range(25)]
+        [self.assertAlmostEqual(ref_dip[i], eij_vec[i], places=8) for i in range(25)]
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
