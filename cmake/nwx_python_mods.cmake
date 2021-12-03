@@ -1,20 +1,23 @@
-# This function will skim a CMake target and create a file _init__.py that
+# This function will skim a CMake target and create a file __init__.py that
 # should be placed next to the shared library created by that target. This
 # function assumes the target's:
 #
 # * public header files are in the ``PUBLIC_HEADER`` property
 # * include paths are in the ``INTERFACE_INCLUDE_DIRECTORIES`` property
-# * dependencies are targets and in the ``INTERFACE_LINK_LIBRAIRES`` property
-#
+# * dependencies are targets and in the ``INTERFACE_LINK_LIBRARIES`` property
 #
 # :Additional Named Arguments:
-#     * NAMESPACE - The C++ namespace that your bindings live in. 
+#     * NAMESPACES - The C++ namespace that your bindings live in. 
 #     * DEPNAMESPACES - The C++ namespaceis that your bindings require,
 #       i.e. previous Python package builds.
 #     * PACKAGE - Package name to used as an alternative to NAMESPACE.  
+#     * DEPPACKAGES - Packages this module depends on.
 #     * DEPENDS - List of modules this module depends on.
 #     * PYTHONIZE - Add special function to Pythonize class with more complex 
 #       arguments. Helps LibChemist.
+#     * MPI - When set will ensure MPI includes are added.
+#     * BLAS - When set will check for BLAS includes.
+#     * TILED - When set, TiledArray will be loaded and includes added.
 #
 function(cppyy_make_python_package)
     #---------------------------------------------------------------------------
@@ -76,7 +79,7 @@ function(cppyy_make_python_package)
        list(APPEND include_dirs ${blaspp_BINARY_DIR}/include ${blaspp_SOURCE_DIR}/include)
        list(APPEND include_dirs ${lapackpp_SOURCE_DIR}/include ${lapackpp_BINARY_DIR}/include)
     endif()
-    if(install_data_TA)
+    if(install_data_TILED)
        list(APPEND include_dirs ${TiledArray_SOURCE_DIR}/src ${TiledArray_BINARY_DIR}/src)
        get_property(EIGEN3_INCLUDE_DIRS TARGET TiledArray_Eigen PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
        list(APPEND include_dirs ${EIGEN3_INCLUDE_DIRS})
@@ -88,8 +91,7 @@ function(cppyy_make_python_package)
        list(APPEND include_dirs ${scalapackpp_SOURCE_DIR}/include)
     endif()
     if("${install_data_PACKAGE}" STREQUAL "chemist")
-       list(APPEND include_dirs ${blacspp_SOURCE_DIR}/include ${blacspp_BINARY_DIR}/include)
-       list(APPEND include_dirs ${scalapackpp_SOURCE_DIR}/include)
+       list(APPEND include_dirs ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
     endif()
     file(GENERATE OUTPUT ${python_defines_file} CONTENT "${python_defines}")
     #---------------------------------------------------------------------------
