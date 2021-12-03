@@ -9,7 +9,7 @@ world = TA.initialize(c_int(0),c_int(0),True)
 
 class NWChemExTestCase(unittest.TestCase):
 
-    def test_scf_energy(self):
+    def dlpno_mp2_dipole(self):
         ref_dip = 0.0
    
         ham_pt   = simde.SystemHamiltonian
@@ -27,8 +27,8 @@ class NWChemExTestCase(unittest.TestCase):
 
         # Make the electronic Hamiltonian
         sys = simde.type.chemical_system(mol, nelectrons)
-        H   = mm.at("SystemHamiltonian").run_as[ham_pt](sys)
-        He  = simde.type.els_hamiltonian(H)
+        [H] = mm.at("SystemHamiltonian").run_as[ham_pt](sys)
+        H_e = simde.type.els_hamiltonian(H)
 
         # Compute SCF wavefunction w/ electronic Hamiltonian
         scf_wf_mod  = mm.at("SCF")
@@ -56,7 +56,7 @@ class NWChemExTestCase(unittest.TestCase):
 
         # Run dipoles w/ unpacked spaces
         dip_mod     = mm.at("MP2 Dipole")
-        [eij] = dip_mod.run_as[simde::SparsePairEnergy](lmos_i, paos_i)
+        [eij] = dip_mod.run_as[simde.SparsePairEnergy](lmos_i, paos_i)
         print("MP2 Dipole: ", eij)
         self.assertAlmostEqual(ref_dip, eij, places=8)
 
