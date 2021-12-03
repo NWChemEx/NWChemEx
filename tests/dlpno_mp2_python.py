@@ -9,8 +9,14 @@ world = TA.initialize(c_int(0),c_int(0),True)
 
 class NWChemExTestCase(unittest.TestCase):
 
-    def dlpno_mp2_dipole(self):
-        ref_dip = 0.0
+    def test_dlpno_mp2_dipole(self):
+        ref_dip = vector([0.0, -0.007523994711814412, -0.01072856548544765, 
+                         -349.5486858006644, -1.821754826367641e-12, -0.007523994711814411, 
+                         0.0, -8.738757592355654, -209.80179502398897, -7.524616896753292e-29, 
+                         -0.01072856548544765, -8.738757592355652, 0.0, -76.87376972253533, 
+                         -1.3707081148084588e-28, -349.5486858006644, -209.80179502398897, 
+                         -76.87376972253533, 0.0, -4.3532995386659215e-24, -1.821754826367641e-12, 
+                         -7.524616896753292e-29, -1.3707081148084588e-28, -4.3532995386659215e-24, 0.0])
    
         ham_pt   = simde.SystemHamiltonian
         local_pt = simde.NoncanonicalToLocal
@@ -58,7 +64,9 @@ class NWChemExTestCase(unittest.TestCase):
         dip_mod     = mm.at("MP2 Dipole")
         [eij] = dip_mod.run_as[simde.SparsePairEnergy](lmos_i, paos_i)
         print("MP2 Dipole: ", eij)
-        self.assertAlmostEqual(ref_dip, eij, places=8)
+        eij_vec = chemist.tensor.to_vector(eij)
+        self.assertAlmostEqual(ref_dip, eij_vec, places=8)
+        #[self.assertAlmostEqual(ref_dip[i], eij_vec[i], places=8) for i in range(25)]
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
