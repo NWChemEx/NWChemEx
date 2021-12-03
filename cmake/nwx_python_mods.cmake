@@ -40,7 +40,7 @@ function(cppyy_make_python_package)
     #---------------------------------------------------------------------------
     #--------------------------Argument Parsing---------------------------------
     #---------------------------------------------------------------------------
-    set(options MPI PYTHONIZE BLAS TA)
+    set(options MPI PYTHONIZE BLAS TILED)
     set(oneValueArgs PACKAGE)
     set(multiValueArgs NAMESPACES DEPPACKAGES)
     cmake_parse_arguments(install_data "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
