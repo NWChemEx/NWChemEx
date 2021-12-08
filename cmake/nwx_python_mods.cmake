@@ -48,27 +48,27 @@ function(cppyy_make_python_package)
     #---------------------------------------------------------------------------
     #--------------------------Get include directories--------------------------
     #---------------------------------------------------------------------------
-    get_target_property(include_dirs ${install_data_PACKAGE} INTERFACE_INCLUDE_DIRECTORIES)
-    get_target_property(link_libs ${install_data_PACKAGE} INTERFACE_LINK_LIBRARIES)
-    foreach(item ${link_libs})
-        get_target_property(include_item ${item} INTERFACE_INCLUDE_DIRECTORIES)
-        list(APPEND include_dirs ${include_item})
-    endforeach()
+    get_true_target_property(include_dirs ${install_data_PACKAGE} INTERFACE_INCLUDE_DIRECTORIES)
     if (install_data_MPI)
         list(APPEND include_dirs ${MPI_CXX_HEADER_DIR})
     endif()
+    list(APPEND include_dirs ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+    list(REMOVE_DUPLICATES include_dirs)
     #---------------------------------------------------------------------------
-    #--------------------------Get headers to includer--------------------------
+    #--------------------------Get headers to include---------------------------
     #---------------------------------------------------------------------------
     get_target_property(include_headers ${install_data_PACKAGE} PUBLIC_HEADER)
     get_filename_component(header_PREFIX ${CMAKE_CURRENT_SOURCE_DIR} NAME_WE)
+    #---------------------------------------------------------------------------
+    #-----------------Blacklist headers we do not want to expose----------------
+    #---------------------------------------------------------------------------
+    list(FILTER include_headers EXCLUDE REGEX ".*linalg_inner_tensors\\.hpp$")
+    list(FILTER include_headers EXCLUDE REGEX ".*pow\\.hpp$")
     #---------------------------------------------------------------------------
     #------------Collect the information we need off the target-----------------
     #---------------------------------------------------------------------------
     set(target_lib "$<TARGET_FILE_NAME:${install_data_PACKAGE}>")
     set(output_dir "${CMAKE_BINARY_DIR}/Python/${install_data_PACKAGE}")
-    get_true_target_property(include_dirs ${install_data_PACKAGE} INTERFACE_INCLUDE_DIRECTORIES)
-    list(REMOVE_DUPLICATES include_dirs)
     #---------------------------------------------------------------------------
     #----Defines needed by BTAS and Madness at runtime are needed by cppyy------
     #---------------------------------------------------------------------------
@@ -78,11 +78,6 @@ function(cppyy_make_python_package)
         set(python_defines "#define BTAS_HAS_BLAS_LAPACK\n")
     endif()
     file(GENERATE OUTPUT ${python_defines_file} CONTENT "${python_defines}")
-    #---------------------------------------------------------------------------
-    #-----------------Blacklist headers we do not want to expose----------------
-    #---------------------------------------------------------------------------
-    list(FILTER include_headers EXCLUDE REGEX ".*linalg_inner_tensors\\.hpp$")
-    list(FILTER include_headers EXCLUDE REGEX ".*pow\\.hpp$")
     #---------------------------------------------------------------------------
     #-----------------Generate _init__.py file contents------------------------
     #---------------------------------------------------------------------------
