@@ -19,6 +19,7 @@
 #     * BLAS - When set will check for BLAS includes.
 #     * TILED - When set, TiledArray will be loaded and includes added.
 #
+
 function(cppyy_make_python_package)
     #---------------------------------------------------------------------------
     #----------------------Check if Python bindings need to be build------------
@@ -66,34 +67,22 @@ function(cppyy_make_python_package)
     #---------------------------------------------------------------------------
     set(target_lib "$<TARGET_FILE_NAME:${install_data_PACKAGE}>")
     set(output_dir "${CMAKE_BINARY_DIR}/Python/${install_data_PACKAGE}")
+    get_true_target_property(include_dirs ${install_data_PACKAGE} INTERFACE_INCLUDE_DIRECTORIES)
+    list(REMOVE_DUPLICATES include_dirs)
     #---------------------------------------------------------------------------
-    #-Defines in BTAS, BLAS, LAPACK, and Madness at runtime are needed by cppyy-
+    #----Defines needed by BTAS and Madness at runtime are needed by cppyy------
     #---------------------------------------------------------------------------
     set(python_defines_file "${output_dir}/python_defines.hpp")
     set(python_defines "#define MADNESS_HAS_CEREAL\n")
     if(BTAS_USE_BLAS_LAPACK)
         set(python_defines "#define BTAS_HAS_BLAS_LAPACK\n")
     endif()
-    if(install_data_BLAS)
-       list(APPEND include_dirs ${BTAS_SOURCE_DIR})
-       list(APPEND include_dirs ${blaspp_BINARY_DIR}/include ${blaspp_SOURCE_DIR}/include)
-       list(APPEND include_dirs ${lapackpp_SOURCE_DIR}/include ${lapackpp_BINARY_DIR}/include)
-    endif()
-    if(install_data_TILED)
-       list(APPEND include_dirs ${TiledArray_SOURCE_DIR}/src ${TiledArray_BINARY_DIR}/src)
-       get_property(EIGEN3_INCLUDE_DIRS TARGET TiledArray_Eigen PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-       list(APPEND include_dirs ${EIGEN3_INCLUDE_DIRS})
-       get_property(UMPIRE_INCLUDE_DIRS TARGET TiledArray_UMPIRE PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-       list(APPEND include_dirs ${UMPIRE_INCLUDE_DIRS})
-    endif()
-    if(ENABLE_SCALAPACK AND install_data_BLAS)
-       list(APPEND include_dirs ${blacspp_SOURCE_DIR}/include ${blacspp_BINARY_DIR}/include)
-       list(APPEND include_dirs ${scalapackpp_SOURCE_DIR}/include)
-    endif()
-    if("${install_data_PACKAGE}" STREQUAL "chemist")
-       list(APPEND include_dirs ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
-    endif()
     file(GENERATE OUTPUT ${python_defines_file} CONTENT "${python_defines}")
+    #---------------------------------------------------------------------------
+    #-----------------Blacklist headers we do not want to expose----------------
+    #---------------------------------------------------------------------------
+    list(FILTER include_headers EXCLUDE REGEX ".*linalg_inner_tensors\\.hpp$")
+    list(FILTER include_headers EXCLUDE REGEX ".*pow\\.hpp$")
     #---------------------------------------------------------------------------
     #-----------------Generate _init__.py file contents------------------------
     #---------------------------------------------------------------------------
@@ -123,8 +112,7 @@ function(cppyy_make_python_package)
     #---------------------------------------------------------------------------
     set(init_file "${init_file}cppyy.include(\"${python_defines_file}\")\n")
     set(init_file "${init_file}headers = \"${include_headers}\".split(';')\n")
-    set(init_file "${init_file}for h in headers:\n")
-    set(init_file "${init_file}    inc = os.path.join(\"${header_PREFIX}\",h)\n")
+    set(init_file "${init_file}for inc in headers:\n")
     set(init_file "${init_file}    cppyy.include(inc)\n")
     set(init_file "${init_file}\ncppyy.load_library(\"${CMAKE_CURRENT_BINARY_DIR}/${target_lib}\")\n\n")
     foreach(namespace ${install_data_NAMESPACES})
@@ -149,4 +137,36 @@ function(cppyy_make_python_package)
     endif()
     #Write it out
     file(GENERATE OUTPUT ${init_file_name} CONTENT "${init_file}")
+endfunction()
+
+
+#---------------------------------------------------------------------------
+#--------Function to recursively find all include directories needed--------
+#---------------------------------------------------------------------------
+function( get_true_target_property _out _target _property )
+  if( TARGET ${_target} )
+    get_property( _${_target}_imported TARGET ${_target} PROPERTY IMPORTED )
+    if( NOT ${_property} MATCHES "INTERFACE_LINK_LIBRARIES" )
+      get_property( _${_target}_property TARGET ${_target} PROPERTY ${_property} )
+    endif()
+    if( 1 )
+      get_property( _${_target}_link TARGET ${_target} PROPERTY INTERFACE_LINK_LIBRARIES )
+      foreach( _lib ${_${_target}_link} )
+        if( TARGET ${_lib} )
+          get_true_target_property( _${_lib}_property ${_lib} ${_property} )
+          if( _${_lib}_property )
+            list( APPEND _${_target}_property_imported ${_${_lib}_property} )
+          endif()
+        elseif( ${_property} MATCHES "INTERFACE_LINK_LIBRARIES" )
+          list( APPEND _${_target}_property_imported ${_lib} )
+        endif()
+      endforeach()
+      if(_${_target}_property_imported)
+        list(APPEND _${_target}_property ${_${_target}_property_imported} )
+      endif()
+      set( ${_out} ${_${_target}_property} PARENT_SCOPE )
+    else()
+      set( ${_out} ${_${_target}_property} PARENT_SCOPE )
+    endif()
+  endif()
 endfunction()
