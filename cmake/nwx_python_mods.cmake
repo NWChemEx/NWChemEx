@@ -41,7 +41,8 @@ function(cppyy_make_python_package)
     #---------------------------------------------------------------------------
     #--------------------------Argument Parsing---------------------------------
     #---------------------------------------------------------------------------
-    set(options MPI PYTHONIZE BLAS TILED)
+    #set(options MPI PYTHONIZE BLAS TILED)
+    set(options MPI PYTHONIZE)
     set(oneValueArgs PACKAGE)
     set(multiValueArgs NAMESPACES DEPPACKAGES)
     cmake_parse_arguments(install_data "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
@@ -49,9 +50,7 @@ function(cppyy_make_python_package)
     #--------------------------Get include directories--------------------------
     #---------------------------------------------------------------------------
     get_true_target_property(include_dirs ${install_data_PACKAGE} INTERFACE_INCLUDE_DIRECTORIES)
-    if (install_data_MPI)
-        list(APPEND include_dirs ${MPI_CXX_HEADER_DIR})
-    endif()
+    list(APPEND include_dirs ${MPI_CXX_HEADER_DIR})
     list(APPEND include_dirs ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
     list(REMOVE_DUPLICATES include_dirs)
     #---------------------------------------------------------------------------
