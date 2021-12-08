@@ -8,16 +8,11 @@
 #
 # :Additional Named Arguments:
 #     * NAMESPACES - The C++ namespace that your bindings live in. 
-#     * DEPNAMESPACES - The C++ namespaceis that your bindings require,
-#       i.e. previous Python package builds.
 #     * PACKAGE - Package name to used as an alternative to NAMESPACE.  
 #     * DEPPACKAGES - Packages this module depends on.
-#     * DEPENDS - List of modules this module depends on.
 #     * PYTHONIZE - Add special function to Pythonize class with more complex 
 #       arguments. Helps LibChemist.
-#     * MPI - When set will ensure MPI includes are added.
-#     * BLAS - When set will check for BLAS includes.
-#     * TILED - When set, TiledArray will be loaded and includes added.
+#     * MPI - When set will ensure MPI stuff is handled properly.
 #
 
 function(cppyy_make_python_package)
