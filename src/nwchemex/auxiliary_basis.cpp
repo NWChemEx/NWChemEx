@@ -5,6 +5,7 @@
 namespace nwchemex {
 
 using simde::type::ao_basis_set;
+using simde::type::ao_space;
 using simde::type::atom;
 using simde::type::molecule;
 
@@ -12,37 +13,40 @@ using ptype        = simde::AuxiliaryBasisSet;
 using manager_type = chemist::BasisSetManager;
 using coords_type  = typename atom::coord_type;
 
-// Use the atomic basis set to make a single atom molecule instance.
-// Gets passed to apply_basis.
-molecule atomic_sys(const chemist::AtomicBasisSet<double>& center) {
-    return molecule{atom{center.atomic_number(),
-                         coords_type{center.x(), center.y(), center.z()}}};
-}
-
 MODULE_CTOR(AuxiliaryBasis) {
     satisfies_property_type<ptype>();
     description("Produces an auxiliary basis set corresponding to the provided "
                 "atomic basis set.");
 
-    add_input<manager_type>("Basis Set Manager");
+    add_input<std::string>("Aux Basis Suffix").set_default("-jkfit");
 }
 
 MODULE_RUN(AuxiliaryBasis) {
-    const auto& [atomic_basis] = ptype::unwrap_inputs(inputs);
-    auto manager = inputs.at("Basis Set Manager").value<manager_type>();
-    auto rv      = results();
+    const auto& [basis_space] = ptype::unwrap_inputs(inputs);
+    auto suffix = inputs.at("Aux Basis Suffix").value<std::string>();
+    // TODO: Make this an additional input; basis set managers not hashable ATM
+    auto manager = chemcache::nwx_basis_set_manager();
+
+    // Use an AtomicBasisSet to make a single atom molecule instance.
+    // Gets passed to apply_basis.
+    auto atomic_sys = [](const chemist::AtomicBasisSet<double>& center) {
+        auto Z      = center.atomic_number();
+        auto coords = coords_type{center.x(), center.y(), center.z()};
+        return molecule{atom{Z, coords}};
+    };
 
     // convert atomic basis to auxiliary basis
     ao_basis_set aux_basis;
-    for(auto& center : atomic_basis) {
-        auto aux_name    = center.basis_set_name() + "-jkfit";
+    for(auto& center : basis_space.basis_set()) {
+        auto aux_name    = center.basis_set_name() + suffix;
         auto atom_as_mol = atomic_sys(center);
 
         auto aux_center = apply_basis(aux_name, atom_as_mol, manager);
         aux_basis       = aux_basis + aux_center.basis_set();
     }
 
-    return ptype::wrap_results(rv, aux_basis);
+    auto rv = results();
+    return ptype::wrap_results(rv, ao_space{aux_basis});
 }
 
 } // namespace nwchemex
