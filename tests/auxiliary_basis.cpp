@@ -15,14 +15,13 @@ TEST_CASE("Auxiliary Basis") {
     std::cout << "here" << std::endl;
 
     SECTION("JK Fit") {
-        auto mod         = mm.at("AuxiliaryBasis");
+        auto mod         = mm.at("Standard JK Fitting Basis");
         auto [aux_space] = mod.run_as<ptype>(simde::type::ao_space{tz});
         REQUIRE(aux_space == tz_jkfit);
     }
 
     SECTION("RI Fit") {
-        auto mod = mm.at("AuxiliaryBasis");
-        mod.change_input("Aux Basis Suffix", "-rifit");
+        auto mod         = mm.at("Standard RI Fitting Basis");
         auto [aux_space] = mod.run_as<ptype>(simde::type::ao_space{tz});
         REQUIRE(aux_space == tz_rifit);
     }

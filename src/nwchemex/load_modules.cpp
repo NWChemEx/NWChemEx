@@ -63,7 +63,9 @@ void load_modules(pluginplay::ModuleManager& mm) {
     mp2::load_modules(mm);
 
     mm.add_module<SystemHamiltonian>("SystemHamiltonian");
-    mm.add_module<AuxiliaryBasis>("AuxiliaryBasis");
+    mm.add_module<AuxiliaryBasis>("Standard JK Fitting Basis");
+    mm.add_module<AuxiliaryBasis>("Standard RI Fitting Basis");
+    mm.change_input("Standard RI Fitting Basis", "Aux Basis Suffix", "-rifit");
 
     set_integrals_default_modules(mm);
     set_scf_default_modules(mm);
