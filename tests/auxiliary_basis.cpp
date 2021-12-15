@@ -12,7 +12,6 @@ TEST_CASE("Auxiliary Basis") {
     auto tz       = nwchemex::apply_basis("cc-pvtz", mol);
     auto tz_jkfit = nwchemex::apply_basis("cc-pvtz-jkfit", mol);
     auto tz_rifit = nwchemex::apply_basis("cc-pvtz-rifit", mol);
-    std::cout << "here" << std::endl;
 
     SECTION("JK Fit") {
         auto mod         = mm.at("Standard JK Fitting Basis");
