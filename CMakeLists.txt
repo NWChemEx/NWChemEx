@@ -82,13 +82,17 @@ if("${BUILD_TESTING}")
        DEPENDS Catch2::Catch2 nwchemex nwx::mokup
     )
     if(BUILD_PYBINDINGS)
-       add_test(
-           NAME test_python
-           COMMAND Python3::Interpreter
-                   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_python.py
-       )
+       set (python_tests
+            test_python dlpno_mp2_python
+           )
+       foreach(py_test ${python_tests})
+         add_test(NAME ${py_test}
+                  COMMAND Python3::Interpreter
+                          ${CMAKE_CURRENT_SOURCE_DIR}/tests/${py_test}.py
+                 )
+       endforeach()
        set_tests_properties(
-           test_python
+           ${python_tests}
            PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/Python"
        )
     endif()
