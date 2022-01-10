@@ -25,7 +25,7 @@ jobs:
           gcc_version: ${{ matrix.gcc_version }}
         run: >
           .github/workflows/scripts/get_dependencies.sh gcc gcovr cmake
-          openblas cblas lapacke scalapack boost eigen3 openmpi cppyy, numpy
+          openblas cblas lapacke scalapack boost eigen3 openmpi cppyy numpy
       - name: build-libint
         env:
           CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
