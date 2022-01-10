@@ -30,9 +30,8 @@ MODULE_RUN(AuxiliaryBasis) {
     // Use an AtomicBasisSet to make a single atom molecule instance.
     // Gets passed to apply_basis.
     auto atomic_sys = [](const chemist::AtomicBasisSet<double>& center) {
-        auto Z      = center.atomic_number();
-        auto coords = coords_type{center.x(), center.y(), center.z()};
-        return molecule{atom{Z, coords}};
+        return molecule{atom{center.atomic_number(),
+                             coords_type{center.x(), center.y(), center.z()}}};
     };
 
     // convert atomic basis to auxiliary basis
