@@ -26,9 +26,16 @@ jobs:
         run: >
           .github/workflows/scripts/get_dependencies.sh gcc gcovr cmake
           openblas cblas lapacke scalapack boost eigen3 openmpi cppyy numpy
+      - name: cache-libint
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: install
+          key: libint-gcc${{ matrix.gcc_version }}
       - name: build-libint
         env:
           CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           export INSTALL_PATH=`pwd`/install
           # check code out
