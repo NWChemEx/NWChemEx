@@ -33,4 +33,11 @@ TEST_CASE("Convenience Functions") {
         REQUIRE(nwchemex::apply_basis("sto-3g", water).basis_set() ==
                 corr_bs(water));
     }
+    SECTION("apply_basis_case_insensitive") {
+        std::cout.precision(std::numeric_limits<double>::max_digits10);
+        MoleculeManager mm = chemcache::nwx_molecule_manager();
+        Molecule water     = mm.at("water");
+        REQUIRE(nwchemex::apply_basis("STo-3G", water).basis_set() ==
+                corr_bs(water));
+    }
 }

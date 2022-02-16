@@ -1,5 +1,6 @@
 #include <chemcache/chemcache.hpp>
 #include <chemist/chemist.hpp>
+#include <utilities/strings/string_tools.hpp> // for tolower_string()
 
 namespace nwchemex {
 
@@ -19,8 +20,10 @@ inline auto apply_basis(
   const chemist::BasisSetManager& man = chemcache::nwx_basis_set_manager()) {
     chemist::AOBasisSet<double> aos;
 
+    std::string lowercase_name = utilities::strings::tolower_string(name);
+
     for(const auto& ai : mol) {
-        auto ci = man.get_basis(name, ai.Z());
+        auto ci = man.get_basis(lowercase_name, ai.Z());
         for(auto i : {0, 1, 2}) ci.coord(i) = ai.coords()[i];
         aos.add_center(ci);
     }
