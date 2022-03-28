@@ -5,13 +5,28 @@ import itertools
 from typing import List
 from ctypes import c_int, c_size_t
 import numpy as np
+import time
+from datetime import timedelta
 try:
     from nwchemex import chemist, TA, chemcache, simde, nwchemex, pluginplay
+    import cppyy
     from cppyy.gbl.std import array
 except ImportError:
-    logging.error('''You need to build nwchemex with -DPYTHON_BINDINGS=ON and the bindings
-    to the PYTHONPATH. You can either use `export PYTHONPATH=path_to_bindings` or use `sys.path.append(path_to_bindings)`
-    in your Python session.''')
+    logging.error('''You need to build nwchemex with -DPYTHON_BINDINGS=ON and add the path to bindings
+    to the PYTHONPATH. You can either run `export PYTHONPATH=path_to_bindings` before starting Python, 
+    or use `sys.path.append(path_to_bindings)` within your Python session.''')
+    from glob import glob
+    import os
+    cwd = os.getcwd()
+    logging.info(
+        'Searching current directory {} for Python bindings'.format(cwd))
+    bindingpaths = glob('**/Python/nwchemex', recursive=True)
+    if len(bindingpaths) == 0:
+        logging.error('Cannot find Python bindings in {}.'.format(cwd))
+    else:
+        logging.info('Found python bindings in these paths:')
+        for nwxpath in bindingpaths:
+            logging.info(os.path.dirname(nwxpath))
     raise ImportError
 import nwxschema as schema
 
@@ -29,10 +44,10 @@ def initialize(debug=False, initialized=False):
     if not initialized:
         world = TA.initialize(c_int(0), c_int(0), True)
         initialized = True
+        fiel = cppyy.__file__
         if world.rank() > 0:
             logging.basicConfig(level=logging.ERROR)
     if debug:
-        import cppyy
         cppyy.set_debug()
         logging.basicConfig(level=logging.DEBUG)
     return
@@ -51,11 +66,12 @@ def get_molecule(symbols, coordinates):
     natom = len(symbols)
     pt = chemist.PeriodicTable()
     chemcache.load_elements(pt)
+    angs2bohr = 1.8897259886
     mol = chemist.Molecule()
     if type(coordinates[0]) == list:
         coordinates = list(itertools.chain(*coordinates))
     for i in range(natom):
-        xyz = array([float(x) for x in coordinates[3*i:3*i+3]])
+        xyz = array([float(x)*angs2bohr for x in coordinates[3*i:3*i+3]])
         symbol = symbols[i]
         at = chemist.Atom(symbol, xyz, c_size_t(pt.sym_2_Z(symbol)))
         mol.push_back(at)
@@ -156,67 +172,111 @@ def get_hamiltonian(mol, charge=0):
     return H
 
 
-def get_total_energy(mol, charge=0, method='SCF', basis='sto-3g', input=None):
-    """Return the total energy
+def get_scf_energy(mol, charge=0, basis='sto-3g', max_iter=50, inp=None):
+    """Return the SCF energy
     Parameters
     ----------
     mol : chemist.Molecule object
     charge : int, optional
-    method : str, optional
     basis : str, optional
-    input : NWXinput, optional. 
+    input : NWXinput, optional.
             Note that coordinates and symbols of input.Molecule is not used.
     Returns
     -------
     E : float
     """
-    if input:
-        assert(type(input) == schema.NWXInput)
-        charge = input.molecule.charge
-        method = input.method
-        basis = input.basis
+    if inp:
+        assert(type(inp) == schema.NWXInput)
+        charge = inp.molecule.charge
+        basis = inp.basis
+        max_iter = inp.scf_max_iter
     H = get_hamiltonian(mol, charge)
     H_e = simde.type.els_hamiltonian(H)
-    basis_name = basis
-    aos = nwchemex.apply_basis(basis_name, mol)
+    aos = nwchemex.apply_basis(basis, mol)
     mm = pluginplay.ModuleManager()
     nwchemex.load_modules(mm)
-    mod = mm.at(method)
-    [phi0] = mod.run_as[simde.CanonicalReference](H_e, aos)
-    [E] = mm.at("Total Energy").run_as[simde.TotalCanonicalEnergy](
-        phi0, H, phi0)
-    return E
+    scf_mod = mm.at('scf')
+    scf_mod.change_input("MaxIt", c_size_t(max_iter))
+    [scf_wf] = scf_mod.run_as[simde.CanonicalReference](H_e, aos)
+    [scf_energy] = mm.at("Total Energy").run_as[simde.TotalCanonicalEnergy](
+        scf_wf, H, scf_wf)
+    return scf_energy
 
 
-def get_total_energy_from_input(inp, mol=None):
+def get_scf_energy_from_input(nwxinp):
     """Return the total energy
     Parameters
     ----------
-    input : NWXinput.
-    mol : chemist.Molecule, optional 
-          If mol is given, coordinates and symbols of input.Molecule will not be used.
+    nwxinp : NWXInput.
+    Returns
+    -------
+    scf_energy : float
+    """
+    assert type(
+        nwxinp) == schema.NWXInput, 'Use nwxschema.NWXInput class to create input.'
+    mol = get_molecule_from_input(nwxinp)
+    return get_scf_energy(mol, inp=nwxinp)
+
+
+def run_scf(nwxinp):
+    """Run NWChemEx SCF module
+    Parameters
+    ----------
+    nwxinp : NWXInput.
+    Returns
+    -------
+    nwxout : NWXOutput
+    """
+    t0 = time.time()
+    timings = {}
+    properties = {}
+    nwxout = schema.NWXOutput(nwxinp)
+    nwxmol = get_molecule_from_input(nwxinp)
+    t = time.time()
+    scfenergy = get_scf_energy(nwxmol, inp=nwxinp)
+    timings['scf_energy'] = timedelta(seconds=time.time()-t)
+    properties['scf_total_energy'] = scfenergy
+    nwxout.return_value = scfenergy
+    nwxout.success = True
+    nwxout.properties = properties
+    timings['total_time'] = timedelta(seconds=time.time()-t0)
+    nwxout.timings = timings
+    return nwxout
+
+
+def get_mp2_energy(mol, charge=0, basis='sto-3g', inp=None):
+    """Return the MP2 energy
+    Parameters
+    ----------
+    mol : chemist.Molecule object
+    charge : int, optional
+    basis : str, optional
+    input : NWXinput, optional.
+            Note that coordinates and symbols of input.Molecule is not used.
     Returns
     -------
     E : float
     """
-    assert type(
-        inp) == schema.NWXInput, 'Use nwxschema.NWXInput class to create input.'
-    if mol is None:
-        mol = get_molecule_from_input(inp)
-    charge = inp.molecule.charge
-    basis = inp.basis
-    method = inp.method
+    if inp:
+        assert(type(inp) == schema.NWXInput)
+        charge = inp.molecule.charge
+        basis = inp.basis
     H = get_hamiltonian(mol, charge)
     H_e = simde.type.els_hamiltonian(H)
-    basis_name = basis
-    aos = nwchemex.apply_basis(basis_name, mol)
+    aos = nwchemex.apply_basis(basis, mol)
     mm = pluginplay.ModuleManager()
     nwchemex.load_modules(mm)
-    mod = mm.at(method)
-    [phi0] = mod.run_as[simde.CanonicalReference](H_e, aos)
-    [E] = mm.at("Total Energy").run_as[simde.TotalCanonicalEnergy](
-        phi0, H, phi0)
-    return E
+    scf_mod = mm.at('SCF')
+    mp1_wf_mod = mm.at("MP1 Wavefunction")
+    [scf_wf] = scf_mod.run_as[simde.CanonicalReference](H_e, aos)
+    [scf_energy] = mm.at("Total Energy").run_as[simde.TotalCanonicalEnergy](
+        scf_wf, H, scf_wf)
+    [mp1_wf] = mp1_wf_mod.run_as[simde.CanonicalManyBodyWf](H_e, scf_wf)
+
+    [mp2_corr] = mm.run_as[simde.CanonicalCorrelationEnergy](
+        "MP2", scf_wf, H_e, mp1_wf)
+
+    return scf_energy + mp2_corr
 
 
 def to_optimize(relaxed_coords, *args):
@@ -235,4 +295,4 @@ def to_optimize(relaxed_coords, *args):
     for i, index in enumerate(indices):
         coords[index] = relaxed_coords[i]
     mol = get_molecule(symbols, coords)
-    return get_total_energy_from_input(inp)
+    return get_scf_energy_from_input(inp)
