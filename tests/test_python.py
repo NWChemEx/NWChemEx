@@ -9,7 +9,7 @@ world = TA.initialize(c_int(0),c_int(0),True)
 class NWChemExTestCase(unittest.TestCase):
 
     def test_scf_energy(self):
-        ref_scf = -74.94208006385703  
+        ref_scf = -74.94208005807283  
 
         name  = mokup.molecule.h2o
         basis = mokup.basis_set.sto3g
@@ -19,7 +19,7 @@ class NWChemExTestCase(unittest.TestCase):
 
         mm = pluginplay.ModuleManager()
         nwchemex.load_modules(mm)
-        mod = mm.at("SCF")
+        mod = mm.at("SCF Driver")
 
         [phi0] = mod.run_as[simde.CanonicalReference](H_e, aos)
         [E]    = mm.at("Total Energy").run_as[simde.TotalCanonicalEnergy](phi0, H, phi0)
@@ -28,7 +28,7 @@ class NWChemExTestCase(unittest.TestCase):
         self.assertAlmostEqual(ref_scf, E, places=8)
 
     def test_mp2_energy(self):
-        ref_mp2 = -0.049149703810793446
+        ref_mp2 = -0.04915043599533923
 
         name  = mokup.molecule.h2o
         basis = mokup.basis_set.sto3g
@@ -38,7 +38,7 @@ class NWChemExTestCase(unittest.TestCase):
      
         mm = pluginplay.ModuleManager()
         nwchemex.load_modules(mm)
-        scf_wf_mod = mm.at("SCF")
+        scf_wf_mod = mm.at("SCF Driver")
         mp1_wf_mod = mm.at("MP1 Wavefunction")
 
         scf_wf_pt = simde.CanonicalReference
@@ -53,7 +53,7 @@ class NWChemExTestCase(unittest.TestCase):
         self.assertAlmostEqual(ref_mp2, E_MP2, places=8)
 
     def test_f12_mp2_energy(self):
-        ref_f12_mp2 = -0.034015837548961259
+        ref_f12_mp2 = -0.03401604283558277
 
         name   = mokup.molecule.h2
         basis  = mokup.basis_set.ccpvdz
@@ -66,7 +66,7 @@ class NWChemExTestCase(unittest.TestCase):
         mm = pluginplay.ModuleManager()
         nwchemex.load_modules(mm)
         mm.change_input("CABS", "F12 fitting basis", aux);
-        scf_wf_mod = mm.at("SCF")
+        scf_wf_mod = mm.at("SCF Driver")
         mp1_wf_mod = mm.at("MP1 Wavefunction")
         mp2_f12_e_mod = mm.at("Dense MP2-F12")
      

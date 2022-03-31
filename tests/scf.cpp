@@ -19,7 +19,7 @@ TEST_CASE("Direct SCF") {
     //    mm.change_submod("Fock Matrix", "J Builder", "DFJK");
     //    mm.change_submod("Fock Matrix", "K Builder", "DFJK");
 
-    auto& mod = mm.at("SCF");
+    auto& mod = mm.at("SCF Driver");
 
     auto [phi0] = mod.run_as<simde::CanonicalReference>(H_e, aos);
     auto [E]    = mm.at("Total Energy").run_as<pt>(phi0, H, phi0);

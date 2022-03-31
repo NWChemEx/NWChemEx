@@ -16,7 +16,7 @@ TEST_CASE("Canonical MP2") {
     auto aos        = mokup::get_bases(name, bs);
     auto H          = mokup::hamiltonian(name);
     simde::type::els_hamiltonian H_e(H);
-    auto scf_wf_mod = mm.at("SCF");
+    auto scf_wf_mod = mm.at("SCF Driver");
     auto mp1_wf_mod = mm.at("MP1 Wavefunction");
     auto [scf_wf]   = scf_wf_mod.run_as<scf_wf_pt>(H_e, aos);
     auto [mp1_wf]   = mp1_wf_mod.run_as<mp1_wf_pt>(H_e, scf_wf);

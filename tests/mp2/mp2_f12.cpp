@@ -23,7 +23,7 @@ TEST_CASE("Canonical MP2-F12") {
 
     mm.change_input("CABS", "F12 fitting basis", aux);
 
-    auto scf_wf_mod    = mm.at("SCF");
+    auto scf_wf_mod    = mm.at("SCF Driver");
     auto mp1_wf_mod    = mm.at("MP1 Wavefunction");
     auto mp2_f12_e_mod = mm.at("Dense MP2-F12");
 
