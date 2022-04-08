@@ -122,7 +122,7 @@ function(cppyy_make_python_package)
         set(init_file "${init_file}        raise TypeError(\"__init__\(\) got an unexpected keyword argument \'\%s\'\" \% kw)\n\n")
         set(init_file "${init_file}    klass.__orig_init__ = klass.__init__\n")
         set(init_file "${init_file}    klass.__init__ = x_init\n\n")
-        set(init_file "${init_file}cppyy.py.add_pythonization(pythonize_class, \"${namespace}\")\n")
+        set(init_file "${init_file}cppyy.py.add_pythonization(pythonize_class, \"${install_data_PACKAGE}\")\n")
     endif()
     #Write it out
     file(GENERATE OUTPUT ${init_file_name} CONTENT "${init_file}")
