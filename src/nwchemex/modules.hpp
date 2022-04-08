@@ -5,5 +5,6 @@ namespace nwchemex {
 
 DECLARE_MODULE(SystemHamiltonian);
 DECLARE_MODULE(AuxiliaryBasis);
+DECLARE_MODULE(ReferenceEnergyDriver);
 
 } // namespace nwchemex
