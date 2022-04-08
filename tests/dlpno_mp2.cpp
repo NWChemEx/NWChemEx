@@ -26,7 +26,8 @@
 
 //     // Compute SCF wavefunction w/ electronic Hamiltonian
 //     auto& scf_wf_mod  = mm.at("SCF Driver");
-//     const auto& [ref] = scf_wf_mod.run_as<simde::CanonicalReference>(H_e, aos);
+//     const auto& [ref] = scf_wf_mod.run_as<simde::CanonicalReference>(H_e,
+//     aos);
 
 //     // Unpack the canonical occupied orbitals, and converged Fock operator
 //     const auto& occ   = ref.basis_set().occupied_orbitals();
@@ -50,6 +51,6 @@
 
 //     // Run dipoles w/ unpacked spaces
 //     auto& dip_mod     = mm.at("MP2 Dipole");
-//     const auto& [eij] = dip_mod.run_as<simde::SparsePairEnergy>(lmos_i, paos_i);
-//     std::cout << eij << std::endl;
+//     const auto& [eij] = dip_mod.run_as<simde::SparsePairEnergy>(lmos_i,
+//     paos_i); std::cout << eij << std::endl;
 // }

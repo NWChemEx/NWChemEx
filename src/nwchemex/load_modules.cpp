@@ -56,9 +56,7 @@ void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
 
 namespace nwchemex {
 
-void set_defaults(pluginplay::ModuleManager& mm) {
-    
-}
+void set_defaults(pluginplay::ModuleManager& mm) {}
 
 void load_modules(pluginplay::ModuleManager& mm) {
     integrals::load_modules(mm);
