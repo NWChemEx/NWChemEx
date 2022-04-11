@@ -23,6 +23,8 @@ void set_scf_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("SCF Step", "Overlap", "Overlap");
     mm.change_submod("DIIS Fock Matrix", "Overlap", "Overlap");
     mm.change_submod("SCFDIIS Step", "Overlap", "Overlap");
+    mm.change_submod("SCF", "Reference Wave Function", "SCF Driver");
+    mm.change_submod("SCF", "Reference Energy", "Total Energy");
 }
 
 void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
@@ -56,7 +58,9 @@ void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
 
 namespace nwchemex {
 
-void set_defaults(pluginplay::ModuleManager& mm) {}
+void set_defaults(pluginplay::ModuleManager& mm) {
+    mm.change_submod("SCF", "System Hamiltonian", "SystemHamiltonian");
+}
 
 void load_modules(pluginplay::ModuleManager& mm) {
     integrals::load_modules(mm);

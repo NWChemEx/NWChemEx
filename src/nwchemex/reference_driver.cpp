@@ -9,7 +9,7 @@ using reference_pt = simde::CanonicalReference;
 using energy_pt    = simde::TotalCanonicalEnergy;
 
 MODULE_CTOR(ReferenceEnergyDriver) {
-    satisfies_property_type(ao_energy_pt);
+    satisfies_property_type<ao_energy_pt>();
     description("Calculates the reference energy from a chemical system in a "
                 "given basis set");
 
@@ -31,7 +31,7 @@ MODULE_RUN(ReferenceEnergyDriver) {
     auto [E]    = energy_mod.run_as<energy_pt>(phi0, H, phi0);
 
     auto rv = results();
-    return reference_pt::wrap_results(rv, E);
+    return ao_energy_pt::wrap_results(rv, E);
 }
 
 } // namespace nwchemex

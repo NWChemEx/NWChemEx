@@ -2,26 +2,22 @@
 #include <catch2/catch.hpp>
 #include <mokup/mokup.hpp>
 
-using pt = simde::TotalCanonicalEnergy;
+using pt = simde::AOEnergy;
 
-TEST_CASE("Direct SCF") {
-    const auto name = mokup::molecule::h2o;
-    const auto bs   = mokup::basis_set::sto3g;
-    auto aos        = mokup::get_bases(name, bs);
-    auto H          = mokup::hamiltonian(name);
-    simde::type::els_hamiltonian H_e(H);
-
+TEST_CASE("SCF") {
     pluginplay::ModuleManager mm;
     nwchemex::load_modules(mm);
 
-    // For density fitted. STO-3G is a terrible fitting set.
-    //    mm.change_input("DFJK", "Fitting Basis", aos);
-    //    mm.change_submod("Fock Matrix", "J Builder", "DFJK");
-    //    mm.change_submod("Fock Matrix", "K Builder", "DFJK");
+    // Grab molecule and build a basis set
+    const auto name = mokup::molecule::h2o;
+    const auto bs   = mokup::basis_set::sto3g;
+    auto mol        = mokup::get_molecule(name);
+    auto aos        = nwchemex::apply_basis("sto-3g", mol);
 
-    auto& mod = mm.at("SCF Driver");
+    simde::type::chemical_system chem_sys(mol);
 
-    auto [phi0] = mod.run_as<simde::CanonicalReference>(H_e, aos);
-    auto [E]    = mm.at("Total Energy").run_as<pt>(phi0, H, phi0);
+    // Calculate energy
+    auto [E]  = mm.at("SCF").run_as<pt>(aos, chem_sys);
     std::cout << "Total SCF Energy: " << E << std::endl;
+    REQUIRE(E == Approx(-74.942080058072833).margin(1.0e-8));
 }
