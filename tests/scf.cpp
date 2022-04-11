@@ -17,7 +17,7 @@ TEST_CASE("SCF") {
     simde::type::chemical_system chem_sys(mol);
 
     // Calculate energy
-    auto [E]  = mm.at("SCF").run_as<pt>(aos, chem_sys);
+    auto [E] = mm.at("SCF").run_as<pt>(aos, chem_sys);
     std::cout << "Total SCF Energy: " << E << std::endl;
     REQUIRE(E == Approx(-74.942080058072833).margin(1.0e-8));
 }
