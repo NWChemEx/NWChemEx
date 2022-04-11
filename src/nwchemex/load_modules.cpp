@@ -23,8 +23,6 @@ void set_scf_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("SCF Step", "Overlap", "Overlap");
     mm.change_submod("DIIS Fock Matrix", "Overlap", "Overlap");
     mm.change_submod("SCFDIIS Step", "Overlap", "Overlap");
-    mm.change_submod("SCF", "Reference Wave Function", "SCF Driver");
-    mm.change_submod("SCF", "Reference Energy", "Total Energy");
 }
 
 void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
@@ -59,7 +57,15 @@ void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
 namespace nwchemex {
 
 void set_defaults(pluginplay::ModuleManager& mm) {
-    mm.change_submod("SCF", "System Hamiltonian", "SystemHamiltonian");
+    mm.change_submod("SCF Energy", "System Hamiltonian", "SystemHamiltonian");
+    mm.change_submod("SCF Energy", "Reference Wave Function", "SCF Driver");
+    mm.change_submod("SCF Energy", "Reference Energy", "Total Energy");
+
+    mm.change_submod("MP2 Energy", "System Hamiltonian", "SystemHamiltonian");
+    mm.change_submod("MP2 Energy", "Reference Wave Function", "SCF Driver");
+    mm.change_submod("MP2 Energy", "Many Body Wave Function",
+                     "MP1 Wavefunction");
+    mm.change_submod("MP2 Energy", "Correlation Energy", "MP2");
 }
 
 void load_modules(pluginplay::ModuleManager& mm) {
@@ -67,7 +73,8 @@ void load_modules(pluginplay::ModuleManager& mm) {
     scf::load_modules(mm);
     mp2::load_modules(mm);
 
-    mm.add_module<ReferenceEnergyDriver>("SCF");
+    mm.add_module<ReferenceEnergyDriver>("SCF Energy");
+    mm.add_module<CorrelatedEnergyDriver>("MP2 Energy");
     mm.add_module<SystemHamiltonian>("SystemHamiltonian");
     mm.add_module<AuxiliaryBasis>("Standard JK Fitting Basis");
     mm.add_module<AuxiliaryBasis>("Standard RI Fitting Basis");

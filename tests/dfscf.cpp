@@ -22,7 +22,7 @@ TEST_CASE("DF-SCF") {
     mm.change_submod("Fock Matrix", "K Builder", "DFJK");
 
     // Calculate energy
-    auto [E] = mm.at("SCF").run_as<pt>(aos, chem_sys);
-    std::cout << "Total SCF Energy: " << E << std::endl;
+    auto [E] = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
+    std::cout << "Total DF-SCF/STO-3G Energy: " << E << std::endl;
     REQUIRE(E == Approx(-1.1201712380602133).margin(1.0e-8));
 }
