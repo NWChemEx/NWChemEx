@@ -1,3 +1,4 @@
+#include "drivers/driver_modules.hpp"
 #include "modules.hpp"
 #include "nwchemex/load_modules.hpp"
 #include <integrals/integrals.hpp>
@@ -73,8 +74,8 @@ void load_modules(pluginplay::ModuleManager& mm) {
     scf::load_modules(mm);
     mp2::load_modules(mm);
 
-    mm.add_module<ReferenceEnergyDriver>("SCF Energy");
-    mm.add_module<CorrelatedEnergyDriver>("MP2 Energy");
+    drivers::load_modules(mm);
+
     mm.add_module<SystemHamiltonian>("SystemHamiltonian");
     mm.add_module<AuxiliaryBasis>("Standard JK Fitting Basis");
     mm.add_module<AuxiliaryBasis>("Standard RI Fitting Basis");
@@ -83,6 +84,7 @@ void load_modules(pluginplay::ModuleManager& mm) {
     set_integrals_default_modules(mm);
     set_scf_default_modules(mm);
     set_mp2_default_modules(mm);
+
     set_defaults(mm);
 }
 

@@ -1,4 +1,4 @@
-#include "modules.hpp"
+#include "driver_modules.hpp"
 #include <simde/simde.hpp>
 
 namespace nwchemex {
@@ -9,7 +9,7 @@ using reference_pt = simde::CanonicalReference;
 using manybody_pt  = simde::CanonicalManyBodyWf;
 using energy_pt    = simde::CanonicalCorrelationEnergy;
 
-MODULE_CTOR(CorrelatedEnergyDriver) {
+MODULE_CTOR(CorrelationEnergyDriver) {
     satisfies_property_type<ao_energy_pt>();
     description("Calculates the correlation energy from a chemical system in a "
                 "given basis set");
@@ -20,7 +20,7 @@ MODULE_CTOR(CorrelatedEnergyDriver) {
     add_submodule<energy_pt>("Correlation Energy");
 }
 
-MODULE_RUN(CorrelatedEnergyDriver) {
+MODULE_RUN(CorrelationEnergyDriver) {
     const auto& [aos, chem_sys] = ao_energy_pt::unwrap_inputs(inputs);
     auto& hamiltonian_mod       = submods.at("System Hamiltonian");
     auto& reference_wf_mod      = submods.at("Reference Wave Function");

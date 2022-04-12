@@ -1,4 +1,4 @@
-#include "modules.hpp"
+#include "driver_modules.hpp"
 #include <simde/simde.hpp>
 
 namespace nwchemex {
