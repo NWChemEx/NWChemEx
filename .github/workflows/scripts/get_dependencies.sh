@@ -161,6 +161,16 @@ get_lapacke() {
   ${APT_GET_COMMAND} install liblapacke liblapacke-dev
 }
 
+# Wraps installing ninja
+#
+# Usage:
+#   get_ninja
+#
+get_ninja() {
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install ninja-build
+}
+
 # Wraps installing numpy
 #
 # Usage:
@@ -248,6 +258,8 @@ for depend in "$@"; do
     get_gcovr
   elif [ "${depend}" = "lapacke" ]; then
     get_lapacke
+  elif [ "${depend}" = "ninja" ]; then
+    get_ninja
   elif [ "${depend}" = "numpy" ]; then
     get_numpy
   elif [ "${depend}" = "openblas" ]; then
