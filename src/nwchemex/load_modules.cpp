@@ -1,3 +1,4 @@
+#include "drivers/driver_modules.hpp"
 #include "modules.hpp"
 #include "nwchemex/load_modules.hpp"
 #include <integrals/integrals.hpp>
@@ -56,10 +57,24 @@ void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
 
 namespace nwchemex {
 
+void set_defaults(pluginplay::ModuleManager& mm) {
+    mm.change_submod("SCF Energy", "System Hamiltonian", "SystemHamiltonian");
+    mm.change_submod("SCF Energy", "Reference Wave Function", "SCF Driver");
+    mm.change_submod("SCF Energy", "Reference Energy", "Total Energy");
+
+    mm.change_submod("MP2 Energy", "System Hamiltonian", "SystemHamiltonian");
+    mm.change_submod("MP2 Energy", "Reference Wave Function", "SCF Driver");
+    mm.change_submod("MP2 Energy", "Many Body Wave Function",
+                     "MP1 Wavefunction");
+    mm.change_submod("MP2 Energy", "Correlation Energy", "MP2");
+}
+
 void load_modules(pluginplay::ModuleManager& mm) {
     integrals::load_modules(mm);
     scf::load_modules(mm);
     mp2::load_modules(mm);
+
+    drivers::load_modules(mm);
 
     mm.add_module<SystemHamiltonian>("SystemHamiltonian");
     mm.add_module<AuxiliaryBasis>("Standard JK Fitting Basis");
@@ -69,6 +84,8 @@ void load_modules(pluginplay::ModuleManager& mm) {
     set_integrals_default_modules(mm);
     set_scf_default_modules(mm);
     set_mp2_default_modules(mm);
+
+    set_defaults(mm);
 }
 
 } // namespace nwchemex
