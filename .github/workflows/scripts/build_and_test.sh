@@ -53,12 +53,7 @@ echo "set(BUILD_TESTING ON)" > "${toolchain_file}"
 } >> "${toolchain_file}"
 
 #Step 2: Configure
-if command -v ninja &> /dev/null
-then
-  ${cmake_command} -GNinja -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE="${toolchain_file}"
-else
-  ${cmake_command} -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE="${toolchain_file}"
-fi
+${cmake_command} -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE="${toolchain_file}"
 
 #Step 3: Compile
 ${cmake_command} --build build
