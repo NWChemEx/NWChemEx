@@ -2,7 +2,7 @@
 #include "modules.hpp"
 #include "nwchemex/load_modules.hpp"
 #include <integrals/integrals.hpp>
-#include <mp2/mp2.hpp>
+// #include <mp2/mp2.hpp> 
 #include <scf/scf.hpp>
 
 namespace {
@@ -26,32 +26,33 @@ void set_scf_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("SCFDIIS Step", "Overlap", "Overlap");
 }
 
-void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
-    mm.change_submod("MP1 Wavefunction", "Transformed ERIS",
-                     "Transformed ERI4");
-    mm.change_submod("MP2", "Transformed ERIs", "Transformed ERI4");
-    mm.change_submod("PAOs", "S Builder", "Overlap");
-    mm.change_submod("QC LMOs", "Fock builder", "Transformed Fock");
-    mm.change_submod("QC PAOs", "Fock builder", "Transformed Fock");
-    mm.change_submod("MP2 Dipole", "dipole", "EDipole");
-    mm.change_submod("L(LMO->LMO) (prescreening)", "DOIs", "DOI");
-    mm.change_submod("DOI Sparsity", "DOIs", "DOI");
+// Uncomment once MP2 is working again
+// void set_mp2_default_modules(pluginplay::ModuleManager& mm) {
+//     mm.change_submod("MP1 Wavefunction", "Transformed ERIS",
+//                      "Transformed ERI4");
+//     mm.change_submod("MP2", "Transformed ERIs", "Transformed ERI4");
+//     mm.change_submod("PAOs", "S Builder", "Overlap");
+//     mm.change_submod("QC LMOs", "Fock builder", "Transformed Fock");
+//     mm.change_submod("QC PAOs", "Fock builder", "Transformed Fock");
+//     mm.change_submod("MP2 Dipole", "dipole", "EDipole");
+//     mm.change_submod("L(LMO->LMO) (prescreening)", "DOIs", "DOI");
+//     mm.change_submod("DOI Sparsity", "DOIs", "DOI");
 
-    mm.change_submod("CABS", "Overlap", "Overlap");
-    mm.change_submod("RIBS", "Overlap", "Overlap");
-    mm.change_submod("MP2-F12 Coupling", "Fock builder", "Transformed Fock");
-    mm.change_submod("MP2-F12 Coupling", "(ai|f12|pj)", "Transformed STG4");
-    mm.change_submod("MP2-F12 V", "(mn|f/r|ls)", "Transformed Yukawa4");
-    mm.change_submod("MP2-F12 V", "(mn|1/r|ls)", "Transformed ERI4");
-    mm.change_submod("MP2-F12 V", "(ia|f12|jb)", "Transformed STG4");
-    mm.change_submod("MP2-F12 X", "(mn|r|ls)", "Transformed STG4");
-    mm.change_submod("MP2-F12 X", "(m|f|n)", "Transformed Fock");
-    mm.change_submod("MP2-F12 B Approx C", "(mn|df12*df12|ls)",
-                     "Transformed STG 4 Center dfdr Squared");
-    mm.change_submod("MP2-F12 B Approx C", "Exchange builder", "Transformed K");
-    mm.change_submod("MP2-F12 B Approx C", "Fock builder", "Transformed Fock");
-    mm.change_submod("MP2-F12 B Approx C", "(ia|f12|jb)", "Transformed STG4");
-}
+//     mm.change_submod("CABS", "Overlap", "Overlap");
+//     mm.change_submod("RIBS", "Overlap", "Overlap");
+//     mm.change_submod("MP2-F12 Coupling", "Fock builder", "Transformed Fock");
+//     mm.change_submod("MP2-F12 Coupling", "(ai|f12|pj)", "Transformed STG4");
+//     mm.change_submod("MP2-F12 V", "(mn|f/r|ls)", "Transformed Yukawa4");
+//     mm.change_submod("MP2-F12 V", "(mn|1/r|ls)", "Transformed ERI4");
+//     mm.change_submod("MP2-F12 V", "(ia|f12|jb)", "Transformed STG4");
+//     mm.change_submod("MP2-F12 X", "(mn|r|ls)", "Transformed STG4");
+//     mm.change_submod("MP2-F12 X", "(m|f|n)", "Transformed Fock");
+//     mm.change_submod("MP2-F12 B Approx C", "(mn|df12*df12|ls)",
+//                      "Transformed STG 4 Center dfdr Squared");
+//     mm.change_submod("MP2-F12 B Approx C", "Exchange builder", "Transformed K");
+//     mm.change_submod("MP2-F12 B Approx C", "Fock builder", "Transformed Fock");
+//     mm.change_submod("MP2-F12 B Approx C", "(ia|f12|jb)", "Transformed STG4");
+// }
 
 } // namespace
 
@@ -62,17 +63,17 @@ void set_defaults(pluginplay::ModuleManager& mm) {
     mm.change_submod("SCF Energy", "Reference Wave Function", "SCF Driver");
     mm.change_submod("SCF Energy", "Reference Energy", "Total Energy");
 
-    mm.change_submod("MP2 Energy", "System Hamiltonian", "SystemHamiltonian");
-    mm.change_submod("MP2 Energy", "Reference Wave Function", "SCF Driver");
-    mm.change_submod("MP2 Energy", "Many Body Wave Function",
-                     "MP1 Wavefunction");
-    mm.change_submod("MP2 Energy", "Correlation Energy", "MP2");
+    // mm.change_submod("MP2 Energy", "System Hamiltonian", "SystemHamiltonian");
+    // mm.change_submod("MP2 Energy", "Reference Wave Function", "SCF Driver");
+    // mm.change_submod("MP2 Energy", "Many Body Wave Function",
+    //                  "MP1 Wavefunction");
+    // mm.change_submod("MP2 Energy", "Correlation Energy", "MP2");
 }
 
 void load_modules(pluginplay::ModuleManager& mm) {
     integrals::load_modules(mm);
     scf::load_modules(mm);
-    mp2::load_modules(mm);
+    // mp2::load_modules(mm);
 
     drivers::load_modules(mm);
 
@@ -83,7 +84,7 @@ void load_modules(pluginplay::ModuleManager& mm) {
 
     set_integrals_default_modules(mm);
     set_scf_default_modules(mm);
-    set_mp2_default_modules(mm);
+    // set_mp2_default_modules(mm);
 
     set_defaults(mm);
 }
