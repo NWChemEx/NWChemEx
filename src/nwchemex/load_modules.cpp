@@ -2,7 +2,7 @@
 #include "modules.hpp"
 #include "nwchemex/load_modules.hpp"
 #include <integrals/integrals.hpp>
-// #include <mp2/mp2.hpp> 
+// #include <mp2/mp2.hpp>
 #include <scf/scf.hpp>
 
 namespace {
@@ -49,9 +49,10 @@ void set_scf_default_modules(pluginplay::ModuleManager& mm) {
 //     mm.change_submod("MP2-F12 X", "(m|f|n)", "Transformed Fock");
 //     mm.change_submod("MP2-F12 B Approx C", "(mn|df12*df12|ls)",
 //                      "Transformed STG 4 Center dfdr Squared");
-//     mm.change_submod("MP2-F12 B Approx C", "Exchange builder", "Transformed K");
-//     mm.change_submod("MP2-F12 B Approx C", "Fock builder", "Transformed Fock");
-//     mm.change_submod("MP2-F12 B Approx C", "(ia|f12|jb)", "Transformed STG4");
+//     mm.change_submod("MP2-F12 B Approx C", "Exchange builder", "Transformed
+//     K"); mm.change_submod("MP2-F12 B Approx C", "Fock builder", "Transformed
+//     Fock"); mm.change_submod("MP2-F12 B Approx C", "(ia|f12|jb)",
+//     "Transformed STG4");
 // }
 
 } // namespace
@@ -63,9 +64,10 @@ void set_defaults(pluginplay::ModuleManager& mm) {
     mm.change_submod("SCF Energy", "Reference Wave Function", "SCF Driver");
     mm.change_submod("SCF Energy", "Reference Energy", "Total Energy");
 
-    // mm.change_submod("MP2 Energy", "System Hamiltonian", "SystemHamiltonian");
-    // mm.change_submod("MP2 Energy", "Reference Wave Function", "SCF Driver");
-    // mm.change_submod("MP2 Energy", "Many Body Wave Function",
+    // mm.change_submod("MP2 Energy", "System Hamiltonian",
+    // "SystemHamiltonian"); mm.change_submod("MP2 Energy", "Reference Wave
+    // Function", "SCF Driver"); mm.change_submod("MP2 Energy", "Many Body Wave
+    // Function",
     //                  "MP1 Wavefunction");
     // mm.change_submod("MP2 Energy", "Correlation Energy", "MP2");
 }
