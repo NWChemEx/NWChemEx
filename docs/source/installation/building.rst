@@ -13,7 +13,7 @@ To compile NWChemEx, some packages must be available on your system beforehand:
 #. MPI, most of the code requires at least MPI-3 compliance, MPICH 3.4 has been tested
 #. Eigen, minimum of 3.4.0; the build will automatically pull this if you don't have it available
 #. libint2 - see below for more information
-#. Depending on what type of GPU you have available to you, you will need CUDA 11 or higher, SYCL 2.0 (use the latest version of the OneAPI SDK), or HIP 4.5. (use the latest ROCm version)
+#. Depending on what type of GPU you have available to you, you will need CUDA 11 or higher, SYCL 2.0 (use the latest version of the OneAPI SDK), or HIP 4.5 (use the latest ROCm version)
 
 If necessary, more installation details for a package will be provided in the
 subsections below.
