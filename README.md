@@ -8,10 +8,7 @@ First a tiny-bit of background.  NWChemEx attempts to break from the
 traditional "monolithic" electronic structure package by decomposing the overall
 electronic structure package into smaller, independent packages called modules.  
 Each module is its own GitHub repository and can be used as is, without the rest
-of NWChemEx (aside from its dependencies).  The current module structure of 
-NWChemEx is summarized in the following diagram:
- 
-![](dox/uml/program_structure.png)
+of NWChemEx (aside from its dependencies).  
  
 For the most part, modules only depend on NWChemExRuntime and its dependencies 
 (which we intend to keep minimal beyond standard dependencies such as BLAS and
