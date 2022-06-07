@@ -1,115 +1,185 @@
 Building the NWChemEx Package
 =============================
 
-Before any attempts at compiling NWChemEx can be successful there are
-a few packages that need to be available. 
+Prerequisites
+-------------
 
-First of all, NWChemEx depends on the TAMM library for the tensor
-operation infrastructure. In turn compiling TAMM requires the CMakeBuild
-library. More details on downloading and installing these components will
-be provided below.
+To compile NWChemEx, some packages must be available on your system beforehand:
 
-Secondly, NWChemEx builds using `CMakePP 
-<https://github.com/CMakePackagingProject/CMakePackagingProject.git>`_. 
-CMakePP extends
-the CMake package with advanced dependency management capabilities. 
-This package enables checking for, downloading, and building dependencies
-automatically. A side effect of using this capability is that running CMake
-will do more than just configuring the build and generating the makefiles. 
-The reason is that CMakePP has to compile all the missing dependencies to
-successfully configure the build. 
-Hence, a first run of CMake can take considerably longer than
-would be expected from a normal configuration run. When all 
-dependencies are in place, subsequent CMake runs should be much faster.
+#. A C++ compiler supporting the C++17 standard
+#. CMake
+#. BLAS/LAPACK/ScaLAPACK
+#. Boost
+#. MPI
+#. libint2
 
-Below the build instructions are given based on a few assumptions:
-1. You are using a sane Unix-like operating system
-2. You have already installed CMakePP
-3. You have Python installed and the installation supports numpy, i.e.
-the command `import numpy` must succeed
-4. You are going to install all components in the same location
+If necessary, more installation details for a package will be provided in the
+subsections below.
 
-First, create a toolchain file in the top-level directory (`toolchain.cmake`). This
-file should contain the following information
+NWChemEx also depends on a number of repositories listed below. Please visit 
+the repositories and ensure that any additional packages that must be available
+before building are installed.
 
-.. code-block:: cmake
+#. integrals <https://github.com/NWChemEx-Project/Integrals>
+#. SCF <https://github.com/NWChemEx-Project/SCF>
+#. MP2 <https://github.com/NWChemEx-Project/MP2>
 
-   set(CMAKE_PREFIX_PATH      <prefix directory>)
-   set(CMAKE_C_COMPILER       <C compiler>)
-   set(CMAKE_CXX_COMPILER     <C++ compiler>)
-   set(CMAKE_Fortran_COMPILER <Fortran compiler>)
-   set(PYTHON_EXECUTABLE      <Python interpreter>)
-   set(PYTHON_LIBRARY         <Python library (libpythonX.X)>)
+BLAS/LAPACK/ScaLAPACK
+^^^^^^^^^^^^^^^^^^^^^
 
-
-The following script will then build and install CMakeBuild, TAMM and NWChemEx.
+**Intel MKL (Intel oneAPI MKL):** Ensure that all required environment 
+variables for the Intel MKL are set by executing ``/path/to/intel/mkl/bin/
+mklvars.sh <arch>``, where ``<arch>`` must be either ``ia32`` or ``intel64``.
+The following command can be added to your ``.bashrc`` to set the required 
+environment variables automatically for all new terminal sessions:
 
 .. code-block:: bash
 
-   git clone https://github.com/NWChemEx-Project/CMakeBuild.git
-   cd CMakeBuild
-   cmake -H. \
-         -Bbuild \
-         -DCMAKE_TOOLCHAIN_FILE=`pwd`/../toolchain.cmake \
-         -DCMAKE_INSTALL_PREFIX=<where/you/want/to/install>
-   cd build
-   cmake --build .
-   #May need to run as an admin depending on where you are installing CMakeBuild to
-   cmake --build . --target install
-   cd ../..
+   . /path/to/intel/mkl/bin/mklvars.sh <arch>
 
-   git clone https://github.com/NWChemEx-Project/TAMM.git
-   cd TAMM
-   cmake -H. \
-         -Bbuild \
-         -DCMAKE_TOOLCHAIN_FILE=`pwd`/../toolchain.cmake \
-         -DCMAKE_PREFIX_PATH=<where/you/want/to/install> \
-         -DCMAKE_INSTALL_PREFIX=<where/you/want/to/install>
-   cd build
-   cmake --build .
-   #May need to run as an admin depending on where you are installing TAMM to
-   cmake --build . --target install
-   cd ../..
+**Other BLAS/LAPACK/ScaLAPACK:** If not using the Intel MKL, ensure that 
+environment variables for the packages are set up correctly according to the
+package-specific instructions.
 
-   git clone https://github.com/NWChemEx-Project/NWChemEx.git
+libint2
+^^^^^^^
+.. note::
+   **Important:** Boost must be installed and in your path prior to building
+   libint2. This is not required by libint2, as libint2 will use its own
+   internal build of Boost. However, when building NWChemEx, errors related
+   to using this internal build of Boost have been observed (by Zach Crandall
+   as of April 29, 2021).
+
+The libint2 build will take a long time (probably >2 hrs), and should be 
+started well in advance. At the time of writing, libint v2.6.0 can be obtained 
+from the `libint v2.6.0 release <https://github.com/evaleev/libint/releases/
+tag/v2.6.0>`__ page and built using instructions at `libint Wiki 
+<https://github.com/evaleev/libint/wiki>`__ if a custom library is needed.
+
+The following build script can be used to build and install the libint2
+pre-generated library "lmax=6 library (standard ints only)", which can be
+downloaded from the
+`libint v2.6.0 release <https://github.com/evaleev/libint/releases/tag/
+v2.6.0>`__ page or directly from `here <https://github.com/evaleev/libint/
+releases/download/v2.6.0/libint-2.6.0.tgz>`__. Download and extract the 
+pre-generated libint v2.6.0 library. Inside the newly extracted libint-2.6.0 
+directory, create a file named ``build.sh`` and paste the below contents, 
+modifying everything in angled brackets (<>) to be correct for your system.
+
+.. code-block:: bash
+
+   #!/usr/bin/env bash
+    
+   cmake -S . \
+         -B build \
+	 -DCMAKE_INSTALL_PREFIX=<desired_install_location> \
+	 -DCMAKE_CXX_COMPILER=<c++_compiler> \
+	 -DCMAKE_CXX_FLAGS="-O3" \
+	 -DCMAKE_CXX_STANDARD=11 \
+	 -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE \
+	 2>&1 | tee OUTPUT.GEN
+	 
+   cmake --build build --target install 2>&1 | tee OUTPUT.BUILD
+
+GitHub Personal Access Token
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A GitHub Personal Access Token (PAT) is necessary since, at the moment, 
+NWChemEx and some dependencies are hosted in private repositories. To create a 
+PAT, follow the instructions at GitHub's `Creating a personal access token
+<https://docs.github.com/en/github/authenticating-to-github/
+creating-a-personal-access-token>`_ page. This PAT will be used when prompted 
+for a password while cloning repositories.
+
+
+Building NWChemEx
+-----------------
+
+The build instructions are given in the following sections based on a few
+assumptions:
+
+#. You are using a sane Unix-like operating system.
+#. All components will be installed in the same location.
+
+The following two files will be created to build NWChemEx, with instructions for
+each in the sections below:
+
+#. CMake Toolchain File: ``toolchain.cmake``
+#. NWChemEx Build Script: ``build_nwx.sh``
+
+CMake Toolchain File
+^^^^^^^^^^^^^^^^^^^^
+
+NWChemEx requires knowledge of many packages and tools which may have system-
+specific installation locations. Inside the top level directory where NWChemEx
+will be built, create a toolchain file named ``toolchain.cmake``. This file
+should contain the following information, replacing everything in angled
+brackets (<>) for your system.
+
+.. code-block:: cmake
+
+   # Compilers
+   set(CMAKE_C_COMPILER   <C compiler>)
+   set(CMAKE_CXX_COMPILER <C++ compiler>)
+   set(MPI_C_COMPILER     <MPI C compiler>)
+   set(MPI_CXX_COMPILER   <MPI CXX compiler>)
+
+   # Token for private repos
+   set(CPP_GITHUB_TOKEN <your_super_secret_github_PAT>)
+
+   # Options
+   set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+   set(BUILD_SHARED_LIBS TRUE)
+   set(BUILD_TESTING TRUE)
+   set(CMAKE_PREFIX_PATH <prefix_directory>) # This is where libint2 is installed
+   set(CMAKE_CXX_STANDARD 17)
+
+   # BLAS/LAPACK
+   set(ENABLE_SCALAPACK ON)
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX")
+
+
+NWChemEx Build Script
+^^^^^^^^^^^^^^^^^^^^^
+
+Create a new file named ``build_nwx.sh`` next to ``toolchain.cmake`` and paste
+the script below into it. This script will download, build, and install NWChemEx 
+and any remaining dependencies. Logs for the build will be generated beside this
+build script.
+
+.. code-block:: bash
+
+   # Clone the repo
+   git clone https://github.com/NWChemEx-Project/NWChemEx.git 2>&1 | tee "OUTPUT.GITCLONE"
+   # <Type login information if prompted.>
+   
+   # Navigate into the newly created NWChemEx subdirectory
    cd NWChemEx
+   
+   # Generate project buildsystem
    cmake -H. \
          -Bbuild \
-         -DCPP_GITHUB_TOKEN=<your super-secret token> \
          -DCMAKE_TOOLCHAIN_FILE=`pwd`/../toolchain.cmake \
-         -DCMAKE_PREFIX_PATH=<where/you/want/to/install> \
-         -DCMAKE_INSTALL_PREFIX=<where/you/want/to/install>
-   cd build
-   cmake --build .
-   #May need to run as an admin depending on where you are installing NWChemEx to
-   cmake --build . --target install
+         -DCMAKE_BUILD_TYPE=Release \
+        #-DCMAKE_INSTALL_PREFIX=<where/you/want/to/install> # cannot install right now
+         2>&1 | tee "../OUTPUT.GEN"
+
+   # Build the project
+   cmake --build build \
+        #--target install \ # we cannot actually install yet
+         2>&1 | tee "../OUTPUT.BUILD"
+
+   # Run tests
+   cd build && ctest 2>&1 | tee "../../OUTPUT.TEST"
+
+   # Return to the top level directory
    cd ../..
 
 .. note::
-
-    The GitHub token is only necessary because, at the moment, various
-    dependencies are hosted in
-    private repositories (instructions for generating a token are `here
-    <https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line>`_).
-
-.. note::
-
-    The `CMAKE_PREFIX_PATH` need to be declared both in the `toolchain.cmake`
-    file as well as on the CMake command line to propagate 
-    properly to a module and all of its dependencies.
-
-For finer-grained control over the build we direct the reader to the more
-thorough CMakePP build instructions located `here 
-<https://cmakepackagingproject.readthedocs.io/en/latest/end_user/quick_start.html>`_
-and note that NWChemEx depends on several other projects:
-
-* `TAMM <https://github.com/NWChemEx-Project/TAMM>`_
-
-  + `CMakeBuild <https://github.com/NWChemEx-Project/CMakeBuild>`_
-
-* `bphash <https://github.com/bennybp/BPHash>`_
-
-* `cereal <https://github.com/USCiLab/cereal>`_
-
-* `Catch2 <https://github.com/catchorg/Catch2>`_ (for testing only)
+   For finer-grained control over the build, we direct the reader to the more
+   thorough CMaize build instructions located `here 
+   <https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest>`_
+   and note that NWChemEx depends on several other projects:
+       
+   * `Catch2 <https://github.com/catchorg/Catch2>`_ (for testing only)
 

@@ -34,32 +34,32 @@ cpp_find_or_build_dependency(
         CMAKE_ARGS BUILD_TESTING=OFF
 )
 
-cpp_find_or_build_dependency(
-       mp2
-       URL github.com/NWChemEx-Project/MP2
-       PRIVATE TRUE
-       BUILD_TARGET mp2
-       FIND_TARGET nwx::mp2
-       CMAKE_ARGS BUILD_TESTING=OFF
-)
+# Uncomment once MP2 is working again
+# cpp_find_or_build_dependency(
+#         mp2
+#         URL github.com/NWChemEx-Project/MP2
+#         PRIVATE TRUE
+#         BUILD_TARGET mp2
+#         FIND_TARGET nwx::mp2
+#         CMAKE_ARGS BUILD_TESTING=OFF
+# )
 
+cpp_find_or_build_dependency(
+        chemcache
+        URL github.com/NWChemEx-Project/ChemCache
+        PRIVATE TRUE
+        BUILD_TARGET chemcache
+        FIND_TARGET nwx::chemcache
+        VERSION generated_data
+        CMAKE_ARGS BUILD_TESTING=OFF
+)
 
 cpp_add_library(
         nwchemex
         SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
         INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include/nwchemex"
-        DEPENDS nwx::mp2 nwx::scf nwx::integrals
+        DEPENDS nwx::scf nwx::integrals nwx::chemcache # nwx::mp2
 )
-
-if(BUILD_PYBINDINGS)
-    if(NOT ${BUILD_SHARED_LIBS})
-       message(FATAL_ERROR "BUILD_SHARED_LIBS needs to be ON as Python needs shared libraries")
-    endif()
-    find_package(Python3 REQUIRED)
-    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
-    find_package(Cppyy REQUIRED)
-    cppyy_make_python_package(nwchemex NAMESPACE nwchemex PREFIX nwchemex)
-endif()
 
 if("${BUILD_TESTING}")
     cpp_find_or_build_dependency(
@@ -70,27 +70,38 @@ if("${BUILD_TESTING}")
             FIND_TARGET Catch2::Catch2
     )
     cpp_find_or_build_dependency(
-            testing
-            URL github.com/NWChemEx-Project/testing
+            mokup
+            URL github.com/NWChemEx-Project/mokup
             PRIVATE
-            BUILD_TARGET testing
-            FIND_TARGET nwx::testing
+            BUILD_TARGET mokup
+            FIND_TARGET nwx::mokup
     )
     cpp_add_tests(
        test_nwchemex
        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests"
        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
-       DEPENDS Catch2::Catch2 nwchemex nwx::testing
+       DEPENDS Catch2::Catch2 nwchemex nwx::mokup
     )
     if(BUILD_PYBINDINGS)
-       add_test(
-           NAME test_python
-           COMMAND Python3::Interpreter
-                   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_python.py
-       )
+       set (python_tests
+            test_python dlpno_mp2_python
+           )
+       foreach(py_test ${python_tests})
+         add_test(NAME ${py_test}
+                  COMMAND Python3::Interpreter
+                          ${CMAKE_CURRENT_SOURCE_DIR}/tests/${py_test}.py
+                 )
+       endforeach()
        set_tests_properties(
-           test_python 
-           PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}"
+           ${python_tests}
+           PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/Python"
        )
     endif()
+endif()
+
+include(nwx_python_mods)
+if("${BUILD_TESTING}")
+    cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwchemex DEPPACKAGES integrals scf chemcache mokup ) # mp2
+else()
+    cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwchemex DEPPACKAGES integrals scf chemcache ) # mp2
 endif()
