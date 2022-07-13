@@ -22,9 +22,9 @@ NWChemEx also depends on a number of repositories listed below. Please visit
 the repositories and ensure that any additional packages that must be available
 before building are installed.
 
-#. integrals <https://github.com/NWChemEx-Project/Integrals>
-#. SCF <https://github.com/NWChemEx-Project/SCF>
-#. MP2 <https://github.com/NWChemEx-Project/MP2>
+#. `integrals <https://github.com/NWChemEx-Project/Integrals>`__
+#. `SCF <https://github.com/NWChemEx-Project/SCF>`__
+#. `MP2 <https://github.com/NWChemEx-Project/MP2>`__
 
 BLAS/LAPACK/ScaLAPACK
 ^^^^^^^^^^^^^^^^^^^^^
