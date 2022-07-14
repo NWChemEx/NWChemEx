@@ -1,9 +1,9 @@
-**********
-SDE Primer
-**********
+******************
+PluginPlay Primer
+******************
 
-The guts of NWChemEx uses the SDE framework. Additional functionality is added 
-to the SDE by writing plugins called "modules". Generally speaking each module 
+The guts of NWChemEx uses the PluginPlay framework. Additional functionality is added 
+to the PluginPlay by writing plugins called "modules". Generally speaking each module 
 can compute one or more properties. For example a module which runs a 
 Hartree-Fock calculation will likely compute the total electronic energy, the
 canonical molecular orbitals, and the Fock matrix. Associated with each property
@@ -16,15 +16,15 @@ register the module with NWChemEx. NWChemEx will handle everything else.
 Writing a module
 ================
 
-NWChemEx and the SDE are able to work with modules written in either C++ or in
+NWChemEx and the PluginPlay are able to work with modules written in either C++ or in
 Python.
 
 C++
 ---
 
 If you want to write your module in C++ you will need to create a library with
-your module. Your library will need to link to the PropertyTypes repo (which 
-will automatically also expose your library to SDE and LibChemist). For sake of
+your module. Your library will need to link to the SimDE repo (which 
+will automatically also expose your library to PluginPlay and Chemist). For sake of
 argument we'll assume your module computes overlap integrals of Gaussian basis
 functions using a deep neural network. Given how the module works we decide to 
 call it ``DeepOverlap`` (module names are case-sensitive) and we decide to call
@@ -35,7 +35,7 @@ the library ``DeepIntegrals``.
 .. code:: c++
 
    #pragma once           // Header guard; avoids multiple inclusions
-   #include <sde/sde.hpp> // Makes SDE visible to your module
+   #include <pluginplay/pluginplay.hpp> // Makes PluginPlay visible to your module
 
    namespace deep_integrals {
 
@@ -45,22 +45,21 @@ the library ``DeepIntegrals``.
    // statements would show up here 
 
    // This is the hook NWChemEx uses to enter your library
-   void load_modules(sde::ModuleManager& mm);
+   void load_modules(pluginplay::ModuleManager& mm);
 
    } // namespace deep_integrals
 
 
-Overlap integrals are of type ``property_types::ao_integrals::Overlap<T>`` 
-where ``T`` is a floating-point type (**e.g.**, ``float`` or ``double``). The 
-definition of ``DeepOverlap`` will look something like:
+Overlap integrals are of type ``simde::EOverlap`` 
+The definition of ``DeepOverlap`` will look something like:
 
 .. code:: c++
 
    #include "path/to/deep_integrals.hpp"
-   #include <property_types/ao_integrals/overlap.hpp>
+   #include <simde/simde.hpp>
 
    // Typedef of the Overlap property type for readability
-   using pt = property_types::ao_integrals::Overlap<double>;
+   using pt = simde::EOverlap;
 
    namespace deep_integrals {
     
@@ -100,7 +99,7 @@ source file:
 
    namespace deep_integrals {
 
-   void load_modules(chemist::ModuleManager& mm) {
+   void load_modules(pluginplay::ModuleManager& mm) {
        mm.add_module<DeepOverlap>("Deep Overlap");
    }
 
