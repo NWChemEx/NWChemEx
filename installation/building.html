@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Building the NWChemEx Package &mdash; NWChemEx 1.0.0 documentation</title>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -100,9 +101,9 @@
            <div itemprop="articleBody">
              
   <section id="building-the-nwchemex-package">
-<h1>Building the NWChemEx Package<a class="headerlink" href="#building-the-nwchemex-package" title="Permalink to this headline"></a></h1>
+<h1>Building the NWChemEx Package<a class="headerlink" href="#building-the-nwchemex-package" title="Permalink to this heading"></a></h1>
 <section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
 <p>To compile NWChemEx, some packages must be available on your system beforehand:</p>
 <ol class="arabic simple">
 <li><p>A C++ compiler supporting the C++17 standard</p></li>
@@ -123,7 +124,7 @@ before building are installed.</p>
 <li><p>MP2 &lt;<a class="reference external" href="https://github.com/NWChemEx-Project/MP2">https://github.com/NWChemEx-Project/MP2</a>&gt;</p></li>
 </ol>
 <section id="blas-lapack-scalapack">
-<h3>BLAS/LAPACK/ScaLAPACK<a class="headerlink" href="#blas-lapack-scalapack" title="Permalink to this headline"></a></h3>
+<h3>BLAS/LAPACK/ScaLAPACK<a class="headerlink" href="#blas-lapack-scalapack" title="Permalink to this heading"></a></h3>
 <p><strong>Intel MKL (Intel oneAPI MKL):</strong> Ensure that all required environment
 variables for the Intel MKL are set by executing <code class="docutils literal notranslate"><span class="pre">/path/to/intel/mkl/bin/</span>
 <span class="pre">mklvars.sh</span> <span class="pre">&lt;arch&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;arch&gt;</span></code> must be either <code class="docutils literal notranslate"><span class="pre">ia32</span></code> or <code class="docutils literal notranslate"><span class="pre">intel64</span></code>.
@@ -137,7 +138,7 @@ environment variables for the packages are set up correctly according to the
 package-specific instructions.</p>
 </section>
 <section id="libint2">
-<h3>libint2<a class="headerlink" href="#libint2" title="Permalink to this headline"></a></h3>
+<h3>libint2<a class="headerlink" href="#libint2" title="Permalink to this heading"></a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><strong>Important:</strong> Boost must be installed and in your path prior to building
@@ -172,7 +173,7 @@ cmake --build build --target install <span class="m">2</span>&gt;<span class="p"
 </div>
 </section>
 <section id="github-personal-access-token">
-<h3>GitHub Personal Access Token<a class="headerlink" href="#github-personal-access-token" title="Permalink to this headline"></a></h3>
+<h3>GitHub Personal Access Token<a class="headerlink" href="#github-personal-access-token" title="Permalink to this heading"></a></h3>
 <p>A GitHub Personal Access Token (PAT) is necessary since, at the moment,
 NWChemEx and some dependencies are hosted in private repositories. To create a
 PAT, follow the instructions at GitHub’s <a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a> page. This PAT will be used when prompted
@@ -180,7 +181,7 @@ for a password while cloning repositories.</p>
 </section>
 </section>
 <section id="building-nwchemex">
-<h2>Building NWChemEx<a class="headerlink" href="#building-nwchemex" title="Permalink to this headline"></a></h2>
+<h2>Building NWChemEx<a class="headerlink" href="#building-nwchemex" title="Permalink to this heading"></a></h2>
 <p>The build instructions are given in the following sections based on a few
 assumptions:</p>
 <ol class="arabic simple">
@@ -194,36 +195,36 @@ each in the sections below:</p>
 <li><p>NWChemEx Build Script: <code class="docutils literal notranslate"><span class="pre">build_nwx.sh</span></code></p></li>
 </ol>
 <section id="cmake-toolchain-file">
-<h3>CMake Toolchain File<a class="headerlink" href="#cmake-toolchain-file" title="Permalink to this headline"></a></h3>
+<h3>CMake Toolchain File<a class="headerlink" href="#cmake-toolchain-file" title="Permalink to this heading"></a></h3>
 <p>NWChemEx requires knowledge of many packages and tools which may have system-
 specific installation locations. Inside the top level directory where NWChemEx
 will be built, create a toolchain file named <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code>. This file
 should contain the following information, replacing everything in angled
 brackets (&lt;&gt;) for your system.</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Compilers</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span>   <span class="s">&lt;C</span> <span class="s">compiler&gt;</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER</span> <span class="s">&lt;C++</span> <span class="s">compiler&gt;</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">MPI_C_COMPILER</span>     <span class="s">&lt;MPI</span> <span class="s">C</span> <span class="s">compiler&gt;</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">MPI_CXX_COMPILER</span>   <span class="s">&lt;MPI</span> <span class="s">CXX</span> <span class="s">compiler&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span><span class="w">   </span><span class="s">&lt;C</span><span class="w"> </span><span class="s">compiler&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER</span><span class="w"> </span><span class="s">&lt;C++</span><span class="w"> </span><span class="s">compiler&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">MPI_C_COMPILER</span><span class="w">     </span><span class="s">&lt;MPI</span><span class="w"> </span><span class="s">C</span><span class="w"> </span><span class="s">compiler&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">MPI_CXX_COMPILER</span><span class="w">   </span><span class="s">&lt;MPI</span><span class="w"> </span><span class="s">CXX</span><span class="w"> </span><span class="s">compiler&gt;</span><span class="p">)</span>
 
 <span class="c"># Token for private repos</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CPP_GITHUB_TOKEN</span> <span class="s">&lt;your_super_secret_github_PAT&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CPP_GITHUB_TOKEN</span><span class="w"> </span><span class="s">&lt;your_super_secret_github_PAT&gt;</span><span class="p">)</span>
 
 <span class="c"># Options</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_POSITION_INDEPENDENT_CODE</span> <span class="s">TRUE</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">BUILD_SHARED_LIBS</span> <span class="s">TRUE</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">BUILD_TESTING</span> <span class="s">TRUE</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span> <span class="s">&lt;prefix_directory&gt;</span><span class="p">)</span> <span class="c"># This is where libint2 is installed</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span> <span class="s">17</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">BUILD_SHARED_LIBS</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">BUILD_TESTING</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="s">&lt;prefix_directory&gt;</span><span class="p">)</span><span class="w"> </span><span class="c"># This is where libint2 is installed</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">17</span><span class="p">)</span>
 
 <span class="c"># BLAS/LAPACK</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">ENABLE_SCALAPACK</span> <span class="s">ON</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS</span> <span class="s2">&quot;${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX&quot;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">ENABLE_SCALAPACK</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS</span><span class="w"> </span><span class="s2">&quot;${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="nwchemex-build-script">
-<h3>NWChemEx Build Script<a class="headerlink" href="#nwchemex-build-script" title="Permalink to this headline"></a></h3>
+<h3>NWChemEx Build Script<a class="headerlink" href="#nwchemex-build-script" title="Permalink to this heading"></a></h3>
 <p>Create a new file named <code class="docutils literal notranslate"><span class="pre">build_nwx.sh</span></code> next to <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code> and paste
 the script below into it. This script will download, build, and install NWChemEx
 and any remaining dependencies. Logs for the build will be generated beside this

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SDE Primer &mdash; NWChemEx 1.0.0 documentation</title>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -99,7 +100,7 @@
            <div itemprop="articleBody">
              
   <section id="sde-primer">
-<h1>SDE Primer<a class="headerlink" href="#sde-primer" title="Permalink to this headline"></a></h1>
+<h1>SDE Primer<a class="headerlink" href="#sde-primer" title="Permalink to this heading"></a></h1>
 <p>The guts of NWChemEx uses the SDE framework. Additional functionality is added
 to the SDE by writing plugins called “modules”. Generally speaking each module
 can compute one or more properties. For example a module which runs a
@@ -110,11 +111,11 @@ NWChemEx uses to call plugins. To interface your code with NWChemEx you need to
 wrap it in a module, register the properties your module can compute, and
 register the module with NWChemEx. NWChemEx will handle everything else.</p>
 <section id="writing-a-module">
-<h2>Writing a module<a class="headerlink" href="#writing-a-module" title="Permalink to this headline"></a></h2>
+<h2>Writing a module<a class="headerlink" href="#writing-a-module" title="Permalink to this heading"></a></h2>
 <p>NWChemEx and the SDE are able to work with modules written in either C++ or in
 Python.</p>
 <section id="c">
-<h3>C++<a class="headerlink" href="#c" title="Permalink to this headline"></a></h3>
+<h3>C++<a class="headerlink" href="#c" title="Permalink to this heading"></a></h3>
 <p>If you want to write your module in C++ you will need to create a library with
 your module. Your library will need to link to the PropertyTypes repo (which
 will automatically also expose your library to SDE and LibChemist). For sake of
@@ -193,7 +194,7 @@ source file:</p>
 </div>
 </section>
 <section id="python">
-<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline"></a></h3>
+<h3>Python<a class="headerlink" href="#python" title="Permalink to this heading"></a></h3>
 <p>TODO: Write me!!!!</p>
 </section>
 </section>
