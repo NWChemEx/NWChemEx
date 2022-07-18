@@ -3,9 +3,6 @@ on:
   pull_request:
     branches:
       - master
-  push:
-    branches:
-      - reuseable-workflow
 
 jobs:
   Build-Documentation:

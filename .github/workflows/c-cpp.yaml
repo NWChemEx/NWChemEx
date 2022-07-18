@@ -4,13 +4,10 @@ on:
   pull_request:
     branches:
       - master
-  push:
-    branches:
-      - reuseable-workflow
 
 jobs:
   build:
-    uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yml@reuseable-workflow
+    uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yml@master
     with: 
       dependencies: 'gcc gcovr cmake openblas cblas lapacke scalapack boost eigen3 openmpi cppyy numpy libint'
     secrets:
