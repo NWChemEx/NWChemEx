@@ -6,21 +6,7 @@ on:
 
 jobs:
   Build-Documentation:
-    runs-on: ubuntu-latest
-    env:
-      cmake_version: 3.16.3
-      arch: Linux-x86_64
-    steps:
-      - name: Obtain Source
-        uses: actions/checkout@v2
-      - name: Get dependencies
-        run: .github/workflows/scripts/get_dependencies.sh cmake doxygen sphinx
-      - name: Build documentation
-        run: .github/workflows/scripts/build_docs.sh nwchemex_cxx_api
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: ${{ secrets.CREATE_PULL_REQUEST_TOKEN }}
-          publish_dir: ./docs/build/html
-
-
+    uses: NWChemEx-Project/.github/.github/workflows/deploy_docs_tmpl.yml@master
+    with: 
+      target: nwchemex_cxx_api
+      dependencies: cmake doxygen sphinx
