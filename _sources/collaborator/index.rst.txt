@@ -11,6 +11,6 @@ are targeted at collaborators.
     :maxdepth: 2
     :caption: Contents:
 
-    sde_primer
-    advanced_sde
+    pluginplay_primer
+    advanced_pluginplay
     faqs

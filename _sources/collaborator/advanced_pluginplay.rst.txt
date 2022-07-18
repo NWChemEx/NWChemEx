@@ -1,9 +1,9 @@
-*******************
-Advanced SDE Primer
-*******************
+***************************
+Advanced PluginPlay Primer
+***************************
 
-The SDE actually has a lot more functionality than what was showcased in the
-SDE primer (TODO: add link). To take maximum advantage of this functionality it 
+The PluginPlay actually has a lot more functionality than what was showcased in the
+PluginPlay primer (TODO: add link). To take maximum advantage of this functionality it 
 is recommended you read through the SDE tutorials and/or documentation (TODO: 
 add link). On this page we briefly highlight some of the additional 
 functionality that is is most likely to be of interest to collaborators. This 

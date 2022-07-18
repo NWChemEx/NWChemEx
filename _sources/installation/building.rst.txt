@@ -6,12 +6,14 @@ Prerequisites
 
 To compile NWChemEx, some packages must be available on your system beforehand:
 
-#. A C++ compiler supporting the C++17 standard
-#. CMake
-#. BLAS/LAPACK/ScaLAPACK
-#. Boost
-#. MPI
-#. libint2
+#. A C++ compiler supporting the C++17 standard, currently we use gcc 9 (10.2 on Intel), clang has not been fully tested
+#. CMake, usually the latest version is the best to use, be aware that some Linux distributions (Ubuntu for example) are often behind on CMake versions in the default build
+#. BLAS/LAPACK/ScaLAPACK or standards equivalent libraries, partially tested options include OpenBlas, NetLib, Blis, FLAME, MKL
+#. Boost, currently 1.59 as a minimum; note that bleeding edge Boost often requires bleeding edge compilers, so be careful here
+#. MPI, most of the code requires at least MPI-3 compliance, MPICH 3.4 has been tested
+#. Eigen, minimum of 3.4.0; the build will automatically pull this if you don't have it available
+#. libint2 - see below for more information
+#. Depending on what type of GPU you have available to you, you will need CUDA 11 or higher, SYCL 2.0 (use the latest version of the OneAPI SDK), or HIP 4.5 (use the latest ROCm version)
 
 If necessary, more installation details for a package will be provided in the
 subsections below.
@@ -20,9 +22,9 @@ NWChemEx also depends on a number of repositories listed below. Please visit
 the repositories and ensure that any additional packages that must be available
 before building are installed.
 
-#. integrals <https://github.com/NWChemEx-Project/Integrals>
-#. SCF <https://github.com/NWChemEx-Project/SCF>
-#. MP2 <https://github.com/NWChemEx-Project/MP2>
+#. `integrals <https://github.com/NWChemEx-Project/Integrals>`__
+#. `SCF <https://github.com/NWChemEx-Project/SCF>`__
+#. `MP2 <https://github.com/NWChemEx-Project/MP2>`__
 
 BLAS/LAPACK/ScaLAPACK
 ^^^^^^^^^^^^^^^^^^^^^

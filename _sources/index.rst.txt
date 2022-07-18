@@ -15,7 +15,7 @@ the table of contents below to help jump to the topic of interest.
    :caption: Project-wide Documentation:
 
    getting_started
-   about
+   about_nwx
    installation/index
    collaborator/index
    C++ API <https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html>
@@ -24,10 +24,10 @@ the table of contents below to help jump to the topic of interest.
    :maxdepth: 2
    :caption: NWX Infrastructure Documentation
 
-   SDE <https://nwchemex-project.github.io/SDE/>
-   Property Types <https://nwchemex-project.github.io/PropertyTypes/>
+   PluginPlay <https://nwchemex-project.github.io/PluginPlay/>
+   SimDE <https://nwchemex-project.github.io/SimDE/>
    Utilities <https://nwchemex-project.github.io/Utilities/>
-   LibChemist <https://nwchemex-project.github.io/LibChemist/>
+   Chemist <https://nwchemex-project.github.io/Chemist/>
 
 
 .. toctree::

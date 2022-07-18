@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SDE Primer &mdash; NWChemEx 1.0.0 documentation</title>
+  <title>PluginPlay Primer &mdash; NWChemEx 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,7 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Advanced SDE Primer" href="advanced_sde.html" />
+    <link rel="next" title="Advanced PluginPlay Primer" href="advanced_pluginplay.html" />
     <link rel="prev" title="Collaborator Documentation" href="index.html" /> 
 </head>
 
@@ -44,9 +44,10 @@
               <p class="caption" role="heading"><span class="caption-text">Project-wide Documentation:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started with NWChemEx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_nwx.html">About the NWChemEx Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/building.html">Building the NWChemEx Package</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Collaborator Documentation</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">SDE Primer</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PluginPlay Primer</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#writing-a-module">Writing a module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#c">C++</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python">Python</a></li>
@@ -54,7 +55,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="advanced_sde.html">Advanced SDE Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_pluginplay.html">Advanced PluginPlay Primer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faqs.html">Collaboration FAQs</a></li>
 </ul>
 </li>
@@ -62,10 +63,10 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">NWX Infrastructure Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/SDE/">SDE</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/PropertyTypes/">Property Types</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/PluginPlay/">PluginPlay</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/SimDE/">SimDE</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/Utilities/">Utilities</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/LibChemist/">LibChemist</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/Chemist/">Chemist</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">First Party NWX Supermodules</span></p>
 <ul>
@@ -89,9 +90,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html">Collaborator Documentation</a> &raquo;</li>
-      <li>SDE Primer</li>
+      <li>PluginPlay Primer</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/collaborator/sde_primer.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/collaborator/pluginplay_primer.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -99,10 +100,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="sde-primer">
-<h1>SDE Primer<a class="headerlink" href="#sde-primer" title="Permalink to this heading"></a></h1>
-<p>The guts of NWChemEx uses the SDE framework. Additional functionality is added
-to the SDE by writing plugins called “modules”. Generally speaking each module
+  <section id="pluginplay-primer">
+<h1>PluginPlay Primer<a class="headerlink" href="#pluginplay-primer" title="Permalink to this heading"></a></h1>
+<p>The guts of NWChemEx uses the PluginPlay framework. Additional functionality is added
+to the PluginPlay by writing plugins called “modules”. Generally speaking each module
 can compute one or more properties. For example a module which runs a
 Hartree-Fock calculation will likely compute the total electronic energy, the
 canonical molecular orbitals, and the Fock matrix. Associated with each property
@@ -112,20 +113,20 @@ wrap it in a module, register the properties your module can compute, and
 register the module with NWChemEx. NWChemEx will handle everything else.</p>
 <section id="writing-a-module">
 <h2>Writing a module<a class="headerlink" href="#writing-a-module" title="Permalink to this heading"></a></h2>
-<p>NWChemEx and the SDE are able to work with modules written in either C++ or in
+<p>NWChemEx and the PluginPlay are able to work with modules written in either C++ or in
 Python.</p>
 <section id="c">
 <h3>C++<a class="headerlink" href="#c" title="Permalink to this heading"></a></h3>
 <p>If you want to write your module in C++ you will need to create a library with
-your module. Your library will need to link to the PropertyTypes repo (which
-will automatically also expose your library to SDE and LibChemist). For sake of
+your module. Your library will need to link to the SimDE repo (which
+will automatically also expose your library to PluginPlay and Chemist). For sake of
 argument we’ll assume your module computes overlap integrals of Gaussian basis
 functions using a deep neural network. Given how the module works we decide to
 call it <code class="docutils literal notranslate"><span class="pre">DeepOverlap</span></code> (module names are case-sensitive) and we decide to call
 the library <code class="docutils literal notranslate"><span class="pre">DeepIntegrals</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">DeepIntegrals</span></code> needs a very simple header file, <code class="docutils literal notranslate"><span class="pre">deep_integrals.hpp</span></code>:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma once           </span><span class="c1">// Header guard; avoids multiple inclusions</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sde/sde.hpp&gt;</span><span class="c1"> // Makes SDE visible to your module</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pluginplay/pluginplay.hpp&gt;</span><span class="c1"> // Makes PluginPlay visible to your module</span><span class="cp"></span>
 
 <span class="k">namespace</span><span class="w"> </span><span class="nn">deep_integrals</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
@@ -135,19 +136,18 @@ the library <code class="docutils literal notranslate"><span class="pre">DeepInt
 <span class="c1">// statements would show up here</span>
 
 <span class="c1">// This is the hook NWChemEx uses to enter your library</span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">load_modules</span><span class="p">(</span><span class="n">sde</span><span class="o">::</span><span class="n">ModuleManager</span><span class="o">&amp;</span><span class="w"> </span><span class="n">mm</span><span class="p">);</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">load_modules</span><span class="p">(</span><span class="n">pluginplay</span><span class="o">::</span><span class="n">ModuleManager</span><span class="o">&amp;</span><span class="w"> </span><span class="n">mm</span><span class="p">);</span><span class="w"></span>
 
 <span class="p">}</span><span class="w"> </span><span class="c1">// namespace deep_integrals</span>
 </pre></div>
 </div>
-<p>Overlap integrals are of type <code class="docutils literal notranslate"><span class="pre">property_types::ao_integrals::Overlap&lt;T&gt;</span></code>
-where <code class="docutils literal notranslate"><span class="pre">T</span></code> is a floating-point type (<strong>e.g.</strong>, <code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">double</span></code>). The
-definition of <code class="docutils literal notranslate"><span class="pre">DeepOverlap</span></code> will look something like:</p>
+<p>Overlap integrals are of type <code class="docutils literal notranslate"><span class="pre">simde::EOverlap</span></code>
+The definition of <code class="docutils literal notranslate"><span class="pre">DeepOverlap</span></code> will look something like:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;path/to/deep_integrals.hpp&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;property_types/ao_integrals/overlap.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;simde/simde.hpp&gt;</span><span class="cp"></span>
 
 <span class="c1">// Typedef of the Overlap property type for readability</span>
-<span class="k">using</span><span class="w"> </span><span class="n">pt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property_types</span><span class="o">::</span><span class="n">ao_integrals</span><span class="o">::</span><span class="n">Overlap</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">pt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">simde</span><span class="o">::</span><span class="n">EOverlap</span><span class="p">;</span><span class="w"></span>
 
 <span class="k">namespace</span><span class="w"> </span><span class="nn">deep_integrals</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
@@ -185,7 +185,7 @@ source file:</p>
 
 <span class="k">namespace</span><span class="w"> </span><span class="nn">deep_integrals</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">load_modules</span><span class="p">(</span><span class="n">chemist</span><span class="o">::</span><span class="n">ModuleManager</span><span class="o">&amp;</span><span class="w"> </span><span class="n">mm</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">load_modules</span><span class="p">(</span><span class="n">pluginplay</span><span class="o">::</span><span class="n">ModuleManager</span><span class="o">&amp;</span><span class="w"> </span><span class="n">mm</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">mm</span><span class="p">.</span><span class="n">add_module</span><span class="o">&lt;</span><span class="n">DeepOverlap</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;Deep Overlap&quot;</span><span class="p">);</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 
@@ -205,7 +205,7 @@ source file:</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Collaborator Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="advanced_sde.html" class="btn btn-neutral float-right" title="Advanced SDE Primer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="advanced_pluginplay.html" class="btn btn-neutral float-right" title="Advanced PluginPlay Primer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -44,6 +44,7 @@
               <p class="caption" role="heading"><span class="caption-text">Project-wide Documentation:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started with NWChemEx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_nwx.html">About the NWChemEx Project</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Building the NWChemEx Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#blas-lapack-scalapack">BLAS/LAPACK/ScaLAPACK</a></li>
@@ -63,10 +64,10 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">NWX Infrastructure Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/SDE/">SDE</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/PropertyTypes/">Property Types</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/PluginPlay/">PluginPlay</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/SimDE/">SimDE</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/Utilities/">Utilities</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/LibChemist/">LibChemist</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/Chemist/">Chemist</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">First Party NWX Supermodules</span></p>
 <ul>
@@ -106,12 +107,14 @@
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
 <p>To compile NWChemEx, some packages must be available on your system beforehand:</p>
 <ol class="arabic simple">
-<li><p>A C++ compiler supporting the C++17 standard</p></li>
-<li><p>CMake</p></li>
-<li><p>BLAS/LAPACK/ScaLAPACK</p></li>
-<li><p>Boost</p></li>
-<li><p>MPI</p></li>
-<li><p>libint2</p></li>
+<li><p>A C++ compiler supporting the C++17 standard, currently we use gcc 9 (10.2 on Intel), clang has not been fully tested</p></li>
+<li><p>CMake, usually the latest version is the best to use, be aware that some Linux distributions (Ubuntu for example) are often behind on CMake versions in the default build</p></li>
+<li><p>BLAS/LAPACK/ScaLAPACK or standards equivalent libraries, partially tested options include OpenBlas, NetLib, Blis, FLAME, MKL</p></li>
+<li><p>Boost, currently 1.59 as a minimum; note that bleeding edge Boost often requires bleeding edge compilers, so be careful here</p></li>
+<li><p>MPI, most of the code requires at least MPI-3 compliance, MPICH 3.4 has been tested</p></li>
+<li><p>Eigen, minimum of 3.4.0; the build will automatically pull this if you don’t have it available</p></li>
+<li><p>libint2 - see below for more information</p></li>
+<li><p>Depending on what type of GPU you have available to you, you will need CUDA 11 or higher, SYCL 2.0 (use the latest version of the OneAPI SDK), or HIP 4.5 (use the latest ROCm version)</p></li>
 </ol>
 <p>If necessary, more installation details for a package will be provided in the
 subsections below.</p>
@@ -119,9 +122,9 @@ subsections below.</p>
 the repositories and ensure that any additional packages that must be available
 before building are installed.</p>
 <ol class="arabic simple">
-<li><p>integrals &lt;<a class="reference external" href="https://github.com/NWChemEx-Project/Integrals">https://github.com/NWChemEx-Project/Integrals</a>&gt;</p></li>
-<li><p>SCF &lt;<a class="reference external" href="https://github.com/NWChemEx-Project/SCF">https://github.com/NWChemEx-Project/SCF</a>&gt;</p></li>
-<li><p>MP2 &lt;<a class="reference external" href="https://github.com/NWChemEx-Project/MP2">https://github.com/NWChemEx-Project/MP2</a>&gt;</p></li>
+<li><p><a class="reference external" href="https://github.com/NWChemEx-Project/Integrals">integrals</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NWChemEx-Project/SCF">SCF</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NWChemEx-Project/MP2">MP2</a></p></li>
 </ol>
 <section id="blas-lapack-scalapack">
 <h3>BLAS/LAPACK/ScaLAPACK<a class="headerlink" href="#blas-lapack-scalapack" title="Permalink to this heading"></a></h3>
