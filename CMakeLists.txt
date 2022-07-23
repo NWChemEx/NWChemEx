@@ -54,11 +54,23 @@ cpp_find_or_build_dependency(
         CMAKE_ARGS BUILD_TESTING=OFF
 )
 
+#find_package(HDF5 REQUIRED)
+cpp_find_or_build_dependency(
+        highfive
+        URL github.com/BlueBrain/HighFive.git
+        BUILD_TARGET HighFive
+        FIND_TARGET HighFive
+        CMAKE_ARGS HIGHFIVE_USE_BOOST=OFF 
+                   HIGHFIVE_UNIT_TESTS=OFF
+                   HIGHFIVE_EXAMPLES=OFF
+                   HIGHFIVE_BUILD_DOCS=OFF
+)
+
 cpp_add_library(
         nwchemex
         SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
         INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include/nwchemex"
-        DEPENDS nwx::scf nwx::integrals nwx::chemcache # nwx::mp2
+        DEPENDS nwx::scf nwx::integrals nwx::chemcache HighFive # nwx::mp2
 )
 
 if("${BUILD_TESTING}")
