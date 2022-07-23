@@ -32,9 +32,9 @@ PROPERTY_TYPE_INPUTS(TransformedElectronicHamiltonian) {
 PROPERTY_TYPE_RESULTS(TransformedElectronicHamiltonian) {
     using simde::type::tensor;
 
-    auto rv = pluginplay::declare_result()
-                .add_field<tensor>("T")
-                .add_field<tensor>("V");
+    auto rv =
+      pluginplay::declare_result().add_field<tensor>("T").add_field<tensor>(
+        "V");
     return rv;
 }
 
@@ -44,16 +44,15 @@ DECLARE_PROPERTY_TYPE(QCSchemaFactory);
 PROPERTY_TYPE_INPUTS(QCSchemaFactory) {
     using simde::type::canonical_reference;
     using simde::type::els_hamiltonian;
-    auto rv = pluginplay::declare_input()
-                .add_field<const els_hamiltonian&>("Electronic Hamiltonian")
-                .add_field<const canonical_reference&>("Reference Wavefunction");
+    auto rv =
+      pluginplay::declare_input()
+        .add_field<const els_hamiltonian&>("Electronic Hamiltonian")
+        .add_field<const canonical_reference&>("Reference Wavefunction");
     return rv;
 }
 
-PROPERTY_TYPE_RESULTS(QCSchemaFactory) {
-    return pluginplay::declare_result();
-}
+PROPERTY_TYPE_RESULTS(QCSchemaFactory) { return pluginplay::declare_result(); }
 
 DECLARE_MODULE(HDF5QCSchema);
 
-}
+} // namespace simde

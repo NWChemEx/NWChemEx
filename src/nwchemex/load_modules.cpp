@@ -84,12 +84,17 @@ void load_modules(pluginplay::ModuleManager& mm) {
     mm.add_module<AuxiliaryBasis>("Standard RI Fitting Basis");
     mm.change_input("Standard RI Fitting Basis", "Aux Basis Suffix", "-rifit");
 
-    mm.add_module<simde::SecondQuantizedHamiltonian>("Second Quantized Hamiltonian");
-    mm.change_submod("Second Quantized Hamiltonian", "Transformed ERIs", "Transformed ERI4");
-    mm.change_submod("Second Quantized Hamiltonian", "Transformed Kinetic", "Transformed Kinetic");
-    mm.change_submod("Second Quantized Hamiltonian", "Transformed Nuclear", "Transformed Nuclear");
+    mm.add_module<simde::SecondQuantizedHamiltonian>(
+      "Second Quantized Hamiltonian");
+    mm.change_submod("Second Quantized Hamiltonian", "Transformed ERIs",
+                     "Transformed ERI4");
+    mm.change_submod("Second Quantized Hamiltonian", "Transformed Kinetic",
+                     "Transformed Kinetic");
+    mm.change_submod("Second Quantized Hamiltonian", "Transformed Nuclear",
+                     "Transformed Nuclear");
     mm.add_module<simde::HDF5QCSchema>("HDF5 QCSchema");
-    mm.change_submod("HDF5 QCSchema", "Transformed Hamiltonian", "Second Quantized Hamiltonian");
+    mm.change_submod("HDF5 QCSchema", "Transformed Hamiltonian",
+                     "Second Quantized Hamiltonian");
 
     set_integrals_default_modules(mm);
     set_scf_default_modules(mm);
