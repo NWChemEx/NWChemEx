@@ -8,10 +8,7 @@ First a tiny-bit of background.  NWChemEx attempts to break from the
 traditional "monolithic" electronic structure package by decomposing the overall
 electronic structure package into smaller, independent packages called modules.  
 Each module is its own GitHub repository and can be used as is, without the rest
-of NWChemEx (aside from its dependencies).  The current module structure of 
-NWChemEx is summarized in the following diagram:
- 
-![](dox/uml/program_structure.png)
+of NWChemEx (aside from its dependencies).  
  
 For the most part, modules only depend on NWChemExRuntime and its dependencies 
 (which we intend to keep minimal beyond standard dependencies such as BLAS and
@@ -25,7 +22,7 @@ to how one can (in theory) substitute various vendor BLAS libraries without
 modifying the code.
 
 The current repo serves as the public face of the NWChemEx software suite.  It
-is capable of building all of the various submodules and assembling them.  
+is capable of building the runtime, various plugins, and assembling them.  
 Additionally, this repo provides tools to interact with the resulting 
 software suite in a number of ways. 
 
