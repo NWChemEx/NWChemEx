@@ -22,7 +22,7 @@ to how one can (in theory) substitute various vendor BLAS libraries without
 modifying the code.
 
 The current repo serves as the public face of the NWChemEx software suite.  It
-is capable of building all of the various submodules and assembling them.  
+is capable of building the runtime, various plugins, and assembling them.  
 Additionally, this repo provides tools to interact with the resulting 
 software suite in a number of ways. 
 
