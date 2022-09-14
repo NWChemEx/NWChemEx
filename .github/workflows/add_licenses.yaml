@@ -21,7 +21,7 @@ on:
 
 jobs:
   license_files:
-    uses: NWChemEx-Project/.github/.github/workflows/add_licenses_master.yml@master
+    uses: NWChemEx-Project/.github/.github/workflows/add_licenses_master.yaml@master
     with:
       config_file: .github/.licenserc.yaml
     secrets:
