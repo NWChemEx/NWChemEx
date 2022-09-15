@@ -6,7 +6,7 @@ on:
 
 jobs:
   Build-Documentation:
-    uses: NWChemEx-Project/.github/.github/workflows/test_docs_tmpl.yml@master
+    uses: NWChemEx-Project/.github/.github/workflows/test_docs_tmpl.yaml@master
     with:
       target: nwchemex_cxx_api
       dependencies: cmake doxygen sphinx
