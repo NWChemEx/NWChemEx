@@ -19,8 +19,8 @@
 #include "nwchemex/load_modules.hpp"
 #include <integrals/integrals.hpp>
 // #include <mp2/mp2.hpp>
-#include <scf/scf.hpp>
 #include <casscf/casscf.hpp>
+#include <scf/scf.hpp>
 
 namespace {
 
@@ -44,9 +44,12 @@ void set_scf_default_modules(pluginplay::ModuleManager& mm) {
 }
 
 void set_casscf_default_modules(pluginplay::ModuleManager& mm) {
-    mm.change_submod("Transformed Electronic Hamiltonian", "Transformed ERIs", "Transformed ERI4");
-    mm.change_submod("Transformed Electronic Hamiltonian", "Transformed Kinetic", "Transformed Kinetic");
-    mm.change_submod("Transformed Electronic Hamiltonian", "Transformed Nuclear", "Transformed Nuclear");
+    mm.change_submod("Transformed Electronic Hamiltonian", "Transformed ERIs",
+                     "Transformed ERI4");
+    mm.change_submod("Transformed Electronic Hamiltonian",
+                     "Transformed Kinetic", "Transformed Kinetic");
+    mm.change_submod("Transformed Electronic Hamiltonian",
+                     "Transformed Nuclear", "Transformed Nuclear");
 }
 
 // Uncomment once MP2 is working again
