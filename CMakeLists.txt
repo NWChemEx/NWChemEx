@@ -34,6 +34,15 @@ cpp_find_or_build_dependency(
         CMAKE_ARGS BUILD_TESTING=OFF
 )
 
+cpp_find_or_build_dependency(
+        casscf
+        URL github.com/NWChemEx-Project/CASSCF
+        PRIVATE TRUE
+        BUILD_TARGET casscf
+        FIND_TARGET nwx::casscf
+        CMAKE_ARGS BUILD_TESTING=OFF
+)
+
 # Uncomment once MP2 is working again
 # cpp_find_or_build_dependency(
 #         mp2
@@ -58,7 +67,7 @@ cpp_add_library(
         nwchemex
         SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
         INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include/nwchemex"
-        DEPENDS nwx::scf nwx::integrals nwx::chemcache # nwx::mp2
+        DEPENDS nwx::scf nwx::integrals nwx::chemcache nwx::casscf # nwx::mp2
 )
 
 if("${BUILD_TESTING}")
@@ -101,7 +110,7 @@ endif()
 
 include(nwx_python_mods)
 if("${BUILD_TESTING}")
-    cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwchemex DEPPACKAGES integrals scf chemcache mokup ) # mp2
+    cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwchemex DEPPACKAGES integrals scf casscf chemcache mokup ) # mp2
 else()
-    cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwchemex DEPPACKAGES integrals scf chemcache ) # mp2
+    cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwchemex DEPPACKAGES integrals scf casscf chemcache ) # mp2
 endif()
