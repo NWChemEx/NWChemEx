@@ -26,11 +26,11 @@ jobs:
     uses: NWChemEx-Project/.github/.github/workflows/tag_and_release_master.yaml@automate-versioning
     secrets:
       token: ${{ secrets.UPDATE_VERSION_TXT }}
-  release:
-    needs: tag
-    if: |
-      (needs.tag.outputs.bumped_major == 'true') || 
-      (needs.tag.outputs.bumped_minor == 'true')
-    uses: NWChemEx-Project/.github/.github/workflows/pypi_release_master.yaml@automate-versioning
-    secrets:
-      token: ${{ secrets.PYPI_API_TOKEN }}
+  # release:
+  #   needs: tag
+  #   if: |
+  #     (needs.tag.outputs.bumped_major == 'true') || 
+  #     (needs.tag.outputs.bumped_minor == 'true')
+  #   uses: NWChemEx-Project/.github/.github/workflows/pypi_release_master.yaml@automate-versioning
+  #   secrets:
+  #     token: ${{ secrets.PYPI_API_TOKEN }}
