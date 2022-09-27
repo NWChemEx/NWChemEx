@@ -21,5 +21,7 @@ header:
     - .github/
     - docs/Makefile
     - LICENSE
+    - docs/requirements.txt
+    - version.txt 
 
   comment: never
