@@ -81,13 +81,14 @@ void set_defaults(pluginplay::ModuleManager& mm) {
                      "SCF Wavefunction");
     mm.change_submod("SCF Energy", "Reference Energy", "Total Energy");
 
-//    mm.change_submod("MP2 Correlation Energy", "System Hamiltonian",
-//                     "SystemHamiltonian");
-//    mm.change_submod("MP2 Correlation Energy", "Reference Wave Function",
-//                     "SCF Wavefunction");
-//    mm.change_submod("MP2 Correlation Energy", "Many Body Wave Function",
-//                     "MP1 Wavefunction");
-//    mm.change_submod("MP2 Correlation Energy", "Correlation Energy", "MP2");
+    //    mm.change_submod("MP2 Correlation Energy", "System Hamiltonian",
+    //                     "SystemHamiltonian");
+    //    mm.change_submod("MP2 Correlation Energy", "Reference Wave Function",
+    //                     "SCF Wavefunction");
+    //    mm.change_submod("MP2 Correlation Energy", "Many Body Wave Function",
+    //                     "MP1 Wavefunction");
+    //    mm.change_submod("MP2 Correlation Energy", "Correlation Energy",
+    //    "MP2");
 }
 
 void load_modules(pluginplay::ModuleManager& mm) {

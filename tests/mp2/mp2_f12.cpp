@@ -36,7 +36,7 @@
 
 //     // Apply auxiliary set and change MP2 Energy module
 //     mm.change_input("CABS", "F12 fitting basis", aux);
-//     mm.change_submod("MP2 Correlation Energy", "Correlation Energy", 
+//     mm.change_submod("MP2 Correlation Energy", "Correlation Energy",
 //                      "Dense MP2-F12");
 
 //     // Calculate energy
