@@ -36,10 +36,11 @@
 
 //     // Apply auxiliary set and change MP2 Energy module
 //     mm.change_input("CABS", "F12 fitting basis", aux);
-//     mm.change_submod("MP2 Energy", "Correlation Energy", "Dense MP2-F12");
+//     mm.change_submod("MP2 Correlation Energy", "Correlation Energy", 
+//                      "Dense MP2-F12");
 
 //     // Calculate energy
-//     auto [E] = mm.at("MP2 Energy").run_as<pt>(aos, chem_sys);
+//     auto [E] = mm.at("MP2 Correlation Energy").run_as<pt>(aos, chem_sys);
 //     std::cout << "MP2-F12/STO-3G Correlation Energy: " << E << std::endl;
 //     REQUIRE(E == Approx(-0.034016042835582974).margin(1.0e-8));
 // }

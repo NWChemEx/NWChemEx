@@ -26,7 +26,7 @@ namespace drivers {
 
 inline void load_modules(pluginplay::ModuleManager& mm) {
     mm.add_module<ReferenceEnergyDriver>("SCF Energy");
-    mm.add_module<CorrelationEnergyDriver>("MP2 Energy");
+    mm.add_module<CorrelationEnergyDriver>("MP2 Correlation Energy");
 }
 
 } // namespace drivers
