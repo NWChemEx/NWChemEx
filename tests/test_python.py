@@ -33,7 +33,7 @@ class NWChemExTestCase(unittest.TestCase):
 
         mm = pluginplay.ModuleManager()
         nwchemex.load_modules(mm)
-        mod = mm.at("SCF Driver")
+        mod = mm.at("SCF Wavefunction")
 
         [phi0] = mod.run_as[simde.CanonicalReference](H_e, aos)
         [E]    = mm.at("Total Energy").run_as[simde.TotalCanonicalEnergy](phi0, H, phi0)
@@ -52,7 +52,7 @@ class NWChemExTestCase(unittest.TestCase):
      
     #     mm = pluginplay.ModuleManager()
     #     nwchemex.load_modules(mm)
-    #     scf_wf_mod = mm.at("SCF Driver")
+    #     scf_wf_mod = mm.at("SCF Wavefunction")
     #     mp1_wf_mod = mm.at("MP1 Wavefunction")
 
     #     scf_wf_pt = simde.CanonicalReference
@@ -80,7 +80,7 @@ class NWChemExTestCase(unittest.TestCase):
     #     mm = pluginplay.ModuleManager()
     #     nwchemex.load_modules(mm)
     #     mm.change_input("CABS", "F12 fitting basis", aux);
-    #     scf_wf_mod = mm.at("SCF Driver")
+    #     scf_wf_mod = mm.at("SCF Wavefunction")
     #     mp1_wf_mod = mm.at("MP1 Wavefunction")
     #     mp2_f12_e_mod = mm.at("Dense MP2-F12")
      
