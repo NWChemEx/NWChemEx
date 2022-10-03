@@ -11,16 +11,11 @@ using qcs_pt = QCSchemaFactory;
 MODULE_CTOR(HDF5QCSchema) {
     satisfies_property_type<qcs_pt>();
     add_submodule<ham_pt>("Transformed Hamiltonian");
-
-    add_input<std::string>("Filename")
-      .set_description("HDF5 Filename")
-      .set_default("data.hdf5");
 }
 
 MODULE_RUN(HDF5QCSchema) {
     // Upwrap Inputs
-    const auto& [H_e, phi0] = qcs_pt::unwrap_inputs(inputs);
-    const auto& fname       = inputs.at("Filename").value<std::string>();
+    const auto& [H_e, phi0, fname] = qcs_pt::unwrap_inputs(inputs);
 
     // Form full orbitals space
     const auto occ_space = phi0.basis_set().occupied_orbitals();
