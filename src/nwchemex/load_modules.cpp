@@ -87,7 +87,8 @@ namespace nwchemex {
 
 void set_defaults(pluginplay::ModuleManager& mm) {
     mm.change_submod("SCF Energy", "System Hamiltonian", "SystemHamiltonian");
-    mm.change_submod("SCF Energy", "Reference Wave Function", "SCF Wavefunction");
+    mm.change_submod("SCF Energy", "Reference Wave Function",
+                     "SCF Wavefunction");
     mm.change_submod("SCF Energy", "Reference Energy", "Total Energy");
 
     // mm.change_submod("MP2 Energy", "System Hamiltonian",

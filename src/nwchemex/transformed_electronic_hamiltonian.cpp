@@ -1,11 +1,11 @@
 #include "nwchemex/load_modules.hpp"
 //#include <hdf5.h>
-#include <highfive/H5File.hpp>
 #include <casscf/property_types/transformed_electronic_hamiltonian.hpp>
+#include <highfive/H5File.hpp>
 
 namespace simde {
 
-using ham_pt  = simde::TransformedElectronicHamiltonian;
+using ham_pt = simde::TransformedElectronicHamiltonian;
 using qcs_pt = QCSchemaFactory;
 
 MODULE_CTOR(HDF5QCSchema) {
