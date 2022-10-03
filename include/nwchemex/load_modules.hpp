@@ -16,6 +16,7 @@
 
 #pragma once
 #include <pluginplay/pluginplay.hpp>
+#include <simde/simde.hpp>
 
 namespace nwchemex {
 
@@ -30,3 +31,22 @@ namespace nwchemex {
 void load_modules(pluginplay::ModuleManager& mm);
 
 } // namespace nwchemex
+
+namespace simde {
+
+DECLARE_PROPERTY_TYPE(QCSchemaFactory);
+PROPERTY_TYPE_INPUTS(QCSchemaFactory) {
+    using simde::type::canonical_reference;
+    using simde::type::els_hamiltonian;
+    auto rv =
+      pluginplay::declare_input()
+        .add_field<const els_hamiltonian&>("Electronic Hamiltonian")
+        .add_field<const canonical_reference&>("Reference Wavefunction");
+    return rv;
+}
+
+PROPERTY_TYPE_RESULTS(QCSchemaFactory) { return pluginplay::declare_result(); }
+
+DECLARE_MODULE(HDF5QCSchema);
+
+} // namespace simde
