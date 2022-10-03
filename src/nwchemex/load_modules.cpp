@@ -77,15 +77,26 @@ namespace nwchemex {
 
 void set_defaults(pluginplay::ModuleManager& mm) {
     mm.change_submod("SCF Energy", "System Hamiltonian", "SystemHamiltonian");
-    mm.change_submod("SCF Energy", "Reference Wave Function", "SCF Driver");
+    mm.change_submod("SCF Energy", "Reference Wave Function",
+                     "SCF Wavefunction");
     mm.change_submod("SCF Energy", "Reference Energy", "Total Energy");
 
-    // mm.change_submod("MP2 Energy", "System Hamiltonian",
-    // "SystemHamiltonian"); mm.change_submod("MP2 Energy", "Reference Wave
-    // Function", "SCF Driver"); mm.change_submod("MP2 Energy", "Many Body Wave
-    // Function",
+    // mm.change_submod("MP2 Correlation Energy", "System Hamiltonian",
+    //                  "SystemHamiltonian");
+    // mm.change_submod("MP2 Correlation Energy", "Reference Wave Function",
+    //                  "SCF Wavefunction");
+    // mm.change_submod("MP2 Correlation Energy", "Many Body Wave Function",
     //                  "MP1 Wavefunction");
-    // mm.change_submod("MP2 Energy", "Correlation Energy", "MP2");
+    // mm.change_submod("MP2 Correlation Energy", "Correlation Energy", "MP2");
+
+    // mm.change_submod("MP2 Energy", "System Hamiltonian",
+    // "SystemHamiltonian");
+    // mm.change_submod("MP2 Energy", "Reference Wave Function",
+    //                  "SCF Wavefunction");
+    // mm.change_submod("MP2 Energy", "Reference Energy", "Total Energy");
+    // mm.change_submod("MP2 Energy", "Many Body Wave Function",
+    //                  "MP1 Wavefunction");
+    // mm.change_submod("MP2 Correlation Energy", "Correlation Energy", "MP2");
 }
 
 void load_modules(pluginplay::ModuleManager& mm) {

@@ -41,7 +41,7 @@
 //     simde::type::els_hamiltonian H_e(H);
 
 //     // Compute SCF wavefunction w/ electronic Hamiltonian
-//     auto& scf_wf_mod  = mm.at("SCF Driver");
+//     auto& scf_wf_mod  = mm.at("SCF Wavefunction");
 //     const auto& [ref] = scf_wf_mod.run_as<simde::CanonicalReference>(H_e,
 //     aos);
 

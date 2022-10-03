@@ -53,7 +53,7 @@
 #         H_e = simde.type.els_hamiltonian(H)
 
 #         # Compute SCF wavefunction w/ electronic Hamiltonian
-#         scf_wf_mod  = mm.at("SCF Driver")
+#         scf_wf_mod  = mm.at("SCF Wavefunction")
 #         [ref] = scf_wf_mod.run_as[simde.CanonicalReference](H_e, aos)
 
 #         # Unpack the canonical occupied orbitals, and converged Fock operator
