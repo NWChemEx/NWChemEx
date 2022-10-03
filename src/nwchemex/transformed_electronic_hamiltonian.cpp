@@ -5,57 +5,8 @@
 namespace simde {
 
 using ham_pt  = TransformedElectronicHamiltonian;
-using teri_pt = TransformedERI4;
-using tkin_pt = TransformedTensorRepresentation<2, simde::type::el_kinetic>;
-using tvne_pt = TransformedTensorRepresentation<2, simde::type::el_nuc_coulomb>;
-
-MODULE_CTOR(SecondQuantizedHamiltonian) {
-    satisfies_property_type<ham_pt>();
-    add_submodule<teri_pt>("Transformed ERIs");
-    add_submodule<tkin_pt>("Transformed Kinetic");
-    add_submodule<tvne_pt>("Transformed Nuclear");
-}
-
-MODULE_RUN(SecondQuantizedHamiltonian) {
-    const auto& [H_e, p] = ham_pt::unwrap_inputs(inputs);
-    auto& eri_mod        = submods.at("Transformed ERIs").value();
-    auto& kin_mod        = submods.at("Transformed Kinetic").value();
-    auto& vne_mod        = submods.at("Transformed Nuclear").value();
-
-    // Compute two-body term
-    // TODO: Get from Hamiltonian
-
-    simde::type::el_el_coulomb r12;
-    using simde::tensor_representation;
-    const auto& [V] = tensor_representation(eri_mod, p, p, r12, p, p);
-
-    // Compute one-body term
-    chemist::operators::CoreHamiltonian H_core(H_e);
-    const auto t_terms = H_core.get_terms<simde::type::el_kinetic>();
-    const auto v_terms = H_core.get_terms<simde::type::el_nuc_coulomb>();
-
-    simde::type::tensor H;
-
-    // Use T to initialize H
-    const auto& [t0] = tensor_representation(kin_mod, p, *(t_terms.at(0)), p);
-    H                = t0;
-    for(std::size_t i = 1; i < t_terms.size(); ++i) {
-        const auto& [ti] = tensor_representation(kin_mod, p, *t_terms[i], p);
-        H("p,q")         = H("p,q") + ti("p,q");
-    }
-
-    // Add V terms
-    for(const auto& v : v_terms) {
-        const auto& [vi] = tensor_representation(vne_mod, p, *v, p);
-        H("p,q")         = H("p,q") + vi("p,q");
-    }
-
-    // Return results
-    auto rv = results();
-    return ham_pt::wrap_results(rv, H, V);
-}
-
 using qcs_pt = QCSchemaFactory;
+
 MODULE_CTOR(HDF5QCSchema) {
     satisfies_property_type<qcs_pt>();
     add_submodule<ham_pt>("Transformed Hamiltonian");
