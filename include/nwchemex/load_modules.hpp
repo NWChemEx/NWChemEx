@@ -38,11 +38,10 @@ DECLARE_PROPERTY_TYPE(QCSchemaFactory);
 PROPERTY_TYPE_INPUTS(QCSchemaFactory) {
     using simde::type::canonical_reference;
     using simde::type::els_hamiltonian;
-    auto rv =
-      pluginplay::declare_input()
-        .add_field<const els_hamiltonian&>("Electronic Hamiltonian")
-        .add_field<const canonical_reference&>("Reference Wavefunction")
-	.add_field<const std::string&>("Filename");
+    auto rv = pluginplay::declare_input()
+                .add_field<const els_hamiltonian&>("Electronic Hamiltonian")
+                .add_field<const canonical_reference&>("Reference Wavefunction")
+                .add_field<const std::string&>("Filename");
     return rv;
 }
 
