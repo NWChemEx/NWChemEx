@@ -83,7 +83,7 @@ function(cppyy_make_python_package)
     set(python_defines_file "${output_dir}/python_defines.hpp")
     set(python_defines "#define MADNESS_HAS_CEREAL\n")
     if(BTAS_USE_BLAS_LAPACK)
-        set(python_defines "#define BTAS_HAS_BLAS_LAPACK\n")
+        set(python_defines "${python_defines}#define BTAS_HAS_BLAS_LAPACK\n")
     endif()
     file(GENERATE OUTPUT ${python_defines_file} CONTENT "${python_defines}")
     #---------------------------------------------------------------------------
