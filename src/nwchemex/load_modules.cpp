@@ -112,7 +112,6 @@ void load_modules(pluginplay::ModuleManager& mm) {
     mm.add_module<AuxiliaryBasis>("Standard RI Fitting Basis");
     mm.change_input("Standard RI Fitting Basis", "Aux Basis Suffix", "-rifit");
 
-
     set_integrals_default_modules(mm);
     set_scf_default_modules(mm);
     set_casscf_default_modules(mm);

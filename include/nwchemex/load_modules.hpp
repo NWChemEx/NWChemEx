@@ -30,4 +30,3 @@ namespace nwchemex {
 void load_modules(pluginplay::ModuleManager& mm);
 
 } // namespace nwchemex
-
