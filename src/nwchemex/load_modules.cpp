@@ -112,9 +112,6 @@ void load_modules(pluginplay::ModuleManager& mm) {
     mm.add_module<AuxiliaryBasis>("Standard RI Fitting Basis");
     mm.change_input("Standard RI Fitting Basis", "Aux Basis Suffix", "-rifit");
 
-    mm.add_module<simde::HDF5QCSchema>("HDF5 QCSchema");
-    mm.change_submod("HDF5 QCSchema", "Transformed Hamiltonian",
-                     "Transformed Electronic Hamiltonian");
 
     set_integrals_default_modules(mm);
     set_scf_default_modules(mm);
