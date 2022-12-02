@@ -4,11 +4,23 @@ on:
   pull_request:
     branches:
       - master
+  push:
+    branches:
+      - clang-build
+
 
 jobs:
-  build:
-    uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@master
+  build-with-gcc:
+    uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@parallel-template
     with: 
       dependencies: 'gcc gcovr cmake openblas cblas lapacke scalapack boost eigen3 openmpi cppyy numpy libint'
+      clang-build: false
+    secrets:
+      CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
+  build-with-clang:
+    uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@parallel-template
+    with: 
+      dependencies: 'clang gcovr cmake openblas cblas lapacke scalapack boost eigen3 openmpi cppyy numpy libint'
+      clang-build: true
     secrets:
       CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
