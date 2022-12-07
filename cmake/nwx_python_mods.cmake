@@ -60,7 +60,6 @@ function(cppyy_make_python_package)
     #---------------------------------------------------------------------------
     get_true_target_property(include_dirs ${install_data_PACKAGE} INTERFACE_INCLUDE_DIRECTORIES)
     list(APPEND include_dirs ${MPI_CXX_HEADER_DIR})
-    list(APPEND include_dirs ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
     list(REMOVE_DUPLICATES include_dirs)
     #---------------------------------------------------------------------------
     #--------------------------Get headers to include---------------------------
