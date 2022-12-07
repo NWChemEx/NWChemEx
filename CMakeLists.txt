@@ -89,6 +89,7 @@ if("${BUILD_TESTING}")
             PRIVATE
             BUILD_TARGET mokup
             FIND_TARGET nwx::mokup
+            CMAKE_ARGS BUILD_TESTING=OFF
     )
     cpp_add_tests(
        test_nwchemex
