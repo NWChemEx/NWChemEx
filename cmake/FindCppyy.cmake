@@ -65,7 +65,15 @@ if(NOT "${_fcppyy_result}" STREQUAL "" OR NOT "${_fcppyy_result2}" STREQUAL "${c
     #
     # Check the version again
     #
-    if(NOT "${_fcppyy_result2}" STREQUAL "${cppyy_version}")
+    if("${_fcppyy_result2}" STREQUAL "${cppyy_version}")
+       set(Cppyy_FOUND TRUE)
+    else()
        set(Cppyy_FOUND FALSE)
     endif()
+else()
+    set(Cppyy_FOUND TRUE)
+endif()
+
+if(NOT Cppyy_FOUND)
+    message(WARNING "CMake could not install cppyy, try installing cppyy ${cppyy_version} manually.")
 endif()

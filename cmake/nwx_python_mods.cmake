@@ -47,6 +47,9 @@ function(cppyy_make_python_package)
     #-----------------------Make sure we have cppyy installed-------------------
     #---------------------------------------------------------------------------
     find_package(Cppyy REQUIRED)
+    if(NOT Cppyy_FOUND)
+        message(FATAL_ERROR "Requested python bindings, but cppyy not found!")
+    endif()
     #---------------------------------------------------------------------------
     #--------------------------Argument Parsing---------------------------------
     #---------------------------------------------------------------------------
