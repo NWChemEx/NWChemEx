@@ -56,5 +56,16 @@ if(NOT "${_fcppyy_result}" STREQUAL "" OR NOT "${_fcppyy_result2}" STREQUAL "${c
     execute_process(COMMAND Python3::Interpreter -c "import cppyy" RESULT_VARIABLE _fcppyy_result)
     if(NOT "${_fcppyy_result}" STREQUAL "")
        set(Cppyy_FOUND FALSE)
+    else()
+    	execute_process(
+        	COMMAND Python3::Interpreter -c "import cppyy; print(cppyy.__version__)"
+        	RESULT_VARIABLE _fcppyy_result2
+    	)
+    endif()
+    #
+    # Check the version again
+    #
+    if(NOT "${_fcppyy_result2}" STREQUAL "${cppyy_version}")
+       set(Cppyy_FOUND FALSE)
     endif()
 endif()
