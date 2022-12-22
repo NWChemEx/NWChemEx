@@ -27,53 +27,60 @@ find_package(Python3 COMPONENTS Interpreter REQUIRED)
 # Check if cppyy Python package exists
 #
 execute_process(
-    COMMAND Python3::Interpreter -c "import cppyy"
-    RESULT_VARIABLE _fcppyy_result
+    COMMAND ${Python3_EXECUTABLE} -c "import cppyy"
+    OUTPUT_VARIABLE _fcppyy_result
 )
 #
 # If cppyy exists, check version
 #
 if("${_fcppyy_result}" STREQUAL "")
+    set(Cppyy_FOUND TRUE)
     execute_process(
-        COMMAND Python3::Interpreter -c "import cppyy; print(cppyy.__version__)"
-        RESULT_VARIABLE _fcppyy_result2
+        COMMAND ${Python3_EXECUTABLE} -c "import cppyy; print(cppyy.__version__),"
+        OUTPUT_VARIABLE _fcppyy_result2
     )
+else()
+    set(Cppyy_FOUND FALSE)
 endif()
 #
 # Try to install cppyy Python package, if it doesn't exist or is incorrect version
 #
-if(NOT "${_fcppyy_result}" STREQUAL "" OR NOT "${_fcppyy_result2}" STREQUAL "${cppyy_version}")
+if("${_fcppyy_result}" STREQUAL "" OR NOT "${_fcppyy_result2}" VERSION_EQUAL "${cppyy_version}")
     if(DEFINED ENV{VIRTUAL_ENV} OR DEFINED ENV{CONDA_PREFIX})
-      set(_pip_args)
+        set(_pip_args)
     else()
-      set(_pip_args "--user")
+        set(_pip_args "--user")
     endif()
     set(_pypkg_name "cppyy==${cppyy_version}")
     execute_process(COMMAND ${Python3_EXECUTABLE} -m pip install ${_pypkg_name} ${_pip_args})
     #
     # Check again if cppyy Python works
     #
-    execute_process(COMMAND Python3::Interpreter -c "import cppyy" RESULT_VARIABLE _fcppyy_result)
-    if(NOT "${_fcppyy_result}" STREQUAL "")
-       set(Cppyy_FOUND FALSE)
-    else()
+    execute_process(COMMAND ${Python3_EXECUTABLE} -c "import cppyy" OUTPUT_VARIABLE _fcppyy_result)
+    if("${_fcppyy_result}" STREQUAL "")
+        set(Cppyy_FOUND TRUE)
     	execute_process(
-        	COMMAND Python3::Interpreter -c "import cppyy; print(cppyy.__version__)"
-        	RESULT_VARIABLE _fcppyy_result2
+            COMMAND ${Python3_EXECUTABLE} -c "import cppyy; print(cppyy.__version__),"
+        	OUTPUT_VARIABLE _fcppyy_result2
     	)
+    else()
+        set(Cppyy_FOUND FALSE)
     endif()
     #
     # Check the version again
     #
-    if("${_fcppyy_result2}" STREQUAL "${cppyy_version}")
-       set(Cppyy_FOUND TRUE)
+    if("${_fcppyy_result2}" VERSION_EQUAL "${cppyy_version}")
+        set(Cppyy_FOUND TRUE)
     else()
-       set(Cppyy_FOUND FALSE)
+        set(Cppyy_FOUND FALSE)
     endif()
 else()
     set(Cppyy_FOUND TRUE)
 endif()
 
 if(NOT Cppyy_FOUND)
-    message(WARNING "CMake could not install cppyy, try installing cppyy ${cppyy_version} manually.")
+    message("Python3: ${Python3_EXECUTABLE}")
+    message("import output: ${_fcppyy_result}")
+    message("version output: ${_fcppyy_result2}")
+    message(FATAL_ERROR "CMake could not install cppyy, try installing cppyy ${cppyy_version} manually.")
 endif()
