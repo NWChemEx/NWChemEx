@@ -21,7 +21,7 @@ Prerequisites
 To compile NWChemEx, some packages must be available on your system beforehand:
 
 #. A C++ compiler supporting the C++17 standard, currently we use gcc 9 (10.2 on Intel), clang has not been fully tested
-#. CMake, usually the latest version is the best to use, be aware that some Linux distributions (Ubuntu for example) are often behind on CMake versions in the default build
+#. CMake (>= 3.17), usually the latest version is the best to use, be aware that some Linux distributions (Ubuntu for example) are often behind on CMake versions in the default build
 #. BLAS/LAPACK/ScaLAPACK or standards equivalent libraries, partially tested options include OpenBlas, NetLib, Blis, FLAME, MKL
 #. Boost, currently 1.59 as a minimum; note that bleeding edge Boost often requires bleeding edge compilers, so be careful here
 #. MPI, most of the code requires at least MPI-3 compliance, MPICH 3.4 has been tested
