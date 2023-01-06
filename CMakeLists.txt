@@ -16,6 +16,14 @@ cmake_minimum_required(VERSION 3.14)
 file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/version.txt" VERSION)
 project(nwchemex VERSION "${VERSION}" LANGUAGES CXX)
 
+include(FetchContent)
+FetchContent_Declare(
+        nwx_cmake
+        GIT_REPOSITORY https://github.com/NWChemEx-Project/NWXCMake
+)
+FetchContent_MakeAvailable(nwx_cmake)
+list(APPEND CMAKE_MODULE_PATH "${nwx_cmake_SOURCE_DIR}/cmake")
+
 set(
         CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake"
         CACHE STRING "" FORCE
