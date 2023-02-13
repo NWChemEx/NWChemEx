@@ -44,6 +44,7 @@ cpp_find_or_build_dependency(
         PRIVATE TRUE
         BUILD_TARGET integrals
         FIND_TARGET nwx::integrals
+        VERSION gpu_end_to_end_driver
         CMAKE_ARGS BUILD_TESTING=OFF
 )
 
@@ -53,6 +54,7 @@ cpp_find_or_build_dependency(
         PRIVATE TRUE
         BUILD_TARGET scf
         FIND_TARGET nwx::scf
+        VERSION gpu_end_to_end_driver
         CMAKE_ARGS BUILD_TESTING=OFF
 )
 
@@ -81,6 +83,13 @@ cpp_add_library(
         SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
         INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include/nwchemex"
         DEPENDS nwx::scf nwx::integrals nwx::chemcache # nwx::mp2
+)
+
+cpp_add_executable(
+        nwx_driver
+        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/end_to_end_driver"
+        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/end_to_end_driver"
+        DEPENDS nwchemex
 )
 
 if("${BUILD_TESTING}")
