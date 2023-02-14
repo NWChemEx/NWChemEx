@@ -15,6 +15,10 @@ int main(int argc, char* argv[]) {
     pluginplay::ModuleManager mm;
     nwchemex::load_modules(mm);
 
+    /// Hacky way to check if we have GPU modules
+    bool have_gpu_modules = mm.count("DFJ_JEngine");
+
+    /// Job specifications
     auto mol = from_name(mol_name);
     auto aos = nwchemex::apply_basis(basis_name, mol);
     auto aux = nwchemex::apply_basis(aux_basis_name, mol);
@@ -25,8 +29,11 @@ int main(int argc, char* argv[]) {
     mm.change_input("Kinetic CS", "Screening Threshold", 1e-12);
     mm.change_input("Nuclear CS", "Screening Threshold", 1e-12);
     mm.change_input("DFJK", "Fitting Basis", aux);
-    if(mm.count("DFJ_JEngine"))
+    if(have_gpu_modules) {
         mm.change_input("DFJ_JEngine", "Fitting Basis", aux);
+        mm.change_input("GauXC Quadrature Batches", "On GPU", true);
+        mm.change_input("snLinK", "On GPU", true);
+    }
 
     /// Setup modules
     mm.change_submod("CoreH", "Electron-Nuclear Attraction", "Nuclear CS");
@@ -36,7 +43,7 @@ int main(int argc, char* argv[]) {
     mm.change_submod("SCF Step", "Overlap", "Overlap CS");
     mm.change_submod("Fock Matrix", "J Builder", "DFJK");
     mm.change_submod("Fock Matrix", "K Builder", "DFJK");
-    if(mm.count("DFJ_JEngine")) {
+    if(have_gpu_modules) {
         mm.change_submod("Fock Matrix", "J Builder", "DFJ_JEngine");
         mm.change_submod("Fock Matrix", "K Builder", "snLinK");
     }
