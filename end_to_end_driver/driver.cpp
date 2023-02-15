@@ -1,4 +1,5 @@
 #include "geometries.hpp"
+#include <integrals/property_types/integral_shape.hpp>
 #include <nwchemex/nwchemex.hpp>
 #include <tiledarray.h>
 
@@ -33,9 +34,11 @@ int main(int argc, char* argv[]) {
         mm.change_input("DFJ_JEngine", "Fitting Basis", aux);
         mm.change_input("GauXC Quadrature Batches", "On GPU", true);
         mm.change_input("snLinK", "On GPU", true);
+        mm.change_input("XC", "On GPU", true);
     }
 
     /// Setup modules
+    /// Will need to handle shape lambdas here
     mm.change_submod("CoreH", "Electron-Nuclear Attraction", "Nuclear CS");
     mm.change_submod("CoreH", "Kinetic Energy", "Kinetic CS");
     mm.change_submod("CoreGuess", "Overlap", "Overlap CS");
