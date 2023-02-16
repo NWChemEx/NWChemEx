@@ -37,8 +37,31 @@ int main(int argc, char* argv[]) {
         mm.change_input("XC", "On GPU", true);
     }
 
+    /// Atomic Tiling Lambda
+    /// Placeholder (or maybe not)
+    using integral_shape_t = integrals::IntegralShape;
+    using shape_t          = typename simde::type::tensor::shape_type;
+    using tiling_t         = typename shape_t::tiling_type;
+    auto shape_mod =
+      pluginplay::make_lambda<integral_shape_t>([=](auto&& bases) {
+          tiling_t tiling;
+          for(auto& set : bases) {
+              tiling.push_back({0});
+              auto& back = tiling.back();
+              for(auto& center : set) {
+                  back.push_back(back.back() + center.n_aos());
+              }
+          }
+          return shape_t{tiling};
+      });
+
     /// Setup modules
-    /// Will need to handle shape lambdas here
+    mm.at("ERI2").change_submod("Tensor Shape", shape_mod);
+    mm.at("ERI3").change_submod("Tensor Shape", shape_mod);
+    mm.at("Nuclear CS").change_submod("Tensor Shape", shape_mod);
+    mm.at("Kinetic CS").change_submod("Tensor Shape", shape_mod);
+    mm.at("Overlap CS").change_submod("Tensor Shape", shape_mod);
+
     mm.change_submod("CoreH", "Electron-Nuclear Attraction", "Nuclear CS");
     mm.change_submod("CoreH", "Kinetic Energy", "Kinetic CS");
     mm.change_submod("CoreGuess", "Overlap", "Overlap CS");
