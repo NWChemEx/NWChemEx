@@ -53,6 +53,7 @@ int main(int argc, char* argv[]) {
     mm.change_submod("CoreH", "Kinetic Energy", "Kinetic CS");
     mm.change_submod("CoreGuess", "Overlap", "Overlap CS");
     mm.change_submod("SCF Step", "Overlap", "Overlap CS");
+    mm.change_submod("DIIS Fock Matrix", "Overlap", "Overlap CS");
     mm.change_submod("SCFDIIS Step", "Overlap", "Overlap CS");
     mm.change_submod("Fock Matrix", "J Builder", "DFJ");
     mm.change_submod("Fock Matrix", "K Builder", "DFK");
