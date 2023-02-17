@@ -31,7 +31,9 @@ void set_integrals_default_modules(pluginplay::ModuleManager& mm) {
 void set_scf_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("CanJK", "ERI Builder", "ERI4");
     mm.change_submod("CanJ", "ERI Builder", "ERI4");
+    mm.change_submod("CanK", "ERI Builder", "ERI4");
     mm.change_submod("DFJ", "ERI Builder", "Transformed ERI3");
+    mm.change_submod("DFK", "ERI Builder", "Transformed ERI3");
     mm.change_submod("DFJK", "ERI Builder", "Transformed ERI3");
     mm.change_submod("MetricChol", "M Builder", "ERI2");
     mm.change_submod("CoreH", "Kinetic Energy", "Kinetic");

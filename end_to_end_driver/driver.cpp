@@ -29,7 +29,8 @@ int main(int argc, char* argv[]) {
     mm.change_input("Overlap CS", "Screening Threshold", 1e-12);
     mm.change_input("Kinetic CS", "Screening Threshold", 1e-12);
     mm.change_input("Nuclear CS", "Screening Threshold", 1e-12);
-    mm.change_input("DFJK", "Fitting Basis", aux);
+    mm.change_input("DFJ", "Fitting Basis", aux);
+    mm.change_input("DFK", "Fitting Basis", aux);
     if(have_gpu_modules) {
         mm.change_input("DFJ_JEngine", "Fitting Basis", aux);
         mm.change_input("GauXC Quadrature Batches", "On GPU", true);
@@ -53,8 +54,8 @@ int main(int argc, char* argv[]) {
     mm.change_submod("CoreGuess", "Overlap", "Overlap CS");
     mm.change_submod("SCF Step", "Overlap", "Overlap CS");
     mm.change_submod("SCF Step", "Overlap", "Overlap CS");
-    mm.change_submod("Fock Matrix", "J Builder", "DFJK");
-    mm.change_submod("Fock Matrix", "K Builder", "DFJK");
+    mm.change_submod("Fock Matrix", "J Builder", "DFJ");
+    mm.change_submod("Fock Matrix", "K Builder", "DFK");
     if(have_gpu_modules) {
         mm.change_submod("Fock Matrix", "J Builder", "DFJ_JEngine");
         mm.change_submod("Fock Matrix", "K Builder", "snLinK");
