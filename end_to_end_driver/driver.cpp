@@ -33,9 +33,9 @@ int main(int argc, char* argv[]) {
     mm.change_input("DFK", "Fitting Basis", aux);
     if(have_gpu_modules) {
         mm.change_input("DFJ_JEngine", "Fitting Basis", aux);
-        mm.change_input("GauXC Quadrature Batches", "On GPU", true);
-        mm.change_input("snLinK", "On GPU", true);
-        mm.change_input("XC", "On GPU", true);
+        // mm.change_input("GauXC Quadrature Batches", "On GPU", true);
+        // mm.change_input("snLinK", "On GPU", true);
+        // mm.change_input("XC", "On GPU", true);
     }
 
     /// Lambda module to determine the shapes based on system
@@ -53,13 +53,15 @@ int main(int argc, char* argv[]) {
     mm.change_submod("CoreH", "Kinetic Energy", "Kinetic CS");
     mm.change_submod("CoreGuess", "Overlap", "Overlap CS");
     mm.change_submod("SCF Step", "Overlap", "Overlap CS");
-    mm.change_submod("SCF Step", "Overlap", "Overlap CS");
+    mm.change_submod("SCFDIIS Step", "Overlap", "Overlap CS");
     mm.change_submod("Fock Matrix", "J Builder", "DFJ");
     mm.change_submod("Fock Matrix", "K Builder", "DFK");
     if(have_gpu_modules) {
         mm.change_submod("Fock Matrix", "J Builder", "DFJ_JEngine");
         mm.change_submod("Fock Matrix", "K Builder", "snLinK");
     }
+    mm.change_submod("SCF Energy", "Reference Wave Function",
+                     "SCFDIIS Wavefunction");
 
     // Run and print profile info
     auto [E] = mm.at("SCF Energy").run_as<simde::AOEnergy>(aos, cs);
