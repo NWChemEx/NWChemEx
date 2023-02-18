@@ -32,13 +32,20 @@ namespace nwchemex {
  */
 inline auto apply_basis(
   const std::string& name, const chemist::Molecule& mol,
-  const chemist::BasisSetManager& man = chemcache::nwx_basis_set_manager()) {
+  bool cart_override                  = false,
+  const chemist::BasisSetManager& man = chemcache::nwx_basis_set_manager(), ) {
     chemist::AOBasisSet<double> aos;
 
     for(const auto& ai : mol) {
         auto ci = man.get_basis(name, ai.Z());
         for(auto i : {0, 1, 2}) ci.coord(i) = ai.coords()[i];
         aos.add_center(ci);
+    }
+
+    if(!cart_override) return chemist::orbital_space::AOSpaceD(aos);
+
+    for(auto& shell : aos.shells()) {
+        shell.pure() = chemist::ShellType::cartesian;
     }
 
     return chemist::orbital_space::AOSpaceD(aos);

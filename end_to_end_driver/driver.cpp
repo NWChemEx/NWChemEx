@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 
     /// Job specifications
     auto mol = from_name(mol_name);
-    auto aos = nwchemex::apply_basis(basis_name, mol);
+    auto aos = nwchemex::apply_basis(basis_name, mol, true);
     auto aux = nwchemex::apply_basis(aux_basis_name, mol);
     auto cs  = simde::type::chemical_system(mol);
 
