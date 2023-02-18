@@ -32,8 +32,8 @@ namespace nwchemex {
  */
 inline auto apply_basis(
   const std::string& name, const chemist::Molecule& mol,
-  bool cart_override                  = false,
-  const chemist::BasisSetManager& man = chemcache::nwx_basis_set_manager(), ) {
+  const chemist::BasisSetManager& man = chemcache::nwx_basis_set_manager(),
+  bool cart_override                  = false) {
     chemist::AOBasisSet<double> aos;
 
     for(const auto& ai : mol) {
@@ -44,11 +44,17 @@ inline auto apply_basis(
 
     if(!cart_override) return chemist::orbital_space::AOSpaceD(aos);
 
-    for(auto& shell : aos.shells()) {
-        shell.pure() = chemist::ShellType::cartesian;
+    for(auto si = 0; si < aos.n_shells(); ++si) {
+        aos.shell(si).pure() = chemist::ShellType::cartesian;
     }
 
     return chemist::orbital_space::AOSpaceD(aos);
 }
 
-} // namespace nwchemex
+inline auto apply_basis(const std::string& name, const chemist::Molecule& mol,
+                        bool cart_override) {
+    return apply_basis(name, mol, chemcache::nwx_basis_set_manager(),
+                       cart_override);
+}
+
+}; // namespace nwchemex
