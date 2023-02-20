@@ -36,7 +36,14 @@ int main(int argc, char* argv[]) {
         mm.change_input("GauXC Quadrature Batches", "On GPU", true);
         mm.change_input("snLinK", "On GPU", true);
         mm.change_input("XC", "On GPU", true);
+        // mm.at("GauXC Basis Converter").turn_off_memoization();
+        // mm.at("GauXC Molecule Converter").turn_off_memoization();
+        // mm.at("GauXC Quadrature Batches").turn_off_memoization();
+        // mm.at("snLinK").turn_off_memoization();
+        // mm.at("XC").turn_off_memoization();
     }
+    // mm.change_input("SCF Loop", "MaxIt", simde::type::size{0});
+    // mm.change_input("SCFDIIS Loop", "MaxIt", simde::type::size{0});
 
     /// Lambda module to determine the shapes based on system
     auto shape_mod = pluginplay::make_lambda<integrals::IntegralShape>(
