@@ -42,8 +42,6 @@ int main(int argc, char* argv[]) {
         // mm.at("snLinK").turn_off_memoization();
         // mm.at("XC").turn_off_memoization();
     }
-    // mm.change_input("SCF Loop", "MaxIt", simde::type::size{0});
-    // mm.change_input("SCFDIIS Loop", "MaxIt", simde::type::size{0});
 
     /// Lambda module to determine the shapes based on system
     auto shape_mod = pluginplay::make_lambda<integrals::IntegralShape>(
@@ -70,6 +68,17 @@ int main(int argc, char* argv[]) {
     }
     mm.change_submod("SCF Energy", "Reference Wave Function",
                      "SCFDIIS Wavefunction");
+
+    /// For just one fock build
+    mm.change_input("SCF Loop", "MaxIt", simde::type::size{0});
+    mm.change_input("SCFDIIS Loop", "MaxIt", simde::type::size{0});
+    auto ee_mod = pluginplay::make_lambda<simde::CanonicalElectronicEnergy>(
+      [](auto&& a, auto&& b, auto&& c) { return 0.0; });
+    mm.at("Converged").change_submod("Energy", ee_mod);
+    auto e_mod = pluginplay::make_lambda<simde::TotalCanonicalEnergy>(
+      [](auto&& a, auto&& b, auto&& c) { return 0.0; });
+    mm.at("SCF Energy").change_submod("Reference Energy", e_mod);
+    
 
     // Run and print profile info
     auto [E] = mm.at("SCF Energy").run_as<simde::AOEnergy>(aos, cs);
