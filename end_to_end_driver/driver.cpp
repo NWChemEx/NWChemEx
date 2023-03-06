@@ -10,7 +10,10 @@ int main(int argc, char* argv[]) {
     std::vector<std::string> args(argv + 1, argv + argc);
     const auto mol_name       = args.at(0);
     const auto basis_name     = args.at(1);
-    const auto aux_basis_name = args.at(1);
+    const auto aux_basis_name = args.at(2);
+    std::cout << mol_name << std::endl;
+    std::cout << basis_name << std::endl;
+    std::cout << aux_basis_name << std::endl;
 
     /// NWX setup
     pluginplay::ModuleManager mm;
@@ -69,6 +72,20 @@ int main(int argc, char* argv[]) {
     mm.change_submod("SCF Energy", "Reference Wave Function",
                      "SCFDIIS Wavefunction");
 
+    // Zero mods for J and K
+    auto shape = integral_tiling(mol_name, std::vector(2, aos.basis_set()));
+    auto zero_tensor = [shape](auto&& bra, auto&& o, auto&& ket) {
+        auto l = [](const auto& idx) { return 0.0; };
+        auto s = shape.clone();
+        auto a = tensorwrapper::tensor::default_allocator<
+          tensorwrapper::tensor::field::Scalar>();
+        return simde::type::tensor(l, std::move(s), std::move(a));
+    };
+    auto fake_j = pluginplay::make_lambda<simde::MeanFieldJ>(zero_tensor);
+    auto fake_k = pluginplay::make_lambda<simde::MeanFieldK>(zero_tensor);
+    // mm.at("Fock Matrix").change_submod("J Builder", fake_j);
+    // mm.at("Fock Matrix").change_submod("K Builder", fake_k);
+
     /// For just one fock build
     mm.change_input("SCF Loop", "MaxIt", simde::type::size{0});
     mm.change_input("SCFDIIS Loop", "MaxIt", simde::type::size{0});
@@ -78,7 +95,6 @@ int main(int argc, char* argv[]) {
     auto e_mod = pluginplay::make_lambda<simde::TotalCanonicalEnergy>(
       [](auto&& a, auto&& b, auto&& c) { return 0.0; });
     mm.at("SCF Energy").change_submod("Reference Energy", e_mod);
-    
 
     // Run and print profile info
     auto [E] = mm.at("SCF Energy").run_as<simde::AOEnergy>(aos, cs);
