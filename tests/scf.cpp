@@ -36,3 +36,33 @@ TEST_CASE("SCF") {
     std::cout << "Total SCF/STO-3G Energy: " << E << std::endl;
     REQUIRE(E == Approx(-74.942080058072833).margin(1.0e-8));
 }
+
+TEST_CASE("SCF with SAD guess") {
+    pluginplay::ModuleManager mm;
+    nwchemex::load_modules(mm);
+
+    // Grab molecule and build a basis set
+    const auto name = mokup::molecule::h2o;
+    auto mol        = mokup::get_molecule(name);
+    auto aos        = nwchemex::apply_basis("sto-3g", mol);
+
+    simde::type::chemical_system chem_sys(mol);
+
+    auto bname = aos.basis_set()[0].basis_set_name();
+
+    chemist::PeriodicTable atomdm_ptable;
+    chemcache::load_atom_dm(8,bname, atomdm_ptable);
+    chemcache::load_atom_dm(1,bname, atomdm_ptable);
+
+
+    // Use SAD guess
+    //auto& guess_mod = mm.at("Guess");
+    //mm.change_submod("Guess","SADGuess");
+    mm.at("SADGuess").change_input("AtomDM_PTable", atomdm_ptable);
+    mm.change_submod("SCF Wavefunction", "Guess", "SADGuess");
+
+    // Calculate energy
+    auto [E] = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
+    std::cout << "Total SCF/STO-3G Energy: " << E << std::endl;
+    REQUIRE(E == Approx(-74.942080058072833).margin(1.0e-8));
+}
