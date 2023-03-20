@@ -21,7 +21,6 @@
 using pt = simde::AOEnergy;
 
 TEST_CASE("SCF") {
-
     auto start = std::chrono::high_resolution_clock::now();
 
     pluginplay::ModuleManager mm;
@@ -40,14 +39,14 @@ TEST_CASE("SCF") {
     REQUIRE(E == Approx(-74.942080058072833).margin(1.0e-8));
 
     auto stop = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
- 
-    std::cout << "Time taken by SCF Test with Core Guess: "
-         << duration.count() << " microseconds" << std::endl;
+    auto duration =
+      std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+
+    std::cout << "Time taken by SCF Test with Core Guess: " << duration.count()
+              << " microseconds" << std::endl;
 }
 
 TEST_CASE("SCF with SAD guess") {
-
     auto start = std::chrono::high_resolution_clock::now();
 
     pluginplay::ModuleManager mm;
@@ -63,9 +62,8 @@ TEST_CASE("SCF with SAD guess") {
     auto bname = aos.basis_set()[0].basis_set_name();
 
     chemist::PeriodicTable atomdm_ptable;
-    chemcache::load_atom_dm(8,bname, atomdm_ptable);
-    chemcache::load_atom_dm(1,bname, atomdm_ptable);
-
+    chemcache::load_atom_dm(8, bname, atomdm_ptable);
+    chemcache::load_atom_dm(1, bname, atomdm_ptable);
 
     // Use SAD guess
     mm.at("SADGuess").change_input("AtomDM_PTable", atomdm_ptable);
@@ -78,8 +76,9 @@ TEST_CASE("SCF with SAD guess") {
 
     auto stop = std::chrono::high_resolution_clock::now();
 
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    auto duration =
+      std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 
-    std::cout << "Time taken by SCF Test with SAD Guess: "
-         << duration.count() << " microseconds" << std::endl;
+    std::cout << "Time taken by SCF Test with SAD Guess: " << duration.count()
+              << " microseconds" << std::endl;
 }
