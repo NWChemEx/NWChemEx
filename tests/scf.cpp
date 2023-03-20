@@ -21,6 +21,9 @@
 using pt = simde::AOEnergy;
 
 TEST_CASE("SCF") {
+
+    auto start = std::chrono::high_resolution_clock::now();
+
     pluginplay::ModuleManager mm;
     nwchemex::load_modules(mm);
 
@@ -35,9 +38,18 @@ TEST_CASE("SCF") {
     auto [E] = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
     std::cout << "Total SCF/STO-3G Energy: " << E << std::endl;
     REQUIRE(E == Approx(-74.942080058072833).margin(1.0e-8));
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+ 
+    std::cout << "Time taken by SCF Test with Core Guess: "
+         << duration.count() << " microseconds" << std::endl;
 }
 
 TEST_CASE("SCF with SAD guess") {
+
+    auto start = std::chrono::high_resolution_clock::now();
+
     pluginplay::ModuleManager mm;
     nwchemex::load_modules(mm);
 
@@ -56,8 +68,6 @@ TEST_CASE("SCF with SAD guess") {
 
 
     // Use SAD guess
-    //auto& guess_mod = mm.at("Guess");
-    //mm.change_submod("Guess","SADGuess");
     mm.at("SADGuess").change_input("AtomDM_PTable", atomdm_ptable);
     mm.change_submod("SCF Wavefunction", "Guess", "SADGuess");
 
@@ -65,4 +75,11 @@ TEST_CASE("SCF with SAD guess") {
     auto [E] = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
     std::cout << "Total SCF/STO-3G Energy: " << E << std::endl;
     REQUIRE(E == Approx(-74.942080058072833).margin(1.0e-8));
+
+    auto stop = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+
+    std::cout << "Time taken by SCF Test with SAD Guess: "
+         << duration.count() << " microseconds" << std::endl;
 }
