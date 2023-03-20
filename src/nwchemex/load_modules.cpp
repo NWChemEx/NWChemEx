@@ -37,6 +37,7 @@ void set_scf_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("CoreH", "Kinetic Energy", "Kinetic");
     mm.change_submod("CoreH", "Electron-Nuclear Attraction", "Nuclear");
     mm.change_submod("CoreGuess", "Overlap", "Overlap");
+    mm.change_submod("SADGuess", "Overlap", "Overlap");
     mm.change_submod("SCF Step", "Overlap", "Overlap");
     mm.change_submod("DIIS Fock Matrix", "Overlap", "Overlap");
     mm.change_submod("SCFDIIS Step", "Overlap", "Overlap");
