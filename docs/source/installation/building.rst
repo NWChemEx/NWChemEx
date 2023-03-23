@@ -183,10 +183,9 @@ build script.
         #-DCMAKE_INSTALL_PREFIX=<where/you/want/to/install> # cannot install right now
          2>&1 | tee "../OUTPUT.GEN"
 
-   # Build the project
-   cmake --build build \
-   # cmake --build build -- -j 8\ # uncomment this line and comment out the line above 
-                                  # if one wants to build with multithreads
+   # Build the project. You can change the "1" to another integer,
+   # N, to instead build with N threads
+   cmake --build build -- -j 1
         #--target install \ # we cannot actually install yet
          2>&1 | tee "../OUTPUT.BUILD"
 
