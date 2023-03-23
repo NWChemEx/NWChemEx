@@ -55,7 +55,7 @@ environment variables automatically for all new terminal sessions:
 
 **Other BLAS/LAPACK/ScaLAPACK:** If not using the Intel MKL, ensure that 
 environment variables for the packages are set up correctly according to the
-package-specific instructions.
+package-specific instructions. Note: if you are using a manually installed linear algebra library, you should append its installation directory to the cmake variable CMAKE_PREFIX_PATH in your toolchain.cmake file (see below).
 
 libint2
 ^^^^^^^
@@ -104,7 +104,7 @@ A GitHub Personal Access Token (PAT) is necessary since, at the moment,
 NWChemEx and some dependencies are hosted in private repositories. To create a 
 PAT, follow the instructions at GitHub's `Creating a personal access token
 <https://docs.github.com/en/github/authenticating-to-github/
-creating-a-personal-access-token>`_ page. This PAT will be used when prompted 
+creating-a-personal-access-token>`_ page. Note: please create a **classical personal access token**, not a fine-grained personal access token. This PAT will be used when prompted 
 for a password while cloning repositories.
 
 
@@ -148,6 +148,9 @@ brackets (<>) for your system.
    set(BUILD_SHARED_LIBS TRUE)
    set(BUILD_TESTING TRUE)
    set(CMAKE_PREFIX_PATH <prefix_directory>) # This is where libint2 is installed
+   # Installation directories of the manually installed linear algebra libraries
+   # should be appended here, for example:
+   #list(APPEND CMAKE_PREFIX_PATH /path_to_library_installation/OpenBLAS/install) 
    set(CMAKE_CXX_STANDARD 17)
 
    # BLAS/LAPACK
@@ -176,12 +179,14 @@ build script.
    cmake -H. \
          -Bbuild \
          -DCMAKE_TOOLCHAIN_FILE=`pwd`/../toolchain.cmake \
-         -DCMAKE_BUILD_TYPE=Release \
+         -DCMAKE_BUILD_TYPE=Debug \
         #-DCMAKE_INSTALL_PREFIX=<where/you/want/to/install> # cannot install right now
          2>&1 | tee "../OUTPUT.GEN"
 
    # Build the project
    cmake --build build \
+   # cmake --build build -- -j 8\ # uncomment this line and comment out the line above 
+                                  # if one wants to build with multithreads
         #--target install \ # we cannot actually install yet
          2>&1 | tee "../OUTPUT.BUILD"
 
@@ -190,6 +195,10 @@ build script.
 
    # Return to the top level directory
    cd ../..
+
+The building Type is currently set to be "Debug", this is because a release building may take extremely long time to finish (a known issue to be resolved).
+
+The toolchain.cmake file and the building script for NWChemEx can also be used (with minor modifications such as repo paths) to compile other packages in the NWChemEx project.
 
 .. note::
    For finer-grained control over the build, we direct the reader to the more
