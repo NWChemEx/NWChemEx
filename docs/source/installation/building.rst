@@ -195,7 +195,7 @@ build script.
    # Return to the top level directory
    cd ../..
 
-The building Type is currently set to be "Debug", this is because a release building may take extremely long time to finish (a known issue to be resolved).
+``CMAKE_BUILD_TYPE`` is currently set to ``"Debug"``, because a ``Release`` build may take an extremely long time to finish (a known issue to be resolved).
 
 The toolchain.cmake file and the building script for NWChemEx can also be used (with minor modifications such as repo paths) to compile other packages in the NWChemEx project.
 
