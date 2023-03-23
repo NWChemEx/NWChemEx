@@ -142,7 +142,7 @@ environment variables automatically for all new terminal sessions:</p>
 </div>
 <p><strong>Other BLAS/LAPACK/ScaLAPACK:</strong> If not using the Intel MKL, ensure that
 environment variables for the packages are set up correctly according to the
-package-specific instructions.</p>
+package-specific instructions and that paths to non-standard installation directories are included in the cmake variable <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> (which should be specified in your <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code> file (see below)).</p>
 </div>
 <div class="section" id="libint2">
 <h3>libint2<a class="headerlink" href="#libint2" title="Permalink to this heading"></a></h3>
@@ -183,7 +183,7 @@ cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"
 <h3>GitHub Personal Access Token<a class="headerlink" href="#github-personal-access-token" title="Permalink to this heading"></a></h3>
 <p>A GitHub Personal Access Token (PAT) is necessary since, at the moment,
 NWChemEx and some dependencies are hosted in private repositories. To create a
-PAT, follow the instructions at GitHub’s <a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a> page. This PAT will be used when prompted
+PAT, follow the instructions at GitHub’s <a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a> page. Note: please create a <strong>classical personal access token</strong>, not a fine-grained personal access token. This PAT will be used when prompted
 for a password while cloning repositories.</p>
 </div>
 </div>
@@ -221,8 +221,11 @@ brackets (&lt;&gt;) for your system.</p>
 <span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span>
 <span class="nb">set</span><span class="p">(</span><span class="s">BUILD_SHARED_LIBS</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span>
 <span class="nb">set</span><span class="p">(</span><span class="s">BUILD_TESTING</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="s">&lt;prefix_directory&gt;</span><span class="p">)</span><span class="w"> </span><span class="c"># This is where libint2 is installed</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">17</span><span class="p">)</span>
+<span class="c"># List directories for dependencies you have installed in non-standard</span>
+<span class="c"># locations. For example:</span>
+<span class="c"># set(CMAKE_PREFIX_PATH /path/to/libint2_install /path/to/personal/BLAS/install ...)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="s">&lt;additional_prefix_directories&gt;</span>
+<span class="s">set(CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">17</span><span class="p">)</span>
 
 <span class="c"># BLAS/LAPACK</span>
 <span class="nb">set</span><span class="p">(</span><span class="s">ENABLE_SCALAPACK</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
@@ -247,12 +250,13 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NWChe
 cmake<span class="w"> </span>-H.<span class="w"> </span><span class="se">\</span>
 <span class="w">      </span>-Bbuild<span class="w"> </span><span class="se">\</span>
 <span class="w">      </span>-DCMAKE_TOOLCHAIN_FILE<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/../toolchain.cmake<span class="w"> </span><span class="se">\</span>
-<span class="w">      </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Debug<span class="w"> </span><span class="se">\</span>
 <span class="w">     </span><span class="c1">#-DCMAKE_INSTALL_PREFIX=&lt;where/you/want/to/install&gt; # cannot install right now</span>
 <span class="w">      </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span><span class="s2">&quot;../OUTPUT.GEN&quot;</span>
 
-<span class="c1"># Build the project</span>
-cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span><span class="se">\</span>
+<span class="c1"># Build the project. You can change the &quot;1&quot; to another integer,</span>
+<span class="c1"># N, to instead build with N threads</span>
+cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--<span class="w"> </span>-j<span class="w"> </span><span class="m">1</span>
 <span class="w">     </span><span class="c1">#--target install \ # we cannot actually install yet</span>
 <span class="w">      </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span><span class="s2">&quot;../OUTPUT.BUILD&quot;</span>
 
@@ -263,6 +267,8 @@ cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"
 <span class="nb">cd</span><span class="w"> </span>../..
 </pre></div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code> is currently set to <code class="docutils literal notranslate"><span class="pre">&quot;Debug&quot;</span></code>, because a <code class="docutils literal notranslate"><span class="pre">Release</span></code> build may take an extremely long time to finish (a known issue to be resolved).</p>
+<p>The toolchain.cmake file and the building script for NWChemEx can also be used (with minor modifications such as repo paths) to compile other packages in the NWChemEx project.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For finer-grained control over the build, we direct the reader to the more
