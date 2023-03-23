@@ -159,10 +159,16 @@ brackets (<>) for your system.
    set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
    set(BUILD_SHARED_LIBS TRUE)
    set(BUILD_TESTING TRUE)
+
    # List directories for dependencies you have installed in non-standard
    # locations. For example:
-   # set(CMAKE_PREFIX_PATH /path/to/libint2_install /path/to/personal/install
-   #      ...)
+   # set(CMAKE_PREFIX_PATH
+   #     /path/to/libint2_install
+   #     /path/to/personal/BLAS/install
+   #     ...)
+   # Uncomment the lines above and set CMAKE_PREFIX_PATH specifically in
+   # your case.
+
    set(CMAKE_PREFIX_PATH <additional_prefix_directories>
    set(CMAKE_CXX_STANDARD 17)
 
