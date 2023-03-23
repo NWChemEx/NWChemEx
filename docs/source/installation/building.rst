@@ -147,10 +147,10 @@ brackets (<>) for your system.
    set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
    set(BUILD_SHARED_LIBS TRUE)
    set(BUILD_TESTING TRUE)
-   set(CMAKE_PREFIX_PATH <prefix_directory>) # This is where libint2 is installed
-   # Installation directories of the manually installed linear algebra libraries
-   # should be appended here, for example:
-   #list(APPEND CMAKE_PREFIX_PATH /path_to_library_installation/OpenBLAS/install) 
+   # List directories for dependencies you have installed in non-standard
+   # locations. For example:
+   # set(CMAKE_PREFIX_PATH /path/to/libint2_install /path/to/personal/BLAS/install ...)
+   set(CMAKE_PREFIX_PATH <additional_prefix_directories>
    set(CMAKE_CXX_STANDARD 17)
 
    # BLAS/LAPACK
