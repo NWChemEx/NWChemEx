@@ -55,7 +55,7 @@ environment variables automatically for all new terminal sessions:
 
 **Other BLAS/LAPACK/ScaLAPACK:** If not using the Intel MKL, ensure that 
 environment variables for the packages are set up correctly according to the
-package-specific instructions. Note: if you are using a manually installed linear algebra library, you should append its installation directory to the cmake variable CMAKE_PREFIX_PATH in your toolchain.cmake file (see below).
+package-specific instructions and that paths to non-standard installation directories are included in the cmake variable ``CMAKE_PREFIX_PATH`` (which should be specified in your ``toolchain.cmake`` file (see below)).
 
 libint2
 ^^^^^^^
