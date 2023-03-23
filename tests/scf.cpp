@@ -66,7 +66,7 @@ TEST_CASE("SCF with SAD guess") {
     chemcache::load_atom_dm(1, bname, atomdm_ptable);
 
     // Use SAD guess
-    mm.at("SADGuess").change_input("AtomDM_PTable", atomdm_ptable);
+    mm.at("AtomDMLookup").change_input("AtomDM_PTable", atomdm_ptable);
     mm.change_submod("SCF Wavefunction", "Guess", "SADGuess");
 
     // Calculate energy
