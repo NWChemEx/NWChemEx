@@ -8,6 +8,7 @@ on:
     branches:
       - gcc-10-test
 
+
 jobs:
   build:
     uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@gcc-10-test
