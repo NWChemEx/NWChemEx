@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@gcc10-issue
+    uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@gcc-10-test
     with: 
       dependencies: 'gcc gcovr cmake openblas cblas lapacke scalapack boost eigen3 openmpi cppyy numpy libint'
       clang-build: false
