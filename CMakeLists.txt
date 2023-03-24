@@ -20,6 +20,7 @@ include(FetchContent)
 FetchContent_Declare(
         nwx_cmake
         GIT_REPOSITORY https://github.com/NWChemEx-Project/NWXCMake
+        GIT_TAG valarray-issue
 )
 FetchContent_MakeAvailable(nwx_cmake)
 list(APPEND CMAKE_MODULE_PATH "${nwx_cmake_SOURCE_DIR}/cmake")
