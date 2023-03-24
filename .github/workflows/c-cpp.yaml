@@ -4,11 +4,17 @@ on:
   pull_request:
     branches:
       - master
+  push:
+    branches:
+      - gcc10-issue
 
 jobs:
   build:
-    uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@master
+    uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@gcc10-issue
     with: 
       dependencies: 'gcc gcovr cmake openblas cblas lapacke scalapack boost eigen3 openmpi cppyy numpy libint'
+      clang-build: false
+      gcc-build: true
+      ninja_build: false
     secrets:
       CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
