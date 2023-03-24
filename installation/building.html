@@ -111,14 +111,23 @@
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
 <p>To compile NWChemEx, some packages must be available on your system beforehand:</p>
 <ol class="arabic simple">
-<li><p>A C++ compiler supporting the C++17 standard, currently we use gcc 9 (10.2 on Intel), clang has not been fully tested</p></li>
-<li><p>CMake (&gt;= 3.17), usually the latest version is the best to use, be aware that some Linux distributions (Ubuntu for example) are often behind on CMake versions in the default build</p></li>
-<li><p>BLAS/LAPACK/ScaLAPACK or standards equivalent libraries, partially tested options include OpenBlas, NetLib, Blis, FLAME, MKL</p></li>
-<li><p>Boost, currently 1.59 as a minimum; note that bleeding edge Boost often requires bleeding edge compilers, so be careful here</p></li>
-<li><p>MPI, most of the code requires at least MPI-3 compliance, MPICH 3.4 has been tested</p></li>
-<li><p>Eigen, minimum of 3.4.0; the build will automatically pull this if you don’t have it available</p></li>
+<li><p>A C++ compiler supporting the C++17 standard, currently we use gcc 9 (10.2
+on Intel), clang has not been fully tested</p></li>
+<li><p>CMake (&gt;= 3.17), usually the latest version is the best to use, be aware
+that some Linux distributions (Ubuntu for example) are often behind on
+CMake versions in the default build</p></li>
+<li><p>BLAS/LAPACK/ScaLAPACK or standards equivalent libraries, partially tested
+options include OpenBlas, NetLib, Blis, FLAME, MKL</p></li>
+<li><p>Boost, currently 1.59 as a minimum; note that bleeding edge Boost often
+requires bleeding edge compilers, so be careful here</p></li>
+<li><p>MPI, most of the code requires at least MPI-3 compliance, MPICH 3.4 has
+been tested</p></li>
+<li><p>Eigen, minimum of 3.4.0; the build will automatically pull this if you
+don’t have it available</p></li>
 <li><p>libint2 - see below for more information</p></li>
-<li><p>Depending on what type of GPU you have available to you, you will need CUDA 11 or higher, SYCL 2.0 (use the latest version of the OneAPI SDK), or HIP 4.5 (use the latest ROCm version)</p></li>
+<li><p>Depending on what type of GPU you have available to you, you will need CUDA
+11 or higher, SYCL 2.0 (use the latest version of the OneAPI SDK), or HIP
+4.5 (use the latest ROCm version)</p></li>
 </ol>
 <p>If necessary, more installation details for a package will be provided in the
 subsections below.</p>
@@ -142,7 +151,9 @@ environment variables automatically for all new terminal sessions:</p>
 </div>
 <p><strong>Other BLAS/LAPACK/ScaLAPACK:</strong> If not using the Intel MKL, ensure that
 environment variables for the packages are set up correctly according to the
-package-specific instructions and that paths to non-standard installation directories are included in the cmake variable <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> (which should be specified in your <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code> file (see below)).</p>
+package-specific instructions and that paths to non-standard installation
+directories are included in the cmake variable <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> (which
+should be specified in your <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code> file (see below)).</p>
 </div>
 <div class="section" id="libint2">
 <h3>libint2<a class="headerlink" href="#libint2" title="Permalink to this heading"></a></h3>
@@ -183,8 +194,9 @@ cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"
 <h3>GitHub Personal Access Token<a class="headerlink" href="#github-personal-access-token" title="Permalink to this heading"></a></h3>
 <p>A GitHub Personal Access Token (PAT) is necessary since, at the moment,
 NWChemEx and some dependencies are hosted in private repositories. To create a
-PAT, follow the instructions at GitHub’s <a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a> page. Note: please create a <strong>classical personal access token</strong>, not a fine-grained personal access token. This PAT will be used when prompted
-for a password while cloning repositories.</p>
+PAT, follow the instructions at GitHub’s <a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a> page. Note: please create a <strong>classical
+personal access token</strong>, not a fine-grained personal access token. This PAT
+will be used when prompted for a password while cloning repositories.</p>
 </div>
 </div>
 <div class="section" id="building-nwchemex">
@@ -195,8 +207,8 @@ assumptions:</p>
 <li><p>You are using a sane Unix-like operating system.</p></li>
 <li><p>All components will be installed in the same location.</p></li>
 </ol>
-<p>The following two files will be created to build NWChemEx, with instructions for
-each in the sections below:</p>
+<p>The following two files will be created to build NWChemEx, with instructions
+for each in the sections below:</p>
 <ol class="arabic simple">
 <li><p>CMake Toolchain File: <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code></p></li>
 <li><p>NWChemEx Build Script: <code class="docutils literal notranslate"><span class="pre">build_nwx.sh</span></code></p></li>
@@ -221,9 +233,16 @@ brackets (&lt;&gt;) for your system.</p>
 <span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span>
 <span class="nb">set</span><span class="p">(</span><span class="s">BUILD_SHARED_LIBS</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span>
 <span class="nb">set</span><span class="p">(</span><span class="s">BUILD_TESTING</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span>
+
 <span class="c"># List directories for dependencies you have installed in non-standard</span>
 <span class="c"># locations. For example:</span>
-<span class="c"># set(CMAKE_PREFIX_PATH /path/to/libint2_install /path/to/personal/BLAS/install ...)</span>
+<span class="c"># set(CMAKE_PREFIX_PATH</span>
+<span class="c">#     /path/to/libint2_install</span>
+<span class="c">#     /path/to/personal/BLAS/install</span>
+<span class="c">#     ...)</span>
+<span class="c"># Uncomment the lines above and set CMAKE_PREFIX_PATH specifically in</span>
+<span class="c"># your case.</span>
+
 <span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="s">&lt;additional_prefix_directories&gt;</span>
 <span class="s">set(CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">17</span><span class="p">)</span>
 
@@ -267,8 +286,11 @@ cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"
 <span class="nb">cd</span><span class="w"> </span>../..
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code> is currently set to <code class="docutils literal notranslate"><span class="pre">&quot;Debug&quot;</span></code>, because a <code class="docutils literal notranslate"><span class="pre">Release</span></code> build may take an extremely long time to finish (a known issue to be resolved).</p>
-<p>The toolchain.cmake file and the building script for NWChemEx can also be used (with minor modifications such as repo paths) to compile other packages in the NWChemEx project.</p>
+<p><code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code> is currently set to <code class="docutils literal notranslate"><span class="pre">&quot;Debug&quot;</span></code>, because a <code class="docutils literal notranslate"><span class="pre">Release</span></code>
+build may take an extremely long time to finish (a known issue to be resolved).</p>
+<p>The toolchain.cmake file and the building script for NWChemEx can also be used
+(with minor modifications such as repo paths) to compile other packages in the
+NWChemEx project.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For finer-grained control over the build, we direct the reader to the more
