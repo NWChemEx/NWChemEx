@@ -221,6 +221,20 @@ The toolchain.cmake file and the building script for NWChemEx can also be used
 (with minor modifications such as repo paths) to compile other packages in the 
 NWChemEx project.
 
+Running the NWChemEx Unit Tests 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Once the NWChemEx package is successfully built the build script would run the
+unit tests with the tool ``ctest``. There are two python tests (
+dlpno_mp2_python, test_python) and one C++ test (test_nwchemex) available to 
+run. The source files of these tests (.py, .cpp) can be found under the 
+directory ``NWChemEx/tests``. Currently all lines in ``dlpno_mp2_python.py``
+have been commented out, hence this test serves as a placeholder for future 
+development. ``test_python.py`` contains a SCF test and all the other unit 
+tests implemented in the .cpp files under the directory ``NWChemEx/tests``
+are running in test_nwchemex. For debugging purposes, the log files of running
+these units can be found under ``NWChemEx/build/Testing/Temporary``.
+
 .. note::
    For finer-grained control over the build, we direct the reader to the more
    thorough CMaize build instructions located `here 

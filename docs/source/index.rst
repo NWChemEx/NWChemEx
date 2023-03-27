@@ -31,6 +31,7 @@ the table of contents below to help jump to the topic of interest.
    getting_started
    about_nwx
    installation/index
+   running/index
    collaborator/index
    C++ API <https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html>
 
