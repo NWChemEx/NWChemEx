@@ -4,11 +4,19 @@ on:
   pull_request:
     branches:
       - master
+  push:
+    branches:
+      - test-with-NWXCMake
 
 jobs:
   build:
     uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@master
     with: 
       dependencies: 'gcc gcovr cmake openblas cblas lapacke scalapack boost eigen3 openmpi cppyy numpy libint'
+      clang-build: false
+      gcc-build: true
+      ninja_build: true
+    secrets:
+      CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
     secrets:
       CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
