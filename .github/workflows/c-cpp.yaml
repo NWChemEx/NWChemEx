@@ -18,5 +18,3 @@ jobs:
       ninja_build: true
     secrets:
       CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
-    secrets:
-      CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
