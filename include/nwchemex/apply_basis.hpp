@@ -37,7 +37,7 @@ inline auto apply_basis(
 
     for(const auto& ai : mol) {
         auto ci = man.get_basis(name, ai.Z());
-        for(auto i : {0, 1, 2}) ci.coord(i) = ai.coords()[i];
+        for(auto i : {0, 1, 2}) ci.coord(i) = ai.coord(i);
         aos.add_center(ci);
     }
 

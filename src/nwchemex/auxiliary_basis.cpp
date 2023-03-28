@@ -27,7 +27,6 @@ using simde::type::molecule;
 
 using ptype        = simde::AuxiliaryBasisSet;
 using manager_type = chemist::BasisSetManager;
-using coords_type  = typename atom::coord_type;
 
 MODULE_CTOR(AuxiliaryBasis) {
     satisfies_property_type<ptype>();
@@ -46,8 +45,8 @@ MODULE_RUN(AuxiliaryBasis) {
     // Use an AtomicBasisSet to make a single atom molecule instance.
     // Gets passed to apply_basis.
     auto atomic_sys = [](const chemist::AtomicBasisSet<double>& center) {
-        return molecule{atom{center.atomic_number(),
-                             coords_type{center.x(), center.y(), center.z()}}};
+        return molecule{atom{"X", center.atomic_number(), 0.0, center.x(),
+                             center.y(), center.z()}};
     };
 
     // convert atomic basis to auxiliary basis
