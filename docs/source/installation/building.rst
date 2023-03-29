@@ -221,6 +221,11 @@ The toolchain.cmake file and the building script for NWChemEx can also be used
 (with minor modifications such as repo paths) to compile other packages in the 
 NWChemEx project.
 
+Running the NWChemEx Unit Tests 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Assuming NWChemEx is built with ``BUILD_TESTING`` enabled, then once the NWChemEx package is successfully built the unit tests can be run by running  ``ctest`` in the build directory. For debugging purposes, the log files resulting from running the unit tests can be found in the ``Testing/Temporary``
+subdirectory of the build directory.
 .. note::
    For finer-grained control over the build, we direct the reader to the more
    thorough CMaize build instructions located `here 
