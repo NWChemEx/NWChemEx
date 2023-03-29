@@ -26,9 +26,7 @@ TEST_CASE("SCF Numerical Gradient") {
     auto mol               = Molecule();
     unsigned int nelectron = 2;
     for(int i = 0; i < nelectron; i++) {
-        mol.push_back(Atom(Atom::AtomName{"H"},
-                           Atom::Coordinates{0.0, 0.0, float(i)},
-                           Atom::Mass{1.0}, Atom::AtomicNumber{1}));
+        mol.push_back(Atom("H", 1ul, 1.0, 0.0, 0.0, float(i)));
     }
     auto aos             = nwchemex::apply_basis("sto-3g", mol);
     std::vector ref_grad = {0., 0., 0.365407, 0., 0., -0.365407};

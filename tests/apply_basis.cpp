@@ -28,15 +28,15 @@ inline auto corr_bs(const Molecule& mol) {
     AOBasisSet<double> rv;
     auto man = chemcache::nwx_basis_set_manager();
     auto O   = man.get_basis("sto-3g", 8);
-    for(auto i : {0, 1, 2}) O.coord(i) = mol[0].coords()[i];
+    for(auto i : {0, 1, 2}) O.coord(i) = mol[0].coord(i);
     rv.add_center(O);
 
     auto H1 = man.get_basis("sto-3g", 1);
-    for(auto i : {0, 1, 2}) H1.coord(i) = mol[1].coords()[i];
+    for(auto i : {0, 1, 2}) H1.coord(i) = mol[1].coord(i);
     rv.add_center(H1);
 
     auto H2 = man.get_basis("sto-3g", 1);
-    for(auto i : {0, 1, 2}) H2.coord(i) = mol[2].coords()[i];
+    for(auto i : {0, 1, 2}) H2.coord(i) = mol[2].coord(i);
     rv.add_center(H2);
     return rv;
 }
