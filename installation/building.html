@@ -19,7 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Collaborator Documentation" href="../collaborator/index.html" />
+    <link rel="next" title="&lt;no title&gt;" href="../running/index.html" />
     <link rel="prev" title="&lt;no title&gt;" href="index.html" /> 
 </head>
 
@@ -59,10 +59,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#building-nwchemex">Building NWChemEx</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#cmake-toolchain-file">CMake Toolchain File</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#nwchemex-build-script">NWChemEx Build Script</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-nwchemex-unit-tests">Running the NWChemEx Unit Tests</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../running/running.html">Running NWChemEx</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../collaborator/index.html">Collaborator Documentation</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html">C++ API</a></li>
 </ul>
@@ -291,14 +293,19 @@ build may take an extremely long time to finish (a known issue to be resolved).<
 <p>The toolchain.cmake file and the building script for NWChemEx can also be used
 (with minor modifications such as repo paths) to compile other packages in the
 NWChemEx project.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For finer-grained control over the build, we direct the reader to the more
-thorough CMaize build instructions located <a class="reference external" href="https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest">here</a>
-and note that NWChemEx depends on several other projects:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/catchorg/Catch2">Catch2</a> (for testing only)</p></li>
-</ul>
+</div>
+<div class="section" id="running-the-nwchemex-unit-tests">
+<h3>Running the NWChemEx Unit Tests<a class="headerlink" href="#running-the-nwchemex-unit-tests" title="Permalink to this heading"></a></h3>
+<p>Assuming NWChemEx is built with <code class="docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code> enabled, then once the NWChemEx package is successfully built the unit tests can be run by running  <code class="docutils literal notranslate"><span class="pre">ctest</span></code> in the build directory. For debugging purposes, the log files resulting from running the unit tests can be found in the <code class="docutils literal notranslate"><span class="pre">Testing/Temporary</span></code>
+subdirectory of the build directory.
+.. note:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>For finer-grained control over the build, we direct the reader to the more
+thorough CMaize build instructions located `here
+&lt;https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest&gt;`_
+and note that NWChemEx depends on several other projects:
+
+* `Catch2 &lt;https://github.com/catchorg/Catch2&gt;`_ (for testing only)
+</pre></div>
 </div>
 </div>
 </div>
@@ -309,7 +316,7 @@ and note that NWChemEx depends on several other projects:</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../collaborator/index.html" class="btn btn-neutral float-right" title="Collaborator Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../running/index.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

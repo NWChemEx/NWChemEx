@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Collaborator Documentation &mdash; NWChemEx 1.0.0 documentation</title>
+  <title>Running NWChemEx &mdash; NWChemEx 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PluginPlay Primer" href="pluginplay_primer.html" />
-    <link rel="prev" title="Running NWChemEx" href="../running/running.html" /> 
+    <link rel="next" title="Collaborator Documentation" href="../collaborator/index.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,13 +50,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started with NWChemEx</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about_nwx.html">About the NWChemEx Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/building.html">Building the NWChemEx Package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../running/running.html">Running NWChemEx</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Collaborator Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pluginplay_primer.html">PluginPlay Primer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="advanced_pluginplay.html">Advanced PluginPlay Primer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="faqs.html">Collaboration FAQs</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Running NWChemEx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../collaborator/index.html">Collaborator Documentation</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html">C++ API</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">NWX Infrastructure Documentation</span></p>
@@ -87,9 +82,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Collaborator Documentation</li>
+          <li class="breadcrumb-item"><a href="index.html">&lt;no title&gt;</a></li>
+      <li class="breadcrumb-item active">Running NWChemEx</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/collaborator/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/running/running.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -97,34 +93,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="collaborator-documentation">
-<h1>Collaborator Documentation<a class="headerlink" href="#collaborator-documentation" title="Permalink to this heading"></a></h1>
-<p>In the context of NWChemEx, collaborators are developers who have existing
-source code, which does not use NWChemEx’s infrastructure, <strong>i.e.</strong>, the code
-does not use the SDE, LibChemist, or PropertyTypes. The topics in this part
-are targeted at collaborators.</p>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pluginplay_primer.html">PluginPlay Primer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pluginplay_primer.html#writing-a-module">Writing a module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="advanced_pluginplay.html">Advanced PluginPlay Primer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="advanced_pluginplay.html#additional-parameters">Additional Parameters</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="faqs.html">Collaboration FAQs</a></li>
-</ul>
-</div>
+  <div class="section" id="running-nwchemex">
+<h1>Running NWChemEx<a class="headerlink" href="#running-nwchemex" title="Permalink to this heading"></a></h1>
+<p>Although could be made possible, NWChemEx usually does not run in the same
+way as other conventional quantum chemistry packages do: obtaining all
+calculation settings from a text input file. To increase the flexibility of
+setting calculation routes and facilitate post-processing of calculation
+results, we recommend running NWChemEx with Python scripts. Once the NWChemEx
+package is successfully compiled, the python bindings of all the C++ modules
+are generated with the tool
+<a class="reference external" href="https://cppyy.readthedocs.io/en/latest/">cppyy</a>.
+An example of running an SCF calculation with the Python bindings can be
+found in <code class="docutils literal notranslate"><span class="pre">NWChemEx/tests/test_python.py</span></code>. We encourage our users to write
+their own python scripts for the special needs in their calculations.</p>
 </div>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../running/running.html" class="btn btn-neutral float-left" title="Running NWChemEx" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pluginplay_primer.html" class="btn btn-neutral float-right" title="PluginPlay Primer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../collaborator/index.html" class="btn btn-neutral float-right" title="Collaborator Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
