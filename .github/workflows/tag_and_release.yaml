@@ -18,14 +18,12 @@ on:
   push:
     branches:
       - master
-      - automate-versioning
-
 
 jobs:
   tag:
-    uses: NWChemEx-Project/.github/.github/workflows/tag_and_release_master.yaml@automate-versioning
+    uses: NWChemEx-Project/.github/.github/workflows/tag_and_release_master.yaml@master
     secrets:
-      token: ${{ secrets.UPDATE_VERSION_TXT }}
+      token: ${{ secrets.TAG_TOKEN }}
   # release:
   #   needs: tag
   #   if: |
