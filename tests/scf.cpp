@@ -18,7 +18,8 @@
 #include <catch2/catch.hpp>
 #include <mokup/mokup.hpp>
 
-using pt = simde::AOEnergy;
+using pt        = simde::AOEnergy;
+using mol_bs_pt = simde::MolecularBasisSet;
 
 TEST_CASE("SCF") {
     auto start = std::chrono::high_resolution_clock::now();
@@ -29,8 +30,10 @@ TEST_CASE("SCF") {
     // Grab molecule and build a basis set
     const auto name = mokup::molecule::h2o;
     auto mol        = mokup::get_molecule(name);
-    auto aos        = nwchemex::apply_basis("sto-3g", mol);
 
+    auto [bs] = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
+
+    simde::type::ao_space aos(bs);
     simde::type::chemical_system chem_sys(mol);
 
     // Calculate energy
@@ -55,18 +58,14 @@ TEST_CASE("SCF with SAD guess") {
     // Grab molecule and build a basis set
     const auto name = mokup::molecule::h2o;
     auto mol        = mokup::get_molecule(name);
-    auto aos        = nwchemex::apply_basis("sto-3g", mol);
 
+    auto [bs] = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
+
+    simde::type::ao_space aos(bs);
     simde::type::chemical_system chem_sys(mol);
 
-    auto bname = aos.basis_set()[0].basis_set_name();
-
-    chemist::PeriodicTable atomdm_ptable;
-    chemcache::load_atom_dm(8, bname, atomdm_ptable);
-    chemcache::load_atom_dm(1, bname, atomdm_ptable);
-
     // Use SAD guess
-    mm.at("SADGuess").change_input("AtomDM_PTable", atomdm_ptable);
+    mm.change_submod("SADGuess", "Atomic Density", "sto-3g atomic dm");
     mm.change_submod("SCF Wavefunction", "Guess", "SADGuess");
 
     // Calculate energy
