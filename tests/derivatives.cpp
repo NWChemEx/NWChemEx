@@ -28,7 +28,7 @@ TEST_CASE("SCF Numerical Gradient") {
     for(int i = 0; i < nelectron; i++) {
         mol.push_back(Atom("H", 1ul, 1.0, 0.0, 0.0, float(i)));
     }
-    
+
     pluginplay::ModuleManager mm;
     nwchemex::load_modules(mm);
 
