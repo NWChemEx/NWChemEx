@@ -18,7 +18,8 @@
 #include <catch2/catch.hpp>
 #include <mokup/mokup.hpp>
 
-using pt = simde::AOEnergy;
+using pt        = simde::AOEnergy;
+using mol_bs_pt = simde::MolecularBasisSet;
 
 TEST_CASE("DF-SCF") {
     pluginplay::ModuleManager mm;
@@ -27,9 +28,12 @@ TEST_CASE("DF-SCF") {
     // Grab molecule and build basis sets
     const auto name = mokup::molecule::h2;
     auto mol        = mokup::get_molecule(name);
-    auto aos        = nwchemex::apply_basis("cc-pvtz", mol);
-    auto aux_aos    = nwchemex::apply_basis("cc-pvtz-jkfit", mol);
 
+    auto [bs]     = mm.at("cc-pvtz").run_as<mol_bs_pt>(mol);
+    auto [aux_bs] = mm.at("cc-pvtz-jkfit").run_as<mol_bs_pt>(mol);
+
+    simde::type::ao_space aos(bs);
+    simde::type::ao_space aux_aos(aux_bs);
     simde::type::chemical_system chem_sys(mol);
 
     // Apply auxiliary set and change J and K build
