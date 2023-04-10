@@ -44,7 +44,7 @@ cpp_find_or_build_dependency(
         PRIVATE TRUE
         BUILD_TARGET integrals
         FIND_TARGET nwx::integrals
-        VERSION gpu_end_to_end_driver
+        #VERSION gpu_end_to_end_driver
         CMAKE_ARGS BUILD_TESTING=OFF
 )
 
@@ -54,7 +54,7 @@ cpp_find_or_build_dependency(
         PRIVATE TRUE
         BUILD_TARGET scf
         FIND_TARGET nwx::scf
-        VERSION gpu_end_to_end_driver
+        #VERSION gpu_end_to_end_driver
         CMAKE_ARGS BUILD_TESTING=OFF
 )
 
