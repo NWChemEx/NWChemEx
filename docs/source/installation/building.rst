@@ -20,14 +20,23 @@ Prerequisites
 
 To compile NWChemEx, some packages must be available on your system beforehand:
 
-#. A C++ compiler supporting the C++17 standard, currently we use gcc 9 (10.2 on Intel), clang has not been fully tested
-#. CMake (>= 3.17), usually the latest version is the best to use, be aware that some Linux distributions (Ubuntu for example) are often behind on CMake versions in the default build
-#. BLAS/LAPACK/ScaLAPACK or standards equivalent libraries, partially tested options include OpenBlas, NetLib, Blis, FLAME, MKL
-#. Boost, currently 1.59 as a minimum; note that bleeding edge Boost often requires bleeding edge compilers, so be careful here
-#. MPI, most of the code requires at least MPI-3 compliance, MPICH 3.4 has been tested
-#. Eigen, minimum of 3.4.0; the build will automatically pull this if you don't have it available
+#. A C++ compiler supporting the C++17 standard, currently we use gcc 9 (10.2 
+   on Intel), clang has not been fully tested
+#. CMake (>= 3.17), usually the latest version is the best to use, be aware 
+   that some Linux distributions (Ubuntu for example) are often behind on 
+   CMake versions in the default build
+#. BLAS/LAPACK/ScaLAPACK or standards equivalent libraries, partially tested 
+   options include OpenBlas, NetLib, Blis, FLAME, MKL
+#. Boost, currently 1.59 as a minimum; note that bleeding edge Boost often 
+   requires bleeding edge compilers, so be careful here
+#. MPI, most of the code requires at least MPI-3 compliance, MPICH 3.4 has 
+   been tested
+#. Eigen, minimum of 3.4.0; the build will automatically pull this if you 
+   don't have it available
 #. libint2 - see below for more information
-#. Depending on what type of GPU you have available to you, you will need CUDA 11 or higher, SYCL 2.0 (use the latest version of the OneAPI SDK), or HIP 4.5 (use the latest ROCm version)
+#. Depending on what type of GPU you have available to you, you will need CUDA
+   11 or higher, SYCL 2.0 (use the latest version of the OneAPI SDK), or HIP 
+   4.5 (use the latest ROCm version)
 
 If necessary, more installation details for a package will be provided in the
 subsections below.
@@ -55,7 +64,9 @@ environment variables automatically for all new terminal sessions:
 
 **Other BLAS/LAPACK/ScaLAPACK:** If not using the Intel MKL, ensure that 
 environment variables for the packages are set up correctly according to the
-package-specific instructions.
+package-specific instructions and that paths to non-standard installation 
+directories are included in the cmake variable ``CMAKE_PREFIX_PATH`` (which 
+should be specified in your ``toolchain.cmake`` file (see below)).
 
 libint2
 ^^^^^^^
@@ -104,8 +115,9 @@ A GitHub Personal Access Token (PAT) is necessary since, at the moment,
 NWChemEx and some dependencies are hosted in private repositories. To create a 
 PAT, follow the instructions at GitHub's `Creating a personal access token
 <https://docs.github.com/en/github/authenticating-to-github/
-creating-a-personal-access-token>`_ page. This PAT will be used when prompted 
-for a password while cloning repositories.
+creating-a-personal-access-token>`_ page. Note: please create a **classical 
+personal access token**, not a fine-grained personal access token. This PAT 
+will be used when prompted for a password while cloning repositories.
 
 
 Building NWChemEx
@@ -117,8 +129,8 @@ assumptions:
 #. You are using a sane Unix-like operating system.
 #. All components will be installed in the same location.
 
-The following two files will be created to build NWChemEx, with instructions for
-each in the sections below:
+The following two files will be created to build NWChemEx, with instructions 
+for each in the sections below:
 
 #. CMake Toolchain File: ``toolchain.cmake``
 #. NWChemEx Build Script: ``build_nwx.sh``
@@ -147,7 +159,17 @@ brackets (<>) for your system.
    set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
    set(BUILD_SHARED_LIBS TRUE)
    set(BUILD_TESTING TRUE)
-   set(CMAKE_PREFIX_PATH <prefix_directory>) # This is where libint2 is installed
+
+   # List directories for dependencies you have installed in non-standard
+   # locations. For example:
+   # set(CMAKE_PREFIX_PATH
+   #     /path/to/libint2_install
+   #     /path/to/personal/BLAS/install
+   #     ...)
+   # Uncomment the lines above and set CMAKE_PREFIX_PATH specifically in
+   # your case.
+
+   set(CMAKE_PREFIX_PATH <additional_prefix_directories>
    set(CMAKE_CXX_STANDARD 17)
 
    # BLAS/LAPACK
@@ -176,12 +198,13 @@ build script.
    cmake -H. \
          -Bbuild \
          -DCMAKE_TOOLCHAIN_FILE=`pwd`/../toolchain.cmake \
-         -DCMAKE_BUILD_TYPE=Release \
+         -DCMAKE_BUILD_TYPE=Debug \
         #-DCMAKE_INSTALL_PREFIX=<where/you/want/to/install> # cannot install right now
          2>&1 | tee "../OUTPUT.GEN"
 
-   # Build the project
-   cmake --build build \
+   # Build the project. You can change the "1" to another integer,
+   # N, to instead build with N threads
+   cmake --build build -- -j 1
         #--target install \ # we cannot actually install yet
          2>&1 | tee "../OUTPUT.BUILD"
 
@@ -191,6 +214,18 @@ build script.
    # Return to the top level directory
    cd ../..
 
+``CMAKE_BUILD_TYPE`` is currently set to ``"Debug"``, because a ``Release`` 
+build may take an extremely long time to finish (a known issue to be resolved).
+
+The toolchain.cmake file and the building script for NWChemEx can also be used 
+(with minor modifications such as repo paths) to compile other packages in the 
+NWChemEx project.
+
+Running the NWChemEx Unit Tests 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Assuming NWChemEx is built with ``BUILD_TESTING`` enabled, then once the NWChemEx package is successfully built the unit tests can be run by running  ``ctest`` in the build directory. For debugging purposes, the log files resulting from running the unit tests can be found in the ``Testing/Temporary``
+subdirectory of the build directory.
 .. note::
    For finer-grained control over the build, we direct the reader to the more
    thorough CMaize build instructions located `here 

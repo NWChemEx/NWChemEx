@@ -17,6 +17,7 @@
 #include "drivers/driver_modules.hpp"
 #include "modules.hpp"
 #include "nwchemex/load_modules.hpp"
+#include <chemcache/chemcache.hpp>
 #include <integrals/integrals.hpp>
 // #include <mp2/mp2.hpp>
 #include <scf/scf.hpp>
@@ -39,6 +40,7 @@ void set_scf_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("CoreH", "Kinetic Energy", "Kinetic");
     mm.change_submod("CoreH", "Electron-Nuclear Attraction", "Nuclear");
     mm.change_submod("CoreGuess", "Overlap", "Overlap");
+    mm.change_submod("SADGuess", "Overlap", "Overlap");
     mm.change_submod("SCF Step", "Overlap", "Overlap");
     mm.change_submod("DIIS Fock Matrix", "Overlap", "Overlap");
     mm.change_submod("SCFDIIS Step", "Overlap", "Overlap");
@@ -110,14 +112,12 @@ void set_defaults(pluginplay::ModuleManager& mm) {
 void load_modules(pluginplay::ModuleManager& mm) {
     integrals::load_modules(mm);
     scf::load_modules(mm);
+    chemcache::load_modules(mm);
     // mp2::load_modules(mm);
 
     drivers::load_modules(mm);
 
     mm.add_module<SystemHamiltonian>("SystemHamiltonian");
-    mm.add_module<AuxiliaryBasis>("Standard JK Fitting Basis");
-    mm.add_module<AuxiliaryBasis>("Standard RI Fitting Basis");
-    mm.change_input("Standard RI Fitting Basis", "Aux Basis Suffix", "-rifit");
 
     set_integrals_default_modules(mm);
     set_scf_default_modules(mm);

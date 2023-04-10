@@ -41,6 +41,29 @@ class NWChemExTestCase(unittest.TestCase):
         print("Total SCF/STO-3G Energy: ", E)
         self.assertAlmostEqual(ref_scf, E, places=8)
 
+    def test_scf_sad_energy(self):
+        ref_scf = -74.94208005807283
+
+        name  = mokup.molecule.h2o
+        basis = mokup.basis_set.sto3g
+        aos   = mokup.get_bases(name, basis)
+        H     = mokup.hamiltonian(name)
+        H_e   = simde.type.els_hamiltonian(H)
+
+        mm = pluginplay.ModuleManager()
+        nwchemex.load_modules(mm)
+        mod = mm.at("SCF Wavefunction")
+
+        mm.change_submod("SADGuess", "Atomic Density", "sto-3g atomic dm")
+        mm.change_submod("SCF Wavefunction", "Guess", "SADGuess")
+
+        [phi0] = mod.run_as[simde.CanonicalReference](H_e, aos)
+        [E]    = mm.at("Total Energy").run_as[simde.TotalCanonicalEnergy](phi0, H, phi0)
+
+        print("Total SCF/STO-3G (SAD) Energy: ", E)
+        self.assertAlmostEqual(ref_scf, E, places=8)
+
+
     # def test_mp2_energy(self):
     #     ref_mp2 = -0.04915043599533923
 
