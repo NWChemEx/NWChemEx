@@ -30,4 +30,4 @@ jobs:
       gcc-build: true
       ninja_build: false
     secrets:
-      CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
+      CMAIZE_GITHUB_TOKEN: ${{ secrets.CMAIZE_GITHUB_TOKEN }}
