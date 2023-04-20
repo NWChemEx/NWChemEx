@@ -40,11 +40,11 @@ MODULE_RUN(ReferenceEnergyDriver) {
     auto& wavefunction_mod      = submods.at("Reference Wave Function");
     auto& energy_mod            = submods.at("Reference Energy");
 
-    auto [H] = hamiltonian_mod.run_as<sys_H_pt>(chem_sys);
+    auto H = hamiltonian_mod.run_as<sys_H_pt>(chem_sys);
     simde::type::els_hamiltonian H_e(H);
 
-    auto [phi0] = wavefunction_mod.run_as<reference_pt>(H_e, aos);
-    auto [E]    = energy_mod.run_as<energy_pt>(phi0, H, phi0);
+    auto phi0 = wavefunction_mod.run_as<reference_pt>(H_e, aos);
+    auto E    = energy_mod.run_as<energy_pt>(phi0, H, phi0);
 
     auto rv = results();
     return ao_energy_pt::wrap_results(rv, E);
