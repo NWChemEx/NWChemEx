@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #include "driver_modules.hpp"
 #include <simde/simde.hpp>
 
@@ -52,8 +52,7 @@ MODULE_RUN(CorrelatedEnergyDriver) {
     auto ref_wf  = reference_wf_mod.run_as<reference_pt>(H_e, aos);
     auto ref_E   = ref_energy_mod.run_as<ref_energy_pt>(ref_wf, H, ref_wf);
     auto corr_wf = many_body_wf_mod.run_as<manybody_pt>(H_e, ref_wf);
-    auto corr_E =
-      corr_energy_mod.run_as<corr_energy_pt>(ref_wf, H_e, corr_wf);
+    auto corr_E  = corr_energy_mod.run_as<corr_energy_pt>(ref_wf, H_e, corr_wf);
 
     auto total_E = ref_E + corr_E;
 

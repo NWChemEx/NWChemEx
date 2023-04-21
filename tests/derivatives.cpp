@@ -37,7 +37,7 @@ TEST_CASE("SCF Numerical Gradient") {
     simde::type::ao_space aos(bs);
     simde::type::chemical_system chem_sys(mol);
     auto& ng_mod = mm.at("SCF Numerical Gradient");
-    auto grad  = ng_mod.run_as<pt>(aos, chem_sys);
+    auto grad    = ng_mod.run_as<pt>(aos, chem_sys);
 
     std::vector ref_grad = {0., 0., 0.365407, 0., 0., -0.365407};
     REQUIRE_THAT(grad, Catch::Approx(ref_grad).margin(0.0001));
