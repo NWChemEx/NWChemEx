@@ -18,18 +18,18 @@ project(nwchemex VERSION "${VERSION}" LANGUAGES CXX)
 
 include(FetchContent)
 FetchContent_Declare(
-        nwx_cmake
-        GIT_REPOSITORY https://github.com/NWChemEx-Project/NWXCMake
+    nwx_cmake
+    GIT_REPOSITORY https://github.com/NWChemEx-Project/NWXCMake
 )
 FetchContent_MakeAvailable(nwx_cmake)
 list(APPEND CMAKE_MODULE_PATH "${nwx_cmake_SOURCE_DIR}/cmake")
 
 set(
-        CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake"
-        CACHE STRING "" FORCE
+    CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake"
+    CACHE STRING "" FORCE
 )
 
-include(get_cpp)
+include(get_cmaize)
 include(nwx_cxx_api_docs)
 
 nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src" 
@@ -40,28 +40,28 @@ nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src"
 option(BUILD_TESTING "Should we build the tests?" OFF)
 option(BUILD_PYBINDINGS "Should we build Python3 bindings?" ON)
 
-cpp_find_or_build_dependency(
-        integrals
-        URL github.com/NWChemEx-Project/Integrals
-        PRIVATE TRUE
-        BUILD_TARGET integrals
-        FIND_TARGET nwx::integrals
-        #VERSION gpu_end_to_end_driver
-        CMAKE_ARGS BUILD_TESTING=OFF
+cmaize_find_or_build_dependency(
+    integrals
+    URL github.com/NWChemEx-Project/Integrals
+    PRIVATE TRUE
+    BUILD_TARGET integrals
+    FIND_TARGET nwx::integrals
+    #VERSION gpu_end_to_end_driver
+    CMAKE_ARGS BUILD_TESTING=OFF
 )
 
-cpp_find_or_build_dependency(
-        scf
-        URL github.com/NWChemEx-Project/SCF
-        PRIVATE TRUE
-        BUILD_TARGET scf
-        FIND_TARGET nwx::scf
-        #VERSION gpu_end_to_end_driver
-        CMAKE_ARGS BUILD_TESTING=OFF
+cmaize_find_or_build_dependency(
+    scf
+    URL github.com/NWChemEx-Project/SCF
+    PRIVATE TRUE
+    BUILD_TARGET scf
+    FIND_TARGET nwx::scf
+    #VERSION gpu_end_to_end_driver
+    CMAKE_ARGS BUILD_TESTING=OFF
 )
 
 # Uncomment once MP2 is working again
-# cpp_find_or_build_dependency(
+# cmaize_find_or_build_dependency(
 #         mp2
 #         URL github.com/NWChemEx-Project/MP2
 #         PRIVATE TRUE
@@ -70,21 +70,21 @@ cpp_find_or_build_dependency(
 #         CMAKE_ARGS BUILD_TESTING=OFF
 # )
 
-cpp_find_or_build_dependency(
-        chemcache
-        URL github.com/NWChemEx-Project/ChemCache
-        PRIVATE TRUE
-        BUILD_TARGET chemcache
-        FIND_TARGET nwx::chemcache
-        VERSION generated_data
-        CMAKE_ARGS BUILD_TESTING=OFF
+cmaize_find_or_build_dependency(
+    chemcache
+    URL github.com/NWChemEx-Project/ChemCache
+    PRIVATE TRUE
+    BUILD_TARGET chemcache
+    FIND_TARGET nwx::chemcache
+    VERSION generated_data
+    CMAKE_ARGS BUILD_TESTING=OFF
 )
 
-cpp_add_library(
-        nwchemex
-        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
-        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include/nwchemex"
-        DEPENDS nwx::scf nwx::integrals nwx::chemcache # nwx::mp2
+cmaize_add_library(
+    nwchemex
+    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
+    INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include/nwchemex"
+    DEPENDS scf integrals chemcache # nwx::mp2
 )
 
 cpp_add_executable(
@@ -95,26 +95,26 @@ cpp_add_executable(
 )
 
 if("${BUILD_TESTING}")
-    cpp_find_or_build_dependency(
-            Catch2
-            URL github.com/catchorg/Catch2
-            BUILD_TARGET Catch2
-            VERSION v2.x
-            FIND_TARGET Catch2::Catch2
+    cmaize_find_or_build_dependency(
+        Catch2
+        URL github.com/catchorg/Catch2
+        BUILD_TARGET Catch2
+        VERSION v2.x
+        FIND_TARGET Catch2::Catch2
     )
-    cpp_find_or_build_dependency(
-            mokup
-            URL github.com/NWChemEx-Project/mokup
-            PRIVATE
-            BUILD_TARGET mokup
-            FIND_TARGET nwx::mokup
-            CMAKE_ARGS BUILD_TESTING=OFF
+    cmaize_find_or_build_dependency(
+        mokup
+        URL github.com/NWChemEx-Project/mokup
+        PRIVATE
+        BUILD_TARGET mokup
+        FIND_TARGET nwx::mokup
+        CMAKE_ARGS BUILD_TESTING=OFF
     )
-    cpp_add_tests(
+    cmaize_add_tests(
        test_nwchemex
        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests"
-       INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
-       DEPENDS Catch2::Catch2 nwchemex nwx::mokup
+       INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
+       DEPENDS Catch2 nwchemex mokup
     )
     if(BUILD_PYBINDINGS)
        set (python_tests
@@ -139,3 +139,5 @@ if("${BUILD_TESTING}")
 else()
     cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwchemex DEPPACKAGES integrals scf chemcache ) # mp2
 endif()
+
+cmaize_add_package(${PROJECT_NAME} NAMESPACE nwx::)
