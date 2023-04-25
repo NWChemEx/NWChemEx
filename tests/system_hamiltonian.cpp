@@ -32,6 +32,6 @@ TEST_CASE("System Hamiltonian") {
 
     chemical_system sys{mol, 10};
 
-    auto [H] = mod.run_as<ptype>(sys);
+    auto H = mod.run_as<ptype>(sys);
     REQUIRE(H == H_corr);
 }

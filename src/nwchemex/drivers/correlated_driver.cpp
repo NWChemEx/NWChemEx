@@ -46,14 +46,13 @@ MODULE_RUN(CorrelatedEnergyDriver) {
     auto& many_body_wf_mod      = submods.at("Many Body Wave Function");
     auto& corr_energy_mod       = submods.at("Correlation Energy");
 
-    auto [H] = hamiltonian_mod.run_as<sys_H_pt>(chem_sys);
+    auto H = hamiltonian_mod.run_as<sys_H_pt>(chem_sys);
     simde::type::els_hamiltonian H_e(H);
 
-    auto [ref_wf]  = reference_wf_mod.run_as<reference_pt>(H_e, aos);
-    auto [ref_E]   = ref_energy_mod.run_as<ref_energy_pt>(ref_wf, H, ref_wf);
-    auto [corr_wf] = many_body_wf_mod.run_as<manybody_pt>(H_e, ref_wf);
-    auto [corr_E] =
-      corr_energy_mod.run_as<corr_energy_pt>(ref_wf, H_e, corr_wf);
+    auto ref_wf  = reference_wf_mod.run_as<reference_pt>(H_e, aos);
+    auto ref_E   = ref_energy_mod.run_as<ref_energy_pt>(ref_wf, H, ref_wf);
+    auto corr_wf = many_body_wf_mod.run_as<manybody_pt>(H_e, ref_wf);
+    auto corr_E  = corr_energy_mod.run_as<corr_energy_pt>(ref_wf, H_e, corr_wf);
 
     auto total_E = ref_E + corr_E;
 
