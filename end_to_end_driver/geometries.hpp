@@ -6,8 +6,8 @@ using bases_ref  = const std::vector<ao_basis_t>&;
 using molecule_t = simde::type::molecule;
 using atom_t     = simde::type::atom;
 using name_t     = typename atom_t::name_type;
-using number_t   = typename atom_t::size_type;
-using coord_t    = typename atom_t::coord_type;
+//using number_t   = typename atom_t::size_type;
+//using coord_t    = typename atom_t::coord_type;
 using shape_t    = typename simde::type::tensor::shape_type;
 using tiling_t   = typename shape_t::tiling_type;
 

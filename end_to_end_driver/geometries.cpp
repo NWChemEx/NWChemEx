@@ -1,7 +1,8 @@
 #include "geometries.hpp"
 
-void add_atom(molecule_t& mol, name_t n, number_t z, coord_t xyz) {
-    mol.push_back(atom_t{n, z, xyz});
+using charge_t = typename atom_t::charge_type;
+void add_atom(molecule_t& mol, name_t n, charge_t z, std::array<double,3> xyz) {
+    mol.push_back(atom_t{n, z, 666, xyz[0], xyz[1], xyz[2]});
 }
 
 molecule_t water() {

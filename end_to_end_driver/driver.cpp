@@ -3,6 +3,8 @@
 #include <nwchemex/nwchemex.hpp>
 #include <tiledarray.h>
 
+using mol_bs_pt = simde::MolecularBasisSet;
+
 int main(int argc, char* argv[]) {
     auto& world = TA::initialize(argc, argv);
 
@@ -24,9 +26,56 @@ int main(int argc, char* argv[]) {
 
     /// Job specifications
     auto mol = from_name(mol_name);
-    auto aos = nwchemex::apply_basis(basis_name, mol, true);
-    auto aux = nwchemex::apply_basis(aux_basis_name, mol);
+    auto [obs]  = mm.at(basis_name).run_as<mol_bs_pt>(mol);
+    auto [axbs] = mm.at(aux_basis_name).run_as<mol_bs_pt>(mol);
     auto cs  = simde::type::chemical_system(mol);
+    
+    for(auto si = 0; si < obs.n_shells(); ++si) {
+        obs.shell(si).pure() = chemist::ShellType::cartesian;
+    }
+    simde::type::ao_space aos(obs);
+    simde::type::ao_space aux(axbs);
+
+    mm.change_input("Overlap CS", "Screening Threshold", 1e-12);
+    mm.change_input("Kinetic CS", "Screening Threshold", 1e-12);
+    mm.change_input("Nuclear CS", "Screening Threshold", 1e-12);
+
+    /// Lambda module to determine the shapes based on system
+    auto shape_mod = pluginplay::make_lambda<integrals::IntegralShape>(
+      [mol_name](auto&& bases) { return integral_tiling(mol_name, bases); });
+
+    /// Setup modules
+    mm.at("ERI2").change_submod("Tensor Shape", shape_mod);
+    mm.at("ERI3").change_submod("Tensor Shape", shape_mod);
+    mm.at("Nuclear CS").change_submod("Tensor Shape", shape_mod);
+    mm.at("Kinetic CS").change_submod("Tensor Shape", shape_mod);
+    mm.at("Overlap CS").change_submod("Tensor Shape", shape_mod);
+    mm.at("Nuclear").change_submod("Tensor Shape", shape_mod);
+    mm.at("Kinetic").change_submod("Tensor Shape", shape_mod);
+    mm.at("Overlap").change_submod("Tensor Shape", shape_mod);
+
+    mm.change_input("DFJ", "Fitting Basis", aux);
+    mm.change_input("DFK", "Fitting Basis", aux);
+    mm.change_input("DFJ_JEngine", "Fitting Basis", aux);
+    mm.change_input("GauXC Quadrature Batches", "On GPU", true);
+    mm.change_input("snLinK", "On GPU", true);
+
+    //mm.change_submod("CoreH", "Electron-Nuclear Attraction", "Nuclear CS");
+    //mm.change_submod("CoreH", "Kinetic Energy", "Kinetic CS");
+    //mm.change_submod("CoreGuess", "Overlap", "Overlap CS");
+    //mm.change_submod("SCF Step", "Overlap", "Overlap CS");
+    //mm.change_submod("DIIS Fock Matrix", "Overlap", "Overlap CS");
+    //mm.change_submod("SCFDIIS Step", "Overlap", "Overlap CS");
+
+    mm.change_submod("SCF Energy", "Reference Wave Function",
+                     "SCFDIIS Wavefunction");
+
+    mm.change_submod("Fock Matrix", "J Builder", "DFJ_JEngine");
+    mm.change_submod("Fock Matrix", "K Builder", "snLinK");
+
+    auto [E] = mm.at("SCF Energy").run_as<simde::AOEnergy>(aos, cs);
+    if(0) {
+    
 
     // Set inputs
     mm.change_input("Overlap CS", "Screening Threshold", 1e-12);
@@ -63,18 +112,19 @@ int main(int argc, char* argv[]) {
     mm.change_submod("SCF Step", "Overlap", "Overlap CS");
     mm.change_submod("DIIS Fock Matrix", "Overlap", "Overlap CS");
     mm.change_submod("SCFDIIS Step", "Overlap", "Overlap CS");
-    mm.change_submod("Fock Matrix", "J Builder", "DFJ");
-    mm.change_submod("Fock Matrix", "K Builder", "DFK");
-    if(have_gpu_modules) {
-        mm.change_submod("Fock Matrix", "J Builder", "DFJ_JEngine");
-        mm.change_submod("Fock Matrix", "K Builder", "snLinK");
-    }
+    //mm.change_submod("Fock Matrix", "J Builder", "DFJ");
+    //mm.change_submod("Fock Matrix", "K Builder", "DFK");
+    //if(have_gpu_modules) {
+    //    mm.change_submod("Fock Matrix", "J Builder", "DFJ_JEngine");
+    //    mm.change_submod("Fock Matrix", "K Builder", "snLinK");
+    //}
     mm.change_submod("SCF Energy", "Reference Wave Function",
                      "SCFDIIS Wavefunction");
 
     // Zero mods for J and K
     auto shape = integral_tiling(mol_name, std::vector(2, aos.basis_set()));
     auto zero_tensor = [shape](auto&& bra, auto&& o, auto&& ket) {
+        std::cout << "FAKE MOD" << std::endl;
         auto l = [](const auto& idx) { return 0.0; };
         auto s = shape.clone();
         auto a = tensorwrapper::tensor::default_allocator<
@@ -103,6 +153,7 @@ int main(int argc, char* argv[]) {
     std::cout << "SCF Profile:" << std::endl;
     std::cout << mm.at("SCF Energy").profile_info() << std::endl;
 
+    }
     TA::finalize();
     return 0;
-}
+
