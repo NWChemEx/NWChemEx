@@ -31,13 +31,13 @@ TEST_CASE("SCF") {
     const auto name = mokup::molecule::h2o;
     auto mol        = mokup::get_molecule(name);
 
-    auto [bs] = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
+    auto bs = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
 
     simde::type::ao_space aos(bs);
     simde::type::chemical_system chem_sys(mol);
 
     // Calculate energy
-    auto [E] = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
+    auto E = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
     std::cout << "Total SCF/STO-3G Energy: " << E << std::endl;
     REQUIRE(E == Approx(-74.942080058072833).margin(1.0e-8));
 
@@ -59,7 +59,7 @@ TEST_CASE("SCF with SAD guess") {
     const auto name = mokup::molecule::h2o;
     auto mol        = mokup::get_molecule(name);
 
-    auto [bs] = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
+    auto bs = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
 
     simde::type::ao_space aos(bs);
     simde::type::chemical_system chem_sys(mol);
@@ -69,7 +69,7 @@ TEST_CASE("SCF with SAD guess") {
     mm.change_submod("SCF Wavefunction", "Guess", "SADGuess");
 
     // Calculate energy
-    auto [E] = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
+    auto E = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
     std::cout << "Total SCF/STO-3G Energy: " << E << std::endl;
     REQUIRE(E == Approx(-74.942080058072833).margin(1.0e-8));
 
