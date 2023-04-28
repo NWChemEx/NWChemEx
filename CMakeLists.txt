@@ -87,10 +87,10 @@ cmaize_add_library(
     DEPENDS scf integrals chemcache # nwx::mp2
 )
 
-cpp_add_executable(
+cmaize_add_executable(
         nwx_driver
         SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/end_to_end_driver"
-        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/end_to_end_driver"
+        INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/end_to_end_driver"
         DEPENDS nwchemex
 )
 
