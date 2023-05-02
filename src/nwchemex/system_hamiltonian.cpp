@@ -40,8 +40,8 @@ MODULE_RUN(SystemHamiltonian) {
     auto n_electrons   = many_electrons{sys.nelectrons()};
     const auto& nuclei = sys.molecule();
 
-    hamiltonian H(nuc_coulomb{nuclei}, els_kinetic{n_electrons},
-                  els_nuc_coulomb{n_electrons, nuclei},
+    hamiltonian H(nuc_coulomb{nuclei.nuclei()}, els_kinetic{n_electrons},
+                  els_nuc_coulomb{n_electrons, nuclei.nuclei()},
                   els_coulomb{n_electrons});
 
     return ptype::wrap_results(rv, H);
