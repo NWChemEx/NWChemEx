@@ -97,7 +97,7 @@ modifying everything in angled brackets (<>) to be correct for your system.
 
    #!/usr/bin/env bash
     
-   cmake -S . \
+   cmake -H . \
          -B build \
 	 -DCMAKE_INSTALL_PREFIX=<desired_install_location> \
 	 -DCMAKE_CXX_COMPILER=<c++_compiler> \
@@ -153,7 +153,7 @@ brackets (<>) for your system.
    set(MPI_CXX_COMPILER   <MPI CXX compiler>)
 
    # Token for private repos
-   set(CPP_GITHUB_TOKEN <your_super_secret_github_PAT>)
+   set(CMAIZE_GITHUB_TOKEN <your_super_secret_github_PAT>)
 
    # Options
    set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
@@ -165,11 +165,12 @@ brackets (<>) for your system.
    # set(CMAKE_PREFIX_PATH
    #     /path/to/libint2_install
    #     /path/to/personal/BLAS/install
-   #     ...)
+   #     ...
+   # )
    # Uncomment the lines above and set CMAKE_PREFIX_PATH specifically in
    # your case.
 
-   set(CMAKE_PREFIX_PATH <additional_prefix_directories>
+   list(APPEND CMAKE_PREFIX_PATH <additional_prefix_directories>)
    set(CMAKE_CXX_STANDARD 17)
 
    # BLAS/LAPACK
@@ -199,20 +200,25 @@ build script.
          -Bbuild \
          -DCMAKE_TOOLCHAIN_FILE=`pwd`/../toolchain.cmake \
          -DCMAKE_BUILD_TYPE=Debug \
-        #-DCMAKE_INSTALL_PREFIX=<where/you/want/to/install> # cannot install right now
+         -DCMAKE_INSTALL_PREFIX=<where/you/want/to/install> \
          2>&1 | tee "../OUTPUT.GEN"
 
    # Build the project. You can change the "1" to another integer,
    # N, to instead build with N threads
-   cmake --build build -- -j 1
-        #--target install \ # we cannot actually install yet
+   cmake --build build -- -j 1 \
          2>&1 | tee "../OUTPUT.BUILD"
 
    # Run tests
    cd build && ctest 2>&1 | tee "../../OUTPUT.TEST"
+   
+   # Back out of the build directory
+   cd ..
+   
+   # Install the project
+   cmake --build build --target install 2>&1 | tee "../OUTPUT.INSTALL"
 
    # Return to the top level directory
-   cd ../..
+   cd ..
 
 ``CMAKE_BUILD_TYPE`` is currently set to ``"Debug"``, because a ``Release`` 
 build may take an extremely long time to finish (a known issue to be resolved).
@@ -226,7 +232,9 @@ Running the NWChemEx Unit Tests
 
 Assuming NWChemEx is built with ``BUILD_TESTING`` enabled, then once the NWChemEx package is successfully built the unit tests can be run by running  ``ctest`` in the build directory. For debugging purposes, the log files resulting from running the unit tests can be found in the ``Testing/Temporary``
 subdirectory of the build directory.
+
 .. note::
+   
    For finer-grained control over the build, we direct the reader to the more
    thorough CMaize build instructions located `here 
    <https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest>`_

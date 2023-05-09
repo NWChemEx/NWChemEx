@@ -179,7 +179,7 @@ directory, create a file named <code class="docutils literal notranslate"><span 
 modifying everything in angled brackets (&lt;&gt;) to be correct for your system.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
 
-cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+cmake<span class="w"> </span>-H<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
 <span class="w">      </span>-B<span class="w"> </span>build<span class="w"> </span><span class="se">\</span>
 <span class="w">      </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;desired_install_location&gt;<span class="w"> </span><span class="se">\</span>
 <span class="w">      </span>-DCMAKE_CXX_COMPILER<span class="o">=</span>&lt;c++_compiler&gt;<span class="w"> </span><span class="se">\</span>
@@ -229,7 +229,7 @@ brackets (&lt;&gt;) for your system.</p>
 <span class="nb">set</span><span class="p">(</span><span class="s">MPI_CXX_COMPILER</span><span class="w">   </span><span class="s">&lt;MPI</span><span class="w"> </span><span class="s">CXX</span><span class="w"> </span><span class="s">compiler&gt;</span><span class="p">)</span>
 
 <span class="c"># Token for private repos</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CPP_GITHUB_TOKEN</span><span class="w"> </span><span class="s">&lt;your_super_secret_github_PAT&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAIZE_GITHUB_TOKEN</span><span class="w"> </span><span class="s">&lt;your_super_secret_github_PAT&gt;</span><span class="p">)</span>
 
 <span class="c"># Options</span>
 <span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span>
@@ -241,12 +241,13 @@ brackets (&lt;&gt;) for your system.</p>
 <span class="c"># set(CMAKE_PREFIX_PATH</span>
 <span class="c">#     /path/to/libint2_install</span>
 <span class="c">#     /path/to/personal/BLAS/install</span>
-<span class="c">#     ...)</span>
+<span class="c">#     ...</span>
+<span class="c"># )</span>
 <span class="c"># Uncomment the lines above and set CMAKE_PREFIX_PATH specifically in</span>
 <span class="c"># your case.</span>
 
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="s">&lt;additional_prefix_directories&gt;</span>
-<span class="s">set(CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">17</span><span class="p">)</span>
+<span class="nb">list</span><span class="p">(</span><span class="s">APPEND</span><span class="w"> </span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="s">&lt;additional_prefix_directories&gt;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">17</span><span class="p">)</span>
 
 <span class="c"># BLAS/LAPACK</span>
 <span class="nb">set</span><span class="p">(</span><span class="s">ENABLE_SCALAPACK</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
@@ -272,20 +273,25 @@ cmake<span class="w"> </span>-H.<span class="w"> </span><span class="se">\</span
 <span class="w">      </span>-Bbuild<span class="w"> </span><span class="se">\</span>
 <span class="w">      </span>-DCMAKE_TOOLCHAIN_FILE<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/../toolchain.cmake<span class="w"> </span><span class="se">\</span>
 <span class="w">      </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Debug<span class="w"> </span><span class="se">\</span>
-<span class="w">     </span><span class="c1">#-DCMAKE_INSTALL_PREFIX=&lt;where/you/want/to/install&gt; # cannot install right now</span>
+<span class="w">      </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;where/you/want/to/install&gt;<span class="w"> </span><span class="se">\</span>
 <span class="w">      </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span><span class="s2">&quot;../OUTPUT.GEN&quot;</span>
 
 <span class="c1"># Build the project. You can change the &quot;1&quot; to another integer,</span>
 <span class="c1"># N, to instead build with N threads</span>
-cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--<span class="w"> </span>-j<span class="w"> </span><span class="m">1</span>
-<span class="w">     </span><span class="c1">#--target install \ # we cannot actually install yet</span>
+cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--<span class="w"> </span>-j<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
 <span class="w">      </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span><span class="s2">&quot;../OUTPUT.BUILD&quot;</span>
 
 <span class="c1"># Run tests</span>
 <span class="nb">cd</span><span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>ctest<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span><span class="s2">&quot;../../OUTPUT.TEST&quot;</span>
 
+<span class="c1"># Back out of the build directory</span>
+<span class="nb">cd</span><span class="w"> </span>..
+
+<span class="c1"># Install the project</span>
+cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>install<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span><span class="s2">&quot;../OUTPUT.INSTALL&quot;</span>
+
 <span class="c1"># Return to the top level directory</span>
-<span class="nb">cd</span><span class="w"> </span>../..
+<span class="nb">cd</span><span class="w"> </span>..
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code> is currently set to <code class="docutils literal notranslate"><span class="pre">&quot;Debug&quot;</span></code>, because a <code class="docutils literal notranslate"><span class="pre">Release</span></code>
@@ -297,15 +303,15 @@ NWChemEx project.</p>
 <div class="section" id="running-the-nwchemex-unit-tests">
 <h3>Running the NWChemEx Unit Tests<a class="headerlink" href="#running-the-nwchemex-unit-tests" title="Permalink to this heading"></a></h3>
 <p>Assuming NWChemEx is built with <code class="docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code> enabled, then once the NWChemEx package is successfully built the unit tests can be run by running  <code class="docutils literal notranslate"><span class="pre">ctest</span></code> in the build directory. For debugging purposes, the log files resulting from running the unit tests can be found in the <code class="docutils literal notranslate"><span class="pre">Testing/Temporary</span></code>
-subdirectory of the build directory.
-.. note:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>For finer-grained control over the build, we direct the reader to the more
-thorough CMaize build instructions located `here
-&lt;https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest&gt;`_
-and note that NWChemEx depends on several other projects:
-
-* `Catch2 &lt;https://github.com/catchorg/Catch2&gt;`_ (for testing only)
-</pre></div>
+subdirectory of the build directory.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For finer-grained control over the build, we direct the reader to the more
+thorough CMaize build instructions located <a class="reference external" href="https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest">here</a>
+and note that NWChemEx depends on several other projects:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/catchorg/Catch2">Catch2</a> (for testing only)</p></li>
+</ul>
 </div>
 </div>
 </div>
