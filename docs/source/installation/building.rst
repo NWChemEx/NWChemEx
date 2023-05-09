@@ -204,15 +204,20 @@ build script.
 
    # Build the project. You can change the "1" to another integer,
    # N, to instead build with N threads
-   cmake --build build -- -j 1
-        #--target install \ # we cannot actually install yet
+   cmake --build build -- -j 1 \
          2>&1 | tee "../OUTPUT.BUILD"
 
    # Run tests
    cd build && ctest 2>&1 | tee "../../OUTPUT.TEST"
+   
+   # Back out of the build directory
+   cd ..
+   
+   # Install the project
+   cmake --build build --target install 2>&1 | tee "../OUTPUT.INSTALL"
 
    # Return to the top level directory
-   cd ../..
+   cd ..
 
 ``CMAKE_BUILD_TYPE`` is currently set to ``"Debug"``, because a ``Release`` 
 build may take an extremely long time to finish (a known issue to be resolved).
