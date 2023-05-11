@@ -35,8 +35,8 @@ class NWChemExTestCase(unittest.TestCase):
         nwchemex.load_modules(mm)
         mod = mm.at("SCF Wavefunction")
 
-        [phi0] = mod.run_as[simde.CanonicalReference](H_e, aos)
-        [E]    = mm.at("Total Energy").run_as[simde.TotalCanonicalEnergy](phi0, H, phi0)
+        phi0 = mod.run_as[simde.CanonicalReference](H_e, aos)
+        E    = mm.at("Total Energy").run_as[simde.TotalCanonicalEnergy](phi0, H, phi0)
 
         print("Total SCF/STO-3G Energy: ", E)
         self.assertAlmostEqual(ref_scf, E, places=8)
@@ -57,8 +57,8 @@ class NWChemExTestCase(unittest.TestCase):
         mm.change_submod("SADGuess", "Atomic Density", "sto-3g atomic dm")
         mm.change_submod("SCF Wavefunction", "Guess", "SADGuess")
 
-        [phi0] = mod.run_as[simde.CanonicalReference](H_e, aos)
-        [E]    = mm.at("Total Energy").run_as[simde.TotalCanonicalEnergy](phi0, H, phi0)
+        phi0 = mod.run_as[simde.CanonicalReference](H_e, aos)
+        E    = mm.at("Total Energy").run_as[simde.TotalCanonicalEnergy](phi0, H, phi0)
 
         print("Total SCF/STO-3G (SAD) Energy: ", E)
         self.assertAlmostEqual(ref_scf, E, places=8)
