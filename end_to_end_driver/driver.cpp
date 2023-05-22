@@ -32,9 +32,9 @@ int main(int argc, char* argv[]) {
     for(auto si = 0; si < obs.n_shells(); ++si) {
         obs.shell(si).pure() = chemist::ShellType::cartesian;
     }
-    for(auto si = 0; si < axbs.n_shells(); ++si) {
-        axbs.shell(si).pure() = chemist::ShellType::cartesian;
-    }
+    //for(auto si = 0; si < axbs.n_shells(); ++si) {
+    //    axbs.shell(si).pure() = chemist::ShellType::cartesian;
+    //}
 
     simde::type::ao_space aos(obs);
     simde::type::ao_space aux(axbs);
