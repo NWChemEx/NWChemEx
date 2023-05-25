@@ -30,6 +30,7 @@ set(
 )
 
 include(get_cmaize)
+include(nwx_versions)
 include(nwx_cxx_api_docs)
 
 nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src" 
@@ -44,6 +45,7 @@ cmaize_find_or_build_dependency(
     integrals
     URL github.com/NWChemEx-Project/Integrals
     PRIVATE TRUE
+    VERSION ${NWX_INTEGRALS_VERSION}
     BUILD_TARGET integrals
     FIND_TARGET nwx::integrals
     CMAKE_ARGS BUILD_TESTING=OFF
@@ -53,6 +55,7 @@ cmaize_find_or_build_dependency(
     scf
     URL github.com/NWChemEx-Project/SCF
     PRIVATE TRUE
+    VERSION ${NWX_SCF_VERSION}
     BUILD_TARGET scf
     FIND_TARGET nwx::scf
     CMAKE_ARGS BUILD_TESTING=OFF
@@ -63,6 +66,7 @@ cmaize_find_or_build_dependency(
 #         mp2
 #         URL github.com/NWChemEx-Project/MP2
 #         PRIVATE TRUE
+#         VERSION ${NWX_MP2_VERSION}
 #         BUILD_TARGET mp2
 #         FIND_TARGET nwx::mp2
 #         CMAKE_ARGS BUILD_TESTING=OFF
@@ -72,6 +76,7 @@ cmaize_find_or_build_dependency(
     chemcache
     URL github.com/NWChemEx-Project/ChemCache
     PRIVATE TRUE
+    VERSION ${NWX_CHEMCACHE_VERSION}
     BUILD_TARGET chemcache
     FIND_TARGET nwx::chemcache
     VERSION generated_data
@@ -90,13 +95,14 @@ if("${BUILD_TESTING}")
         Catch2
         URL github.com/catchorg/Catch2
         BUILD_TARGET Catch2
-        VERSION v2.x
+        VERSION ${NWX_CATCH2_VERSION}
         FIND_TARGET Catch2::Catch2
     )
     cmaize_find_or_build_dependency(
         mokup
         URL github.com/NWChemEx-Project/mokup
-        PRIVATE
+        PRIVATE TRUE
+        VERSION ${NWX_MOKUP_VERSION}
         BUILD_TARGET mokup
         FIND_TARGET nwx::mokup
         CMAKE_ARGS BUILD_TESTING=OFF
