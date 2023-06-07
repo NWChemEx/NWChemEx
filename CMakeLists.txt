@@ -39,7 +39,7 @@ nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src"
 
 ### Options ###
 option(BUILD_TESTING "Should we build the tests?" OFF)
-option(BUILD_PYBINDINGS "Should we build Python3 bindings?" ON)
+option(BUILD_CPPYY_PYBINDINGS "Should we build Python3 bindings?" ON)
 
 cmaize_find_or_build_dependency(
     integrals
@@ -113,7 +113,7 @@ if("${BUILD_TESTING}")
        INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
        DEPENDS Catch2 nwchemex mokup
     )
-    if(BUILD_PYBINDINGS)
+    if(BUILD_CPPYY_PYBINDINGS)
        set (python_tests
             test_python dlpno_mp2_python
            )
