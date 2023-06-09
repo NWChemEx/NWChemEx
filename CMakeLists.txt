@@ -30,6 +30,7 @@ set(
 )
 
 include(get_cmaize)
+include(nwx_versions)
 include(nwx_cxx_api_docs)
 
 nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src" 
@@ -38,12 +39,13 @@ nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src"
 
 ### Options ###
 option(BUILD_TESTING "Should we build the tests?" OFF)
-option(BUILD_PYBINDINGS "Should we build Python3 bindings?" ON)
+option(BUILD_CPPYY_PYBINDINGS "Should we build Python3 bindings?" ON)
 
 cmaize_find_or_build_dependency(
     integrals
     URL github.com/NWChemEx-Project/Integrals
     PRIVATE TRUE
+    VERSION ${NWX_INTEGRALS_VERSION}
     BUILD_TARGET integrals
     FIND_TARGET nwx::integrals
     #VERSION gpu_end_to_end_driver
@@ -54,6 +56,7 @@ cmaize_find_or_build_dependency(
     scf
     URL github.com/NWChemEx-Project/SCF
     PRIVATE TRUE
+    VERSION ${NWX_SCF_VERSION}
     BUILD_TARGET scf
     FIND_TARGET nwx::scf
     #VERSION gpu_end_to_end_driver
@@ -65,6 +68,7 @@ cmaize_find_or_build_dependency(
 #         mp2
 #         URL github.com/NWChemEx-Project/MP2
 #         PRIVATE TRUE
+#         VERSION ${NWX_MP2_VERSION}
 #         BUILD_TARGET mp2
 #         FIND_TARGET nwx::mp2
 #         CMAKE_ARGS BUILD_TESTING=OFF
@@ -74,6 +78,7 @@ cmaize_find_or_build_dependency(
     chemcache
     URL github.com/NWChemEx-Project/ChemCache
     PRIVATE TRUE
+    VERSION ${NWX_CHEMCACHE_VERSION}
     BUILD_TARGET chemcache
     FIND_TARGET nwx::chemcache
     VERSION generated_data
@@ -99,13 +104,14 @@ if("${BUILD_TESTING}")
         Catch2
         URL github.com/catchorg/Catch2
         BUILD_TARGET Catch2
-        VERSION v2.x
+        VERSION ${NWX_CATCH2_VERSION}
         FIND_TARGET Catch2::Catch2
     )
     cmaize_find_or_build_dependency(
         mokup
         URL github.com/NWChemEx-Project/mokup
-        PRIVATE
+        PRIVATE TRUE
+        VERSION ${NWX_MOKUP_VERSION}
         BUILD_TARGET mokup
         FIND_TARGET nwx::mokup
         CMAKE_ARGS BUILD_TESTING=OFF
@@ -116,7 +122,7 @@ if("${BUILD_TESTING}")
        INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
        DEPENDS Catch2 nwchemex mokup
     )
-    if(BUILD_PYBINDINGS)
+    if(BUILD_CPPYY_PYBINDINGS)
        set (python_tests
             test_python dlpno_mp2_python
            )
