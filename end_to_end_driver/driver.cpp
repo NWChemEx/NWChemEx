@@ -1,4 +1,3 @@
-#include <integrals/property_types/integral_shape.hpp>
 #include <nwchemex/nwchemex.hpp>
 #include <tiledarray.h>
 
