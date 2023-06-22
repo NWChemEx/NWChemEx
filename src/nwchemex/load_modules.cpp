@@ -80,6 +80,14 @@ void set_defaults(pluginplay::ModuleManager& mm) {
     mm.change_submod("SCF Energy", "Reference Wave Function",
                      "SCF Wavefunction");
     mm.change_submod("SCF Energy", "Reference Energy", "Total Energy");
+
+    mm.change_submod("SCF Energy From Density", "System Hamiltonian",
+                     "SystemHamiltonian");
+    mm.change_submod("SCF Energy From Density", "Reference Density",
+                     "SCF Density Driver");
+    mm.change_submod("SCF Energy From Density", "Reference Energy",
+                     "Total Energy From Density");
+
     mm.change_submod("SCF Numerical Gradient", "System Hamiltonian",
                      "SystemHamiltonian");
     mm.change_submod("SCF Numerical Gradient", "Reference Energy",

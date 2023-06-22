@@ -20,6 +20,7 @@
 namespace nwchemex {
 
 DECLARE_MODULE(ReferenceEnergyDriver);
+DECLARE_MODULE(ReferenceEnergyDensityDriver);
 DECLARE_MODULE(CorrelatedEnergyDriver);
 DECLARE_MODULE(CorrelationEnergyDriver);
 
@@ -27,6 +28,7 @@ namespace drivers {
 
 inline void load_modules(pluginplay::ModuleManager& mm) {
     mm.add_module<ReferenceEnergyDriver>("SCF Energy");
+    mm.add_module<ReferenceEnergyDensityDriver>("SCF Energy From Density");
     mm.add_module<CorrelatedEnergyDriver>("MP2 Energy");
     mm.add_module<CorrelationEnergyDriver>("MP2 Correlation Energy");
 }
