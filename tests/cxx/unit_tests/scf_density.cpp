@@ -21,7 +21,7 @@
 using pt        = simde::AOEnergy;
 using mol_bs_pt = simde::MolecularBasisSet;
 
-TEST_CASE("SCF") {
+TEST_CASE("Density-based SCF") {
     auto start = std::chrono::high_resolution_clock::now();
 
     pluginplay::ModuleManager mm;
@@ -37,7 +37,7 @@ TEST_CASE("SCF") {
     simde::type::chemical_system chem_sys(mol);
 
     // Calculate energy
-    auto E = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
+    auto E = mm.at("SCF Energy From Density").run_as<pt>(aos, chem_sys);
     std::cout << "Total SCF/STO-3G Energy: " << E << std::endl;
     REQUIRE(E == Approx(-74.942080058072833).margin(1.0e-8));
 
@@ -45,11 +45,11 @@ TEST_CASE("SCF") {
     auto duration =
       std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 
-    std::cout << "Time taken by SCF Test with Core Guess: " << duration.count()
-              << " microseconds" << std::endl;
+    std::cout << "Time taken by density-based SCF Test with Core Guess: "
+              << duration.count() << " microseconds" << std::endl;
 }
 
-TEST_CASE("SCF with SAD guess") {
+TEST_CASE("Density-based SCF with SAD guess") {
     auto start = std::chrono::high_resolution_clock::now();
 
     pluginplay::ModuleManager mm;
@@ -66,10 +66,10 @@ TEST_CASE("SCF with SAD guess") {
 
     // Use SAD guess
     mm.change_submod("SADDensity", "Atomic Density", "sto-3g atomic dm");
-    mm.change_submod("SCF Wavefunction", "Guess", "SADGuess");
+    mm.change_submod("SCF Density Driver", "Guess", "SADGuess");
 
     // Calculate energy
-    auto E = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
+    auto E = mm.at("SCF Energy From Density").run_as<pt>(aos, chem_sys);
     std::cout << "Total SCF/STO-3G Energy: " << E << std::endl;
     REQUIRE(E == Approx(-74.942080058072833).margin(1.0e-8));
 
@@ -78,6 +78,6 @@ TEST_CASE("SCF with SAD guess") {
     auto duration =
       std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 
-    std::cout << "Time taken by SCF Test with SAD Guess: " << duration.count()
-              << " microseconds" << std::endl;
+    std::cout << "Time taken by density-based SCF Test with SAD Guess: "
+              << duration.count() << " microseconds" << std::endl;
 }

@@ -37,11 +37,8 @@ void set_scf_default_modules(pluginplay::ModuleManager& mm) {
     mm.change_submod("MetricChol", "M Builder", "ERI2");
     mm.change_submod("CoreH", "Kinetic Energy", "Kinetic");
     mm.change_submod("CoreH", "Electron-Nuclear Attraction", "Nuclear");
-    mm.change_submod("CoreGuess", "Overlap", "Overlap");
-    mm.change_submod("SADGuess", "Overlap", "Overlap");
-    mm.change_submod("SCF Step", "Overlap", "Overlap");
+    mm.change_submod("MOs Fock", "Overlap", "Overlap");
     mm.change_submod("DIIS Fock Matrix", "Overlap", "Overlap");
-    mm.change_submod("SCFDIIS Step", "Overlap", "Overlap");
     mm.change_submod("XC", "Tensor Shape", "OneTileShape");
 }
 
@@ -83,6 +80,14 @@ void set_defaults(pluginplay::ModuleManager& mm) {
     mm.change_submod("SCF Energy", "Reference Wave Function",
                      "SCF Wavefunction");
     mm.change_submod("SCF Energy", "Reference Energy", "Total Energy");
+
+    mm.change_submod("SCF Energy From Density", "System Hamiltonian",
+                     "SystemHamiltonian");
+    mm.change_submod("SCF Energy From Density", "Reference Density",
+                     "SCF Density Driver");
+    mm.change_submod("SCF Energy From Density", "Reference Energy",
+                     "Total Energy From Density");
+
     mm.change_submod("SCF Numerical Gradient", "System Hamiltonian",
                      "SystemHamiltonian");
     mm.change_submod("SCF Numerical Gradient", "Reference Energy",
