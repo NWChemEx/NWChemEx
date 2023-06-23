@@ -91,9 +91,9 @@ void set_defaults(pluginplay::ModuleManager& mm) {
     mm.change_submod("SCF Numerical Gradient", "System Hamiltonian",
                      "SystemHamiltonian");
     mm.change_submod("SCF Numerical Gradient", "Reference Energy",
-                     "Total Energy");
-    mm.change_submod("SCF Numerical Gradient", "Reference Wave Function",
-                     "SCF Wavefunction");
+                     "Total Energy From Density");
+    mm.change_submod("SCF Numerical Gradient", "Reference Density",
+                     "SCF Density Driver");
 
     // mm.change_submod("MP2 Correlation Energy", "System Hamiltonian",
     //                  "SystemHamiltonian");
