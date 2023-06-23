@@ -65,7 +65,7 @@ TEST_CASE("SCF with SAD guess") {
     simde::type::chemical_system chem_sys(mol);
 
     // Use SAD guess
-    mm.change_submod("SADGuess", "Atomic Density", "sto-3g atomic dm");
+    mm.change_submod("SADDensity", "Atomic Density", "sto-3g atomic dm");
     mm.change_submod("SCF Wavefunction", "Guess", "SADGuess");
 
     // Calculate energy

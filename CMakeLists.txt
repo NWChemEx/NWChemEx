@@ -13,7 +13,7 @@
 # limitations under the License.
 
 cmake_minimum_required(VERSION 3.14)
-file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/version.txt" VERSION)
+set(VERSION 1.0.0) #TODO: Get from git
 project(nwchemex VERSION "${VERSION}" LANGUAGES CXX)
 
 include(FetchContent)
@@ -33,13 +33,14 @@ include(get_cmaize)
 include(nwx_versions)
 include(nwx_cxx_api_docs)
 
-nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src" 
+nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src"
                  "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 
 ### Options ###
 option(BUILD_TESTING "Should we build the tests?" OFF)
-option(BUILD_CPPYY_PYBINDINGS "Should we build Python3 bindings?" ON)
+option(BUILD_PYBIND11_PYBINDINGS "Use pybind11 to build Python3 bindings?" OFF)
+option(BUILD_CPPYY_PYBINDINGS "Use Cppyy to build Python3 bindings?" OFF)
 
 cmaize_find_or_build_dependency(
     integrals
@@ -50,6 +51,7 @@ cmaize_find_or_build_dependency(
     FIND_TARGET nwx::integrals
     #VERSION gpu_end_to_end_driver
     CMAKE_ARGS BUILD_TESTING=OFF
+               BUILD_PYBIND11_PYBINDINGS=${BUILD_PYBIND11_PYBINDINGS}
 )
 
 cmaize_find_or_build_dependency(
@@ -61,6 +63,7 @@ cmaize_find_or_build_dependency(
     FIND_TARGET nwx::scf
     #VERSION gpu_end_to_end_driver
     CMAKE_ARGS BUILD_TESTING=OFF
+               BUILD_PYBIND11_PYBINDINGS=${BUILD_PYBIND11_PYBINDINGS}
 )
 
 # Uncomment once MP2 is working again
@@ -83,6 +86,7 @@ cmaize_find_or_build_dependency(
     FIND_TARGET nwx::chemcache
     VERSION generated_data
     CMAKE_ARGS BUILD_TESTING=OFF
+               BUILD_PYBIND11_PYBINDINGS="${BUILD_PYBIND11_PYBINDINGS}"
 )
 
 cmaize_add_library(
@@ -99,7 +103,18 @@ cmaize_add_executable(
         DEPENDS nwchemex
 )
 
+include(nwx_pybind11)
+nwx_add_pybind11_module(
+    ${PROJECT_NAME}
+    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/python"
+    DEPENDS "${PROJECT_NAME}"
+)
+
+include(nwx_python_mods)
 if("${BUILD_TESTING}")
+    set(CXX_TEST_DIR "${CMAKE_CURRENT_LIST_DIR}/tests/cxx")
+    set(PYTHON_TEST_DIR "${CMAKE_CURRENT_LIST_DIR}/tests/python")
+
     cmaize_find_or_build_dependency(
         Catch2
         URL github.com/catchorg/Catch2
@@ -118,14 +133,16 @@ if("${BUILD_TESTING}")
     )
     cmaize_add_tests(
        test_nwchemex
-       SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests"
-       INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/nwchemex"
+       SOURCE_DIR "${CXX_TEST_DIR}/unit_tests"
+       INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
        DEPENDS Catch2 nwchemex mokup
     )
+    nwx_pybind11_tests(
+        py_nwchemex ${PYTHON_TEST_DIR}/integration_tests/test_nwchemex.py
+        SUBMODULES parallelzone pluginplay chemist simde integrals scf
+    )
     if(BUILD_CPPYY_PYBINDINGS)
-       set (python_tests
-            test_python dlpno_mp2_python
-           )
+       set(python_tests test_python dlpno_mp2_python)
        foreach(py_test ${python_tests})
          add_test(NAME ${py_test}
                   COMMAND Python3::Interpreter
@@ -136,14 +153,20 @@ if("${BUILD_TESTING}")
            ${python_tests}
            PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/Python"
        )
+       cppyy_make_python_package(
+           PACKAGE nwchemex
+           NAMESPACES nwchemex
+           DEPPACKAGES integrals scf chemcache mokup
+        ) # mp2
     endif()
 endif()
 
-include(nwx_python_mods)
-if("${BUILD_TESTING}")
-    cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwchemex DEPPACKAGES integrals scf chemcache mokup ) # mp2
-else()
-    cppyy_make_python_package(PACKAGE nwchemex NAMESPACES nwchemex DEPPACKAGES integrals scf chemcache ) # mp2
+if(BUILD_CPPYY_PYBINDINGS)
+    cppyy_make_python_package(
+        PACKAGE nwchemex
+        NAMESPACES nwchemex
+        DEPPACKAGES integrals scf chemcache
+    ) # mp2
 endif()
 
 cmaize_add_package(${PROJECT_NAME} NAMESPACE nwx::)
