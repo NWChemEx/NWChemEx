@@ -64,6 +64,16 @@ cmaize_find_or_build_dependency(
                BUILD_PYBIND11_PYBINDINGS=${BUILD_PYBIND11_PYBINDINGS}
 )
 
+cmaize_find_or_build_dependency(
+        coupledcluster
+        URL github.com/NWChemEx-Project/CoupledCluster
+        VERSION master
+        PRIVATE TRUE
+        BUILD_TARGET coupledcluster
+        FIND_TARGET nwx::coupledcluster
+        CMAKE_ARGS BUILD_TESTING=OFF
+)
+
 # Uncomment once MP2 is working again
 # cmaize_find_or_build_dependency(
 #         mp2
@@ -91,7 +101,7 @@ cmaize_add_library(
     nwchemex
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
     INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include/nwchemex"
-    DEPENDS scf integrals chemcache # nwx::mp2
+    DEPENDS scf integrals chemcache coupledcluster # nwx::mp2
 )
 
 include(nwx_pybind11)

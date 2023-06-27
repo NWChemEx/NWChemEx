@@ -21,6 +21,7 @@
 #include <integrals/integrals.hpp>
 // #include <mp2/mp2.hpp>
 #include <scf/scf.hpp>
+#include <cc/ccsd.hpp>
 
 namespace {
 
@@ -71,6 +72,12 @@ void set_scf_default_modules(pluginplay::ModuleManager& mm) {
 //     "Transformed STG4");
 // }
 
+void set_ccsd_default_modules(pluginplay::ModuleManager& mm) {
+    mm.change_submod("CCSD", "Fock Builder", "Fock Matrix");
+    mm.change_submod("CCSD", "Transformed ERIs", "Transformed ERI4");
+    mm.change_submod("CCSD", "Electronic Energy", "Electronic Energy");
+}
+
 } // namespace
 
 namespace nwchemex {
@@ -118,7 +125,7 @@ void load_modules(pluginplay::ModuleManager& mm) {
     scf::load_modules(mm);
     chemcache::load_modules(mm);
     // mp2::load_modules(mm);
-
+    ccsd::load_modules(mm);
     drivers::load_modules(mm);
 
     mm.add_module<SystemHamiltonian>("SystemHamiltonian");
@@ -126,7 +133,7 @@ void load_modules(pluginplay::ModuleManager& mm) {
     set_integrals_default_modules(mm);
     set_scf_default_modules(mm);
     // set_mp2_default_modules(mm);
-
+    set_ccsd_default_modules(mm);
     set_defaults(mm);
 }
 
