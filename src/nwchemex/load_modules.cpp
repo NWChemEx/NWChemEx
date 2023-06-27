@@ -20,8 +20,8 @@
 #include <chemcache/chemcache.hpp>
 #include <integrals/integrals.hpp>
 // #include <mp2/mp2.hpp>
-#include <scf/scf.hpp>
 #include <cc/ccsd.hpp>
+#include <scf/scf.hpp>
 
 namespace {
 

@@ -3,7 +3,8 @@
 #include <mokup/mokup.hpp>
 
 using scf_wf_pt = simde::CanonicalReference;
-using ccsd_e_pt = simde::CorrelationEnergy<simde::type::canonical_reference,simde::type::canonical_reference>;
+using ccsd_e_pt = simde::CorrelationEnergy<simde::type::canonical_reference,
+                                           simde::type::canonical_reference>;
 
 TEST_CASE("Canonical CCSD") {
     auto& world = TA::get_default_world();
@@ -24,7 +25,7 @@ TEST_CASE("Canonical CCSD") {
     auto [scf_te] = mm.at("SCF Energy").run_as<simde::AOEnergy>(aos, chem_sys);
 
     mm.change_input("CCSD", "threshold", 1e-9);
-    auto [E]        = mm.run_as<ccsd_e_pt>("CCSD", scf_wf, H_e, scf_wf);
+    auto [E] = mm.run_as<ccsd_e_pt>("CCSD", scf_wf, H_e, scf_wf);
     std::cout << "CCSD/STO-3G Correlation Energy: " << E << std::endl;
-    std::cout << "CCSD/STO-3G Total Energy: " << E+scf_te << std::endl;
+    std::cout << "CCSD/STO-3G Total Energy: " << E + scf_te << std::endl;
 }
