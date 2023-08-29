@@ -144,8 +144,8 @@ TEST_CASE("JK mixed") {
 }
 
 TEST_CASE("DFJK mixed") {
-    auto t0      = std::chrono::high_resolution_clock::now();
-    auto t1      = std::chrono::high_resolution_clock::now();
+    auto t0 = std::chrono::high_resolution_clock::now();
+    auto t1 = std::chrono::high_resolution_clock::now();
     auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
     pluginplay::ModuleManager mm;
     nwchemex::load_modules(mm);
@@ -212,9 +212,9 @@ TEST_CASE("DFJK mixed") {
     // std::cout << "K01 from DFJK: " << dt.count() << " ms\n";
 
     std::cout << "J01 from DFJ: \n";
-    t0      = std::chrono::high_resolution_clock::now();
+    t0           = std::chrono::high_resolution_clock::now();
     auto J01_dfj = dfj_mod.run_as<j_pt>(aos1, j0, aos1);
-    t1      = std::chrono::high_resolution_clock::now();
+    t1           = std::chrono::high_resolution_clock::now();
     dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
     // std::cout << "J01 from DFJ: " << dt.count() << " ms\n";
 
