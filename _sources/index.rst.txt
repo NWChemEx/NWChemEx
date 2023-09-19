@@ -33,6 +33,7 @@ the table of contents below to help jump to the topic of interest.
    installation/index
    running/index
    collaborator/index
+   module_api/index
    C++ API <https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html>
 
 .. toctree::
