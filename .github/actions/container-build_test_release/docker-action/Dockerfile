@@ -22,7 +22,7 @@ FROM ghcr.io/nwchemex-project/release_integrals:gcc-stable
 
 FROM ghcr.io/nwchemex-project/release_chemcache:gcc-stable
 
-FROM ghcr.io/nwchemex-project/base_integrals:$base_tag
+FROM ghcr.io/nwchemex-project/base_nwchemex:$base_tag
 
 COPY --from=0 /install /install
 
