@@ -1,0 +1,147 @@
+# The building/testing/releasing process happens 
+# in a container created from the base image (container action).
+# In the end two new release images
+# ghcr.io/nwchemex-project/release_nwchemex:gcc(clang)-latest
+# are generated. Whether these images are stable
+# (do not break any downstream repos) or not is still 
+# to be tested.
+# This workflow should run in the branch which opens a
+# PR to dev (dev/master model to be developed).
+
+name: Build test release
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  # TODO: obtain package version info
+  # general packages for all repos: from NWXCmake
+  # specific packages for a repo: from dependency_versions.txt in
+  # the repo
+  #
+  # A job to retrieve all package versions and output
+  ###
+  docker-file-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      build_dockfile: ${{ steps.changes.outputs.bdfile }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          bdfile:
+            - '.github/Dockerfile/**'
+
+  update-base-image:
+    needs: docker-file-changes
+    if: ${{ needs.docker-file-changes.outputs.build_dockfile == 'true' }}
+    uses: NWChemEx-Project/NWChemEx/.github/workflows/build_base.yaml@image-build_test_release
+    secrets: inherit
+
+  build_update_check:
+    runs-on: ubuntu-latest
+    needs: docker-file-changes
+    outputs:
+      bi_check: ${{ steps.building-image-update.outputs.tag }}
+    steps:
+      - name: Check if the building image has been updated
+        id: building-image-update
+        run: |
+          if [ ${{ needs.docker-file-changes.outputs.build_dockfile == 'true' }} ]; then
+             tag="latest"
+          else
+             tag="stable"
+          fi
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+
+  build_test_release-gcc:
+    runs-on: ubuntu-latest
+    needs: [update-base-image, build_update_check]
+    if: always() && (needs.update-base-image.result == 'success' || needs.update-base-image.result == 'skipped')
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.CONTAINER_REPO_TOKEN }}
+      - uses: actions/checkout@v3
+      - name: Get current branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v7
+      - name: build test release in a container
+        uses: ./.github/actions/container-build_test_release
+        with:
+          ninja_build: true
+          test: true
+          integration_test: false
+          INSTALL: true
+          base_tag: ${{needs.build_update_check.outputs.bi_check}}
+          dep_repo_tag: gcc-stable
+          token: ${{ secrets.CONTAINER_REPO_TOKEN }}
+          user: ${{ github.actor }}
+          cmake_version: 3.17.0
+          gcc_version: 9
+          use_clang: false
+          CMAIZE_GITHUB_TOKEN: ${{ secrets.CMAIZE_GITHUB_TOKEN }}
+          branch_name: ${{ steps.branch-name.outputs.current_branch }} 
+      - name: Check stable release image
+        id: image_exists
+        shell: /usr/bin/bash {0}
+        run: |
+          docker manifest inspect ghcr.io/nwchemex-project/release_nwchemex:gcc-stable > /dev/null
+          echo "conclusion=$?" >> "$GITHUB_OUTPUT"
+      - name: Push stable release image if not exist
+        if: ${{ steps.image_exists.outputs.conclusion != 0 }}
+        run: |
+          docker pull ghcr.io/nwchemex-project/release_nwchemex:gcc-latest
+          docker tag ghcr.io/nwchemex-project/release_nwchemex:gcc-latest ghcr.io/nwchemex-project/release_nwchemex:gcc-stable
+          docker push ghcr.io/nwchemex-project/release_nwchemex:gcc-stable
+
+          #  build_test_release-clang:
+          #    runs-on: ubuntu-latest
+          #    needs: [update-base-image, build_update_check]
+          #    if: always() && (needs.update-base-image.result == 'success' || needs.update-base-image.result == 'skipped')
+          #    steps:
+          #      - name: Login to GitHub Container Registry
+          #        uses: docker/login-action@v1
+          #        with:
+          #          registry: ghcr.io
+          #          username: ${{ github.actor }}
+          #          password: ${{ secrets.CONTAINER_REPO_TOKEN }}
+          #      - uses: actions/checkout@v3
+          #      - name: Get current branch name
+          #        id: branch-name
+          #        uses: tj-actions/branch-names@v7
+          #      - name: build test release in a container
+          #        uses: ./.github/actions/container-build_test_release
+          #        with:
+          #          ninja_build: true
+          #          test: true
+          #          integration_test: false
+          #          INSTALL: true
+          #          base_tag: ${{needs.build_update_check.outputs.bi_check}}
+          #          dep_repo_tag: clang-stable
+          #          token: ${{ secrets.CONTAINER_REPO_TOKEN }}
+          #          user: ${{ github.actor }}
+          #          cmake_version: 3.17.0
+          #          clang_version: 11
+          #          use_clang: true
+          #          CMAIZE_GITHUB_TOKEN: ${{ secrets.CMAIZE_GITHUB_TOKEN }}
+          #          branch_name: ${{ steps.branch-name.outputs.current_branch }}
+          #      - name: Check stable release image
+          #        id: image_exists
+          #        shell: /usr/bin/bash {0}
+          #        run: |
+          #          docker manifest inspect ghcr.io/nwchemex-project/release_nwchemex:clang-stable > /dev/null
+          #          echo "conclusion=$?" >> "$GITHUB_OUTPUT"
+          #      - name: Push stable release image if not exist
+          #        if: ${{ steps.image_exists.outputs.conclusion != 0 }}
+          #        run: |
+          #          docker pull ghcr.io/nwchemex-project/release_nwchemex:clang-latest
+          #          docker tag ghcr.io/nwchemex-project/release_nwchemex:clang-latest ghcr.io/nwchemex-project/release_nwchemex:clang-stable
+          #          docker push ghcr.io/nwchemex-project/release_nwchemex:clang-stable
