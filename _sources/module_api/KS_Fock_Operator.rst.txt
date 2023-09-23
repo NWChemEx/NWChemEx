@@ -47,7 +47,7 @@ module. The columns are:
 +------------------------+----------------------------------------------------------------------+-------------------------------------+
 | One Electron Density   | N/A                                                                  | N/A                                 |
 +------------------------+----------------------------------------------------------------------+-------------------------------------+
-| XC Functional          | <N7chemist9operators29ExchangeCorrelationFunctionalE 0x5570b60e4580> | The exchange-correlation functional |
+| XC Functional          | <N7chemist9operators29ExchangeCorrelationFunctionalE 0x56509f2cfab0> | The exchange-correlation functional |
 +------------------------+----------------------------------------------------------------------+-------------------------------------+
 
 
@@ -91,7 +91,7 @@ XC Functional
 
 - Description : The exchange-correlation functional
 - Default Value : <N7chemist9operators29ExchangeCorrelationFunctionalE
-0x5570b60e4580>
+0x56509f2cfab0>
 - Optional? : False
 - Opaque? : True
 - Domain Restrictions :
