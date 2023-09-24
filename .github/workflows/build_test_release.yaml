@@ -39,7 +39,7 @@ jobs:
   update-base-image:
     needs: docker-file-changes
     if: ${{ needs.docker-file-changes.outputs.build_dockfile == 'true' }}
-    uses: NWChemEx-Project/NWChemEx/.github/workflows/build_base.yaml@image-build_test_release
+    uses: NWChemEx-Project/NWChemEx/.github/workflows/build_base.yaml@master
     secrets: inherit
 
   build_update_check:
