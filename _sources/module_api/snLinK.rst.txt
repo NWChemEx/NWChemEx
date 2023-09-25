@@ -47,7 +47,7 @@ module. The columns are:
 +------------------+----------------------------------------------------------------------------------+----------------------------------+
 | Integration Grid | UltraFine                                                                        | Specification of the Atomic Grid |
 +------------------+----------------------------------------------------------------------------------+----------------------------------+
-| k                | <N7chemist9operators8ExchangeINS_8ElectronENS_7DensityIJS2_EEEEE 0x56509f324d10> | N/A                              |
+| k                | <N7chemist9operators8ExchangeINS_8ElectronENS_7DensityIJS2_EEEEE 0x55562b26fe20> | N/A                              |
 +------------------+----------------------------------------------------------------------------------+----------------------------------+
 | ket              | N/A                                                                              | N/A                              |
 +------------------+----------------------------------------------------------------------------------+----------------------------------+
@@ -95,7 +95,7 @@ k
 
 - Description : N/A
 - Default Value :
-<N7chemist9operators8ExchangeINS_8ElectronENS_7DensityIJS2_EEEEE 0x56509f324d10>
+<N7chemist9operators8ExchangeINS_8ElectronENS_7DensityIJS2_EEEEE 0x55562b26fe20>
 - Optional? : False
 - Opaque? : True
 - Domain Restrictions :
