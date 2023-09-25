@@ -22,7 +22,7 @@ jobs:
   # A job to retrieve all package versions and output
   ###
   update-base-image:
-    uses: NWChemEx-Project/NWChemEx/.github/workflows/build_base.yaml@image-build_test_release
+    uses: NWChemEx-Project/NWChemEx/.github/workflows/build_base.yaml@master
     secrets: inherit
 
   build_test_release-gcc:
