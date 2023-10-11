@@ -50,16 +50,26 @@ int main(int argc, char* argv[]) {
     const auto mol_name       = args.at(0);
     const auto basis_name     = args.at(1);
     const auto aux_basis_name = args.at(2);
-    std::cout << mol_name << std::endl;
-    std::cout << basis_name << std::endl;
-    std::cout << aux_basis_name << std::endl;
+    if(!world.rank()) {
+      std::cout << mol_name << std::endl;
+      std::cout << basis_name << std::endl;
+      std::cout << aux_basis_name << std::endl;
+    }
 
     /// NWX setup
     pluginplay::ModuleManager mm;
     nwchemex::load_modules(mm);
+    //for( auto& [n, p] : mm ) {
+    //  p->turn_off_memoization();
+    //}
+    mm.at("Density").turn_off_memoization();
+    mm.at("DFJ").turn_off_memoization();
+    mm.at("HF Fock Operator").turn_off_memoization();
+    mm.at("MOs Fock").turn_off_memoization();
+    mm.at("CanJK").turn_off_memoization();
 
     /// Hacky way to check if we have GPU modules
-    bool have_gpu_modules = mm.count("DFJ_JEngine");
+    bool have_gpu_modules = false; //mm.count("DFJ_JEngine");
 
     /// Job specifications
     auto mol  = mol_name.find(".xyz") == std::string::npos ? 
@@ -132,8 +142,10 @@ int main(int argc, char* argv[]) {
     // Run and print profile info
     auto E = mm.at("SCF Energy").run_as<simde::AOEnergy>(aos, cs);
     world.gop.fence();
-    std::cout << std::scientific << std::setprecision(16);
-    std::cout << "SCF Energy = " << E << std::endl;
+    if(!world.rank()) {
+      std::cout << std::scientific << std::setprecision(16);
+      std::cout << "SCF Energy = " << E << std::endl;
+    }
     //std::cout << "SCF Profile:" << std::endl;
     //for(auto& [name, mod] : mm) {
     //  std::cout << name << " " << mod->profile_info(false) << std::endl;
