@@ -42,6 +42,7 @@ nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src"
 option(BUILD_TESTING "Should we build the tests?" OFF)
 option(BUILD_PYBIND11_PYBINDINGS "Use pybind11 to build Python3 bindings?" OFF)
 option(BUILD_CPPYY_PYBINDINGS "Use Cppyy to build Python3 bindings?" OFF)
+option(BUILD_FULL_CHEMCACHE "If ChemCache isn't found, build the full version" ON)
 
 cmaize_find_or_build_dependency(
     integrals
@@ -76,6 +77,10 @@ cmaize_find_or_build_dependency(
 #         CMAKE_ARGS BUILD_TESTING=OFF
 # )
 
+if("${BUILD_FULL_CHEMCACHE}")
+    set(NWX_CHEMCACHE_VERSION generated_data)
+endif()
+
 cmaize_find_or_build_dependency(
     chemcache
     URL github.com/NWChemEx-Project/ChemCache
@@ -83,7 +88,6 @@ cmaize_find_or_build_dependency(
     VERSION ${NWX_CHEMCACHE_VERSION}
     BUILD_TARGET chemcache
     FIND_TARGET nwx::chemcache
-    VERSION generated_data
     CMAKE_ARGS BUILD_TESTING=OFF
                BUILD_PYBIND11_PYBINDINGS="${BUILD_PYBIND11_PYBINDINGS}"
 )
