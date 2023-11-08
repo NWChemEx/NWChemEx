@@ -40,15 +40,15 @@ module. The columns are:
 - ``Default`` : The initial value, if one exists, and
 - ``Description`` : A human readable description of what the option is used for.
 
-+--------+---------+------------------------------+
-| Key    | Default | Description                  |
-+========+=========+==============================+
-| AOs    | N/A     | The atomic orbital basis set |
-+--------+---------+------------------------------+
-| Arg 1  | N/A     | N/A                          |
-+--------+---------+------------------------------+
-| system | N/A     | N/A                          |
-+--------+---------+------------------------------+
++-----------------+---------+------------------------------+
+| Key             | Default | Description                  |
++=================+=========+==============================+
+| AOs             | N/A     | The atomic orbital basis set |
++-----------------+---------+------------------------------+
+| Arg 1           | N/A     | N/A                          |
++-----------------+---------+------------------------------+
+| Chemical System | N/A     | N/A                          |
++-----------------+---------+------------------------------+
 
 
 Detailed Descriptions
@@ -86,8 +86,8 @@ Arg 1
 
   - Type == chemist::Molecule
 
-system
-------
+Chemical System
+---------------
 
 - Description : N/A
 - Default Value : N/A

@@ -68,6 +68,14 @@ Modules API
    6-31g__atomic_dm
    6-31g__
    6-31g___atomic_basis
+   ahlrichs_pvdz
+   ahlrichs_pvdz_atomic_basis
+   ahlrichs_tzv
+   ahlrichs_tzv_atomic_basis
+   ahlrichs_vdz
+   ahlrichs_vdz_atomic_basis
+   ahlrichs_vtz
+   ahlrichs_vtz_atomic_basis
    Atom
    Atom_Isotope
    aug-cc-pcv5z
@@ -285,6 +293,56 @@ Modules API
    d-aug-cc-pvqz_atomic_basis
    d-aug-cc-pvtz
    d-aug-cc-pvtz_atomic_basis
+   def2-ecp
+   def2-ecp_atomic_basis
+   def2-qzvp
+   def2-qzvp_atomic_basis
+   def2-qzvp-rifit
+   def2-qzvp-rifit_atomic_basis
+   def2-qzvpd
+   def2-qzvpd_atomic_basis
+   def2-qzvpp
+   def2-qzvpp_atomic_basis
+   def2-qzvpp-rifit
+   def2-qzvpp-rifit_atomic_basis
+   def2-qzvppd
+   def2-qzvppd_atomic_basis
+   def2-qzvppd-rifit
+   def2-qzvppd-rifit_atomic_basis
+   def2-sv(p)
+   def2-sv(p)_atomic_basis
+   def2-sv(p)-jkfit
+   def2-sv(p)-jkfit_atomic_basis
+   def2-sv(p)-rifit
+   def2-sv(p)-rifit_atomic_basis
+   def2-svp
+   def2-svp_atomic_basis
+   def2-svp-rifit
+   def2-svp-rifit_atomic_basis
+   def2-svpd
+   def2-svpd_atomic_basis
+   def2-svpd-rifit
+   def2-svpd-rifit_atomic_basis
+   def2-tzvp
+   def2-tzvp_atomic_basis
+   def2-tzvp-rifit
+   def2-tzvp-rifit_atomic_basis
+   def2-tzvpd
+   def2-tzvpd_atomic_basis
+   def2-tzvpd-rifit
+   def2-tzvpd-rifit_atomic_basis
+   def2-tzvpp
+   def2-tzvpp_atomic_basis
+   def2-tzvpp-rifit
+   def2-tzvpp-rifit_atomic_basis
+   def2-tzvppd
+   def2-tzvppd_atomic_basis
+   def2-tzvppd-rifit
+   def2-tzvppd-rifit_atomic_basis
+   def2-universal-jfit
+   def2-universal-jfit_atomic_basis
+   def2-universal-jkfit
+   def2-universal-jkfit_atomic_basis
    Density
    DFJ
    DFJK

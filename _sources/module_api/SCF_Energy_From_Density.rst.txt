@@ -40,13 +40,13 @@ module. The columns are:
 - ``Default`` : The initial value, if one exists, and
 - ``Description`` : A human readable description of what the option is used for.
 
-+--------+---------+------------------------------+
-| Key    | Default | Description                  |
-+========+=========+==============================+
-| AOs    | N/A     | The atomic orbital basis set |
-+--------+---------+------------------------------+
-| system | N/A     | N/A                          |
-+--------+---------+------------------------------+
++-----------------+---------+------------------------------+
+| Key             | Default | Description                  |
++=================+=========+==============================+
+| AOs             | N/A     | The atomic orbital basis set |
++-----------------+---------+------------------------------+
+| Chemical System | N/A     | N/A                          |
++-----------------+---------+------------------------------+
 
 
 Detailed Descriptions
@@ -73,8 +73,8 @@ AOs
 
   - Type == chemist::orbital_space::AOSpace<chemist::basis_set::AOBasisSet<chemist::basis_set::AtomicBasisSet<chemist::basis_set::Shell<chemist::basis_set::ContractedGaussian<chemist::basis_set::Primitive<double>>>>>>
 
-system
-------
+Chemical System
+---------------
 
 - Description : N/A
 - Default Value : N/A

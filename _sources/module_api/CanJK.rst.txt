@@ -44,11 +44,11 @@ module. The columns are:
 +---------+-----------------------------------------------------------------------------------------------+-------------+
 | Key     | Default                                                                                       | Description |
 +=========+===============================================================================================+=============+
-| (r₁₂)⁻¹ | <N7chemist9operators18CoulombInteractionIJNS_8ElectronENS_7DensityIJS2_EEEEEE 0x55e3fd16bbc0> | N/A         |
+| (r₁₂)⁻¹ | <N7chemist9operators18CoulombInteractionIJNS_8ElectronENS_7DensityIJS2_EEEEEE 0x55cef2f45b50> | N/A         |
 +---------+-----------------------------------------------------------------------------------------------+-------------+
 | bra     | N/A                                                                                           | N/A         |
 +---------+-----------------------------------------------------------------------------------------------+-------------+
-| k       | <N7chemist9operators8ExchangeINS_8ElectronENS_7DensityIJS2_EEEEE 0x55e3fd16bb00>              | N/A         |
+| k       | <N7chemist9operators8ExchangeINS_8ElectronENS_7DensityIJS2_EEEEE 0x55cef2f45a90>              | N/A         |
 +---------+-----------------------------------------------------------------------------------------------+-------------+
 | ket     | N/A                                                                                           | N/A         |
 +---------+-----------------------------------------------------------------------------------------------+-------------+
@@ -73,7 +73,7 @@ subsection we list:
 - Description : N/A
 - Default Value :
 <N7chemist9operators18CoulombInteractionIJNS_8ElectronENS_7DensityIJS2_EEEEEE
-0x55e3fd16bbc0>
+0x55cef2f45b50>
 - Optional? : False
 - Opaque? : True
 - Domain Restrictions :
@@ -96,7 +96,7 @@ k
 
 - Description : N/A
 - Default Value :
-<N7chemist9operators8ExchangeINS_8ElectronENS_7DensityIJS2_EEEEE 0x55e3fd16bb00>
+<N7chemist9operators8ExchangeINS_8ElectronENS_7DensityIJS2_EEEEE 0x55cef2f45a90>
 - Optional? : False
 - Opaque? : True
 - Domain Restrictions :
