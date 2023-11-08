@@ -129,8 +129,8 @@ class TestSCF(unittest.TestCase):
         
         # Create the basis set and the AO space
         basis_pt = simde.MolecularBasisSet()
-        bs = mm.at("cc-pvtz").run_as(basis_pt, mol_h2)
-        aux_bs = mm.at("cc-pvtz-jkfit").run_as(basis_pt, mol_h2)
+        bs = mm.at("sto-3g").run_as(basis_pt, mol_h2)
+        aux_bs = mm.at("sto-3g").run_as(basis_pt, mol_h2)
         aos = chemist.AOSpaceD(bs)
         aux_aos = chemist.AOSpaceD(aux_bs)
         
@@ -143,5 +143,5 @@ class TestSCF(unittest.TestCase):
         aoenergy_pt = simde.AOEnergy()
         energy = mm.at("SCF Energy").run_as(aoenergy_pt, aos, chem_sys_h2)
         end_time = time.time()
-        self.assertAlmostEqual(energy, -1.1201712380602133, 8)
+        self.assertAlmostEqual(energy, -1.16282097647378, 8)
         print("DF-SCF Energy: ", energy, " Time: ", end_time - start_time, " seconds")

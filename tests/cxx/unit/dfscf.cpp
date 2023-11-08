@@ -29,8 +29,8 @@ TEST_CASE("DF-SCF") {
     const auto name = mokup::molecule::h2;
     auto mol        = mokup::get_molecule(name);
 
-    auto bs     = mm.at("cc-pvtz").run_as<mol_bs_pt>(mol);
-    auto aux_bs = mm.at("cc-pvtz-jkfit").run_as<mol_bs_pt>(mol);
+    auto bs     = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
+    auto aux_bs = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
 
     simde::type::ao_space aos(bs);
     simde::type::ao_space aux_aos(aux_bs);
@@ -44,5 +44,5 @@ TEST_CASE("DF-SCF") {
     // Calculate energy
     auto E = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
     std::cout << "Total DF-SCF/STO-3G Energy: " << E << std::endl;
-    REQUIRE(E == Approx(-1.1201712380602133).margin(1.0e-8));
+    REQUIRE(E == Approx(-1.16282097647378).margin(1.0e-8));
 }
