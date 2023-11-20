@@ -1,9 +1,0 @@
-name: Run clang-format Linter
-
-on: [push]
-
-jobs:
-  build:
-    uses: NWChemEx-Project/.github/.github/workflows/format_tmpl.yaml@master
-    with:
-      source: 'include src tests'
