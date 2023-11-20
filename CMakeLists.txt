@@ -17,6 +17,7 @@ set(VERSION 1.0.0) #TODO: Get from git
 project(nwchemex VERSION "${VERSION}" LANGUAGES CXX)
 
 include(FetchContent)
+enable_language(C)
 FetchContent_Declare(
     nwx_cmake
     GIT_REPOSITORY https://github.com/NWChemEx-Project/NWXCMake
@@ -41,6 +42,7 @@ nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src"
 option(BUILD_TESTING "Should we build the tests?" OFF)
 option(BUILD_PYBIND11_PYBINDINGS "Use pybind11 to build Python3 bindings?" OFF)
 option(BUILD_CPPYY_PYBINDINGS "Use Cppyy to build Python3 bindings?" OFF)
+option(BUILD_FULL_CHEMCACHE "If ChemCache isn't found, build the full version" ON)
 
 cmaize_find_or_build_dependency(
     integrals
@@ -85,6 +87,10 @@ cmaize_find_or_build_dependency(
 #         CMAKE_ARGS BUILD_TESTING=OFF
 # )
 
+if("${BUILD_FULL_CHEMCACHE}")
+    set(NWX_CHEMCACHE_VERSION generated_data)
+endif()
+
 cmaize_find_or_build_dependency(
     chemcache
     URL github.com/NWChemEx-Project/ChemCache
@@ -92,7 +98,6 @@ cmaize_find_or_build_dependency(
     VERSION ${NWX_CHEMCACHE_VERSION}
     BUILD_TARGET chemcache
     FIND_TARGET nwx::chemcache
-    VERSION generated_data
     CMAKE_ARGS BUILD_TESTING=OFF
                BUILD_PYBIND11_PYBINDINGS="${BUILD_PYBIND11_PYBINDINGS}"
 )
@@ -133,8 +138,14 @@ if("${BUILD_TESTING}")
         CMAKE_ARGS BUILD_TESTING=OFF
     )
     cmaize_add_tests(
-       test_nwchemex
-       SOURCE_DIR "${CXX_TEST_DIR}/unit_tests"
+       test_unit_nwchemex
+       SOURCE_DIR "${CXX_TEST_DIR}/unit"
+       INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
+       DEPENDS Catch2 nwchemex mokup
+    )
+    cmaize_add_tests(
+       test_integration_nwchemex
+       SOURCE_DIR "${CXX_TEST_DIR}/integration"
        INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
        DEPENDS Catch2 nwchemex mokup
     )

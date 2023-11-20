@@ -1,4 +1,3 @@
-#
 # Copyright 2023 NWChemEx-Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,21 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: C_C++_CI
+FROM alpine:latest
 
-on:
-  pull_request:
-    branches:
-      - master
+COPY docker-action /docker-action
+COPY entrypoint.sh /entrypoint.sh
 
+RUN apk add --update --no-cache docker
+RUN ["chmod", "+x", "/entrypoint.sh"]
 
-jobs:
-  build:
-    uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@master
-    with: 
-      dependencies: 'gcc ninja gcovr cmake openblas cblas lapacke scalapack boost eigen3 openmpi cppyy numpy libint'
-      clang-build: false
-      gcc-build: true
-      ninja_build: false
-    secrets:
-      CMAIZE_GITHUB_TOKEN: ${{ secrets.CMAIZE_GITHUB_TOKEN }}
+# Code file to execute when the docker container starts up (`entrypoint.sh`)
+ENTRYPOINT ["/entrypoint.sh"]
