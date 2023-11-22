@@ -19,13 +19,13 @@ TEST_CASE("Canonical CCSD") {
     simde::type::chemical_system chem_sys(mol);
 
     simde::type::els_hamiltonian H_e(H);
-    auto scf_wf_mod = mm.at("SCF Driver");
-    auto [scf_wf]   = scf_wf_mod.run_as<scf_wf_pt>(H_e, aos);
+    auto scf_wf_mod = mm.at("SCF Wavefunction");
+    auto scf_wf   = scf_wf_mod.run_as<scf_wf_pt>(H_e, aos);
 
-    auto [scf_te] = mm.at("SCF Energy").run_as<simde::AOEnergy>(aos, chem_sys);
+    auto scf_te = mm.at("SCF Energy").run_as<simde::AOEnergy>(aos, chem_sys);
 
     mm.change_input("CCSD", "threshold", 1e-9);
-    auto [E] = mm.run_as<ccsd_e_pt>("CCSD", scf_wf, H_e, scf_wf);
+    auto E = mm.run_as<ccsd_e_pt>("CCSD", scf_wf, H_e, scf_wf);
     std::cout << "CCSD/STO-3G Correlation Energy: " << E << std::endl;
     std::cout << "CCSD/STO-3G Total Energy: " << E + scf_te << std::endl;
 }
