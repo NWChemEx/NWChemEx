@@ -20,7 +20,7 @@ TEST_CASE("Canonical CCSD") {
 
     simde::type::els_hamiltonian H_e(H);
     auto scf_wf_mod = mm.at("SCF Wavefunction");
-    auto scf_wf   = scf_wf_mod.run_as<scf_wf_pt>(H_e, aos);
+    auto scf_wf     = scf_wf_mod.run_as<scf_wf_pt>(H_e, aos);
 
     auto scf_te = mm.at("SCF Energy").run_as<simde::AOEnergy>(aos, chem_sys);
 
