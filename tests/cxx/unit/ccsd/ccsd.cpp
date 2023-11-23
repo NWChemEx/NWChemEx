@@ -13,7 +13,7 @@ TEST_CASE("Canonical CCSD") {
 
     const auto name = mokup::molecule::h2o;
     auto mol        = mokup::get_molecule(name);
-    const auto bs   = mokup::basis_set::sto3g;
+    const auto bs   = mokup::basis_set::ccpvdz;
     auto aos        = mokup::get_bases(name, bs);
     auto H          = mokup::hamiltonian(name);
     simde::type::chemical_system chem_sys(mol);
@@ -26,6 +26,5 @@ TEST_CASE("Canonical CCSD") {
 
     mm.change_input("CCSD", "threshold", 1e-9);
     auto E = mm.run_as<ccsd_e_pt>("CCSD", scf_wf, H_e, scf_wf);
-    std::cout << "CCSD/STO-3G Correlation Energy: " << E << std::endl;
-    std::cout << "CCSD/STO-3G Total Energy: " << E + scf_te << std::endl;
-}
+    std::cout << "CCSD/CC-PVDZ Correlation Energy: " << E << std::endl;
+    std::cout << "CCSD/CC-PVDZ Total Energy: " << E + scf_te << std::endl;
