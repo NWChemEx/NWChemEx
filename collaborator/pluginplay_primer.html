@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PluginPlay Primer &mdash; NWChemEx 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -64,7 +66,7 @@
 <li class="toctree-l2"><a class="reference internal" href="faqs.html">Collaboration FAQs</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../module_api/index.html">Modules API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module_api/index.html">Module API</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html">C++ API</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">NWX Infrastructure Documentation</span></p>
@@ -106,8 +108,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="pluginplay-primer">
-<h1>PluginPlay Primer<a class="headerlink" href="#pluginplay-primer" title="Permalink to this heading"></a></h1>
+  <section id="pluginplay-primer">
+<h1>PluginPlay Primer<a class="headerlink" href="#pluginplay-primer" title="Link to this heading"></a></h1>
 <p>The guts of NWChemEx uses the PluginPlay framework. Additional functionality is added
 to the PluginPlay by writing plugins called “modules”. Generally speaking each module
 can compute one or more properties. For example a module which runs a
@@ -117,12 +119,12 @@ is an API called the “property type”. The property types define the hooks th
 NWChemEx uses to call plugins. To interface your code with NWChemEx you need to
 wrap it in a module, register the properties your module can compute, and
 register the module with NWChemEx. NWChemEx will handle everything else.</p>
-<div class="section" id="writing-a-module">
-<h2>Writing a module<a class="headerlink" href="#writing-a-module" title="Permalink to this heading"></a></h2>
+<section id="writing-a-module">
+<h2>Writing a module<a class="headerlink" href="#writing-a-module" title="Link to this heading"></a></h2>
 <p>NWChemEx and the PluginPlay are able to work with modules written in either C++ or in
 Python.</p>
-<div class="section" id="c">
-<h3>C++<a class="headerlink" href="#c" title="Permalink to this heading"></a></h3>
+<section id="c">
+<h3>C++<a class="headerlink" href="#c" title="Link to this heading"></a></h3>
 <p>If you want to write your module in C++ you will need to create a library with
 your module. Your library will need to link to the SimDE repo (which
 will automatically also expose your library to PluginPlay and Chemist). For sake of
@@ -198,13 +200,13 @@ source file:</p>
 <span class="p">}</span><span class="w"> </span><span class="c1">// namespace deep_integrals</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="python">
-<h3>Python<a class="headerlink" href="#python" title="Permalink to this heading"></a></h3>
+</section>
+<section id="python">
+<h3>Python<a class="headerlink" href="#python" title="Link to this heading"></a></h3>
 <p>TODO: Write me!!!!</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

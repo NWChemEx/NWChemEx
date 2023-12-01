@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Building the NWChemEx Package &mdash; NWChemEx 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -66,7 +68,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../running/running.html">Running NWChemEx</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../collaborator/index.html">Collaborator Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../module_api/index.html">Modules API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module_api/index.html">Module API</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html">C++ API</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">NWX Infrastructure Documentation</span></p>
@@ -108,10 +110,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="building-the-nwchemex-package">
-<h1>Building the NWChemEx Package<a class="headerlink" href="#building-the-nwchemex-package" title="Permalink to this heading"></a></h1>
-<div class="section" id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+  <section id="building-the-nwchemex-package">
+<h1>Building the NWChemEx Package<a class="headerlink" href="#building-the-nwchemex-package" title="Link to this heading"></a></h1>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
 <p>To compile NWChemEx, some packages must be available on your system beforehand:</p>
 <ol class="arabic simple">
 <li><p>A C++ compiler supporting the C++17 standard, currently we use gcc 9 (10.2
@@ -142,8 +144,8 @@ before building are installed.</p>
 <li><p><a class="reference external" href="https://github.com/NWChemEx-Project/SCF">SCF</a></p></li>
 <li><p><a class="reference external" href="https://github.com/NWChemEx-Project/MP2">MP2</a></p></li>
 </ol>
-<div class="section" id="blas-lapack-scalapack">
-<h3>BLAS/LAPACK/ScaLAPACK<a class="headerlink" href="#blas-lapack-scalapack" title="Permalink to this heading"></a></h3>
+<section id="blas-lapack-scalapack">
+<h3>BLAS/LAPACK/ScaLAPACK<a class="headerlink" href="#blas-lapack-scalapack" title="Link to this heading"></a></h3>
 <p><strong>Intel MKL (Intel oneAPI MKL):</strong> Ensure that all required environment
 variables for the Intel MKL are set by executing <code class="docutils literal notranslate"><span class="pre">/path/to/intel/mkl/bin/</span>
 <span class="pre">mklvars.sh</span> <span class="pre">&lt;arch&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;arch&gt;</span></code> must be either <code class="docutils literal notranslate"><span class="pre">ia32</span></code> or <code class="docutils literal notranslate"><span class="pre">intel64</span></code>.
@@ -157,9 +159,9 @@ environment variables for the packages are set up correctly according to the
 package-specific instructions and that paths to non-standard installation
 directories are included in the cmake variable <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> (which
 should be specified in your <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code> file (see below)).</p>
-</div>
-<div class="section" id="libint2">
-<h3>libint2<a class="headerlink" href="#libint2" title="Permalink to this heading"></a></h3>
+</section>
+<section id="libint2">
+<h3>libint2<a class="headerlink" href="#libint2" title="Link to this heading"></a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><strong>Important:</strong> Boost must be installed and in your path prior to building
@@ -192,18 +194,18 @@ cmake<span class="w"> </span>-H<span class="w"> </span>.<span class="w"> </span>
 cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>install<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>OUTPUT.BUILD
 </pre></div>
 </div>
-</div>
-<div class="section" id="github-personal-access-token">
-<h3>GitHub Personal Access Token<a class="headerlink" href="#github-personal-access-token" title="Permalink to this heading"></a></h3>
+</section>
+<section id="github-personal-access-token">
+<h3>GitHub Personal Access Token<a class="headerlink" href="#github-personal-access-token" title="Link to this heading"></a></h3>
 <p>A GitHub Personal Access Token (PAT) is necessary since, at the moment,
 NWChemEx and some dependencies are hosted in private repositories. To create a
 PAT, follow the instructions at GitHub’s <a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">Creating a personal access token</a> page. Note: please create a <strong>classical
 personal access token</strong>, not a fine-grained personal access token. This PAT
 will be used when prompted for a password while cloning repositories.</p>
-</div>
-</div>
-<div class="section" id="building-nwchemex">
-<h2>Building NWChemEx<a class="headerlink" href="#building-nwchemex" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+<section id="building-nwchemex">
+<h2>Building NWChemEx<a class="headerlink" href="#building-nwchemex" title="Link to this heading"></a></h2>
 <p>The build instructions are given in the following sections based on a few
 assumptions:</p>
 <ol class="arabic simple">
@@ -216,8 +218,8 @@ for each in the sections below:</p>
 <li><p>CMake Toolchain File: <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code></p></li>
 <li><p>NWChemEx Build Script: <code class="docutils literal notranslate"><span class="pre">build_nwx.sh</span></code></p></li>
 </ol>
-<div class="section" id="cmake-toolchain-file">
-<h3>CMake Toolchain File<a class="headerlink" href="#cmake-toolchain-file" title="Permalink to this heading"></a></h3>
+<section id="cmake-toolchain-file">
+<h3>CMake Toolchain File<a class="headerlink" href="#cmake-toolchain-file" title="Link to this heading"></a></h3>
 <p>NWChemEx requires knowledge of many packages and tools which may have system-
 specific installation locations. Inside the top level directory where NWChemEx
 will be built, create a toolchain file named <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code>. This file
@@ -255,9 +257,9 @@ brackets (&lt;&gt;) for your system.</p>
 <span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS</span><span class="w"> </span><span class="s2">&quot;${CMAKE_CXX_FLAGS} -DOMPI_SKIP_MPICXX&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="nwchemex-build-script">
-<h3>NWChemEx Build Script<a class="headerlink" href="#nwchemex-build-script" title="Permalink to this heading"></a></h3>
+</section>
+<section id="nwchemex-build-script">
+<h3>NWChemEx Build Script<a class="headerlink" href="#nwchemex-build-script" title="Link to this heading"></a></h3>
 <p>Create a new file named <code class="docutils literal notranslate"><span class="pre">build_nwx.sh</span></code> next to <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code> and paste
 the script below into it. This script will download, build, and install NWChemEx
 and any remaining dependencies. Logs for the build will be generated beside this
@@ -300,9 +302,9 @@ build may take an extremely long time to finish (a known issue to be resolved).<
 <p>The toolchain.cmake file and the building script for NWChemEx can also be used
 (with minor modifications such as repo paths) to compile other packages in the
 NWChemEx project.</p>
-</div>
-<div class="section" id="running-the-nwchemex-unit-tests">
-<h3>Running the NWChemEx Unit Tests<a class="headerlink" href="#running-the-nwchemex-unit-tests" title="Permalink to this heading"></a></h3>
+</section>
+<section id="running-the-nwchemex-unit-tests">
+<h3>Running the NWChemEx Unit Tests<a class="headerlink" href="#running-the-nwchemex-unit-tests" title="Link to this heading"></a></h3>
 <p>Assuming NWChemEx is built with <code class="docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code> enabled, then once the NWChemEx package is successfully built the unit tests can be run by running  <code class="docutils literal notranslate"><span class="pre">ctest</span></code> in the build directory. For debugging purposes, the log files resulting from running the unit tests can be found in the <code class="docutils literal notranslate"><span class="pre">Testing/Temporary</span></code>
 subdirectory of the build directory.</p>
 <div class="admonition note">
@@ -314,9 +316,9 @@ and note that NWChemEx depends on several other projects:</p>
 <li><p><a class="reference external" href="https://github.com/catchorg/Catch2">Catch2</a> (for testing only)</p></li>
 </ul>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
