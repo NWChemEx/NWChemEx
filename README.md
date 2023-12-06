@@ -16,7 +16,7 @@
 
 # NWChemEx
 
-[Documentation](https://nwchemex-project.github.io/NWChemEx)
+[Documentation](https://nwchemex.github.io/NWChemEx)
 
 ## About This Repo
 
@@ -45,7 +45,7 @@ software suite in a number of ways.
 ## Building
 
 See
-[Build Instructions](https://nwchemex-project.github.io/NWChemEx/installation/building.html#)
+[Build Instructions](https://nwchemex.github.io/NWChemEx/installation/building.html#)
 in the documentation.
 
 ## Running jobs

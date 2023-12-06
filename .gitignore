@@ -12,15 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-################################################################################
-#
-# The master .gitignore lives at NWChemEx-Project/DeveloperTools. The .gitignore
-# file contained in all other NWChemEx-Project repositories is a synchronized
-# copy of the master .gitignore. Thus to make changes to the .gitignore file
-# please make them to the master .gitignore file.
-#
-################################################################################
-
 # These are extensions commonly used to denote temporary files
 *.tmp
 *.autosave

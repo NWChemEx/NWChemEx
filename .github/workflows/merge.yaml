@@ -22,7 +22,7 @@ on:
 
 jobs:
   Common-Merge:
-    uses: NWChemEx-Project/.github/.github/workflows/common_merge.yaml@master
+    uses: NWChemEx/.github/.github/workflows/common_merge.yaml@master
     with:
       doc_target: 'nwchemex_cxx_api'
       generate_module_docs: true
