@@ -20,7 +20,7 @@ include(FetchContent)
 enable_language(C)
 FetchContent_Declare(
     nwx_cmake
-    GIT_REPOSITORY https://github.com/NWChemEx-Project/NWXCMake
+    GIT_REPOSITORY https://github.com/NWChemEx/NWXCMake
 )
 FetchContent_MakeAvailable(nwx_cmake)
 list(APPEND CMAKE_MODULE_PATH "${nwx_cmake_SOURCE_DIR}/cmake")
@@ -46,7 +46,7 @@ option(BUILD_FULL_CHEMCACHE "If ChemCache isn't found, build the full version" O
 
 cmaize_find_or_build_dependency(
     integrals
-    URL github.com/NWChemEx-Project/Integrals
+    URL github.com/NWChemEx/Integrals
     PRIVATE TRUE
     VERSION ${NWX_INTEGRALS_VERSION}
     BUILD_TARGET integrals
@@ -57,7 +57,7 @@ cmaize_find_or_build_dependency(
 
 cmaize_find_or_build_dependency(
     scf
-    URL github.com/NWChemEx-Project/SCF
+    URL github.com/NWChemEx/SCF
     PRIVATE TRUE
     VERSION ${NWX_SCF_VERSION}
     BUILD_TARGET scf
@@ -69,7 +69,7 @@ cmaize_find_or_build_dependency(
 # Uncomment once MP2 is working again
 # cmaize_find_or_build_dependency(
 #         mp2
-#         URL github.com/NWChemEx-Project/MP2
+#         URL github.com/NWChemEx/MP2
 #         PRIVATE TRUE
 #         VERSION ${NWX_MP2_VERSION}
 #         BUILD_TARGET mp2
@@ -83,7 +83,7 @@ endif()
 
 cmaize_find_or_build_dependency(
     chemcache
-    URL github.com/NWChemEx-Project/ChemCache
+    URL github.com/NWChemEx/ChemCache
     PRIVATE TRUE
     VERSION ${NWX_CHEMCACHE_VERSION}
     BUILD_TARGET chemcache
@@ -120,7 +120,7 @@ if("${BUILD_TESTING}")
     )
     cmaize_find_or_build_dependency(
         mokup
-        URL github.com/NWChemEx-Project/mokup
+        URL github.com/NWChemEx/mokup
         PRIVATE TRUE
         VERSION ${NWX_MOKUP_VERSION}
         BUILD_TARGET mokup

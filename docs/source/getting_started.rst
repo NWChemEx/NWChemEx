@@ -36,7 +36,7 @@ If you answered along the lines of:
 
    - Welcome to the team!!! You are a developer.
    - A link to the developer documentation can be found 
-     `here <https://nwchemex-project.github.io/DeveloperTools/>`_
+     `here <https://nwchemex.github.io/DeveloperTools/>`_
    - The developer documentation is hosted out of the DeveloperTools repo. The 
      documentation references scripts and other tools located in that repo.  
 
@@ -44,5 +44,5 @@ If you answered along the lines of:
 
    - Either NWChemEx is not the project for you or we missed a scenario. Feel 
      free to contact us using 
-     `GitHub Disscussions <https://github.com/NWChemEx-Project/NWChemEx/discussions/categories/q-a>`_
+     `GitHub Disscussions <https://github.com/NWChemEx/NWChemEx/discussions/categories/q-a>`_
 

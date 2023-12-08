@@ -45,9 +45,9 @@ NWChemEx also depends on a number of repositories listed below. Please visit
 the repositories and ensure that any additional packages that must be available
 before building are installed.
 
-#. `integrals <https://github.com/NWChemEx-Project/Integrals>`__
-#. `SCF <https://github.com/NWChemEx-Project/SCF>`__
-#. `MP2 <https://github.com/NWChemEx-Project/MP2>`__
+#. `integrals <https://github.com/NWChemEx/Integrals>`__
+#. `SCF <https://github.com/NWChemEx/SCF>`__
+#. `MP2 <https://github.com/NWChemEx/MP2>`__
 
 BLAS/LAPACK/ScaLAPACK
 ^^^^^^^^^^^^^^^^^^^^^
@@ -189,7 +189,7 @@ build script.
 .. code-block:: bash
 
    # Clone the repo
-   git clone https://github.com/NWChemEx-Project/NWChemEx.git 2>&1 | tee "OUTPUT.GITCLONE"
+   git clone https://github.com/NWChemEx/NWChemEx.git 2>&1 | tee "OUTPUT.GITCLONE"
    # <Type login information if prompted.>
    
    # Navigate into the newly created NWChemEx subdirectory
