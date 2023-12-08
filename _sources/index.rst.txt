@@ -16,7 +16,7 @@
 Welcome to the NWChemEx Project!!!
 ##################################
 
-The https://github.com/NWChemEx-Project/NWChemEx is the top-level, user-centric
+The https://github.com/NWChemEx/NWChemEx is the top-level, user-centric
 repository for the NWChemEx project. The documentation you are currently reading
 is the top-most documentation page associated with the NWChemEx project. We have 
 attempted to (and continue to attempt to) provide comprehensive documentation of 
@@ -34,22 +34,22 @@ the table of contents below to help jump to the topic of interest.
    running/index
    collaborator/index
    module_api/index
-   C++ API <https://nwchemex-project.github.io/NWChemEx/nwchemex_cxx_api/index.html>
+   C++ API <https://nwchemex.github.io/NWChemEx/nwchemex_cxx_api/index.html>
 
 .. toctree::
    :maxdepth: 2
    :caption: NWX Infrastructure Documentation
 
-   PluginPlay <https://nwchemex-project.github.io/PluginPlay/>
-   SimDE <https://nwchemex-project.github.io/SimDE/>
-   Utilities <https://nwchemex-project.github.io/Utilities/>
-   Chemist <https://nwchemex-project.github.io/Chemist/>
+   PluginPlay <https://nwchemex.github.io/PluginPlay/>
+   SimDE <https://nwchemex.github.io/SimDE/>
+   Utilities <https://nwchemex.github.io/Utilities/>
+   Chemist <https://nwchemex.github.io/Chemist/>
 
 
 .. toctree::
    :maxdepth: 2
    :caption: First Party NWX Supermodules
 
-   Integrals <https://nwchemex-project.github.io/Integrals/>
-   SCF <https://nwchemex-project.github.io/SCF/>
-   MP2 <https://nwchemex-project.github.io/MP2/>
+   Integrals <https://nwchemex.github.io/Integrals/>
+   SCF <https://nwchemex.github.io/SCF/>
+   MP2 <https://nwchemex.github.io/MP2/>
