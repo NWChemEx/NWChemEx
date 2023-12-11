@@ -16,7 +16,6 @@
 
 #include "nwchemex/nwchemex.hpp"
 #include <catch2/catch.hpp>
-#include <mokup/mokup.hpp>
 
 using pt        = simde::AOEnergy;
 using mol_bs_pt = simde::MolecularBasisSet;
@@ -26,9 +25,9 @@ TEST_CASE("DF-SCF") {
     nwchemex::load_modules(mm);
 
     // Grab molecule and build basis sets
-    const auto name = mokup::molecule::h2;
-    auto mol        = mokup::get_molecule(name);
-
+    simde::type::atom H1{"H", 1ul, 0.0, 0.0, 0.0, 0.0};
+    simde::type::atom H2{"H", 1ul, 0.0, 0.0, 0.0, 1.6818473865225443};
+    simde::type::molecule mol{H1, H2};
     auto bs     = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
     auto aux_bs = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
 

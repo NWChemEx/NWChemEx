@@ -16,10 +16,10 @@
 
 #include "nwchemex/nwchemex.hpp"
 #include <catch2/catch.hpp>
-#include <mokup/mokup.hpp>
 
-using pt        = simde::AOEnergy;
-using mol_bs_pt = simde::MolecularBasisSet;
+using pt          = simde::AOEnergy;
+using mol_bs_pt   = simde::MolecularBasisSet;
+using molecule_pt = simde::MoleculeFromString;
 
 TEST_CASE("SCF") {
     auto start = std::chrono::high_resolution_clock::now();
@@ -28,10 +28,9 @@ TEST_CASE("SCF") {
     nwchemex::load_modules(mm);
 
     // Grab molecule and build a basis set
-    const auto name = mokup::molecule::h2o;
-    auto mol        = mokup::get_molecule(name);
-
-    auto bs = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
+    std::string name{"water"};
+    auto mol = mm.at("NWX Molecules").run_as<molecule_pt>(name);
+    auto bs  = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
 
     simde::type::ao_space aos(bs);
     simde::type::chemical_system chem_sys(mol);
@@ -56,10 +55,9 @@ TEST_CASE("SCF with SAD guess") {
     nwchemex::load_modules(mm);
 
     // Grab molecule and build a basis set
-    const auto name = mokup::molecule::h2o;
-    auto mol        = mokup::get_molecule(name);
-
-    auto bs = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
+    std::string name{"water"};
+    auto mol = mm.at("NWX Molecules").run_as<molecule_pt>(name);
+    auto bs  = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
 
     simde::type::ao_space aos(bs);
     simde::type::chemical_system chem_sys(mol);
