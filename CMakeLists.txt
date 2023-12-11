@@ -118,26 +118,17 @@ if("${BUILD_TESTING}")
         VERSION ${NWX_CATCH2_VERSION}
         FIND_TARGET Catch2::Catch2
     )
-    cmaize_find_or_build_dependency(
-        mokup
-        URL github.com/NWChemEx/mokup
-        PRIVATE TRUE
-        VERSION ${NWX_MOKUP_VERSION}
-        BUILD_TARGET mokup
-        FIND_TARGET nwx::mokup
-        CMAKE_ARGS BUILD_TESTING=OFF
-    )
     cmaize_add_tests(
        test_unit_nwchemex
        SOURCE_DIR "${CXX_TEST_DIR}/unit"
        INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
-       DEPENDS Catch2 nwchemex mokup
+       DEPENDS Catch2 nwchemex
     )
     cmaize_add_tests(
        test_integration_nwchemex
        SOURCE_DIR "${CXX_TEST_DIR}/integration"
        INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
-       DEPENDS Catch2 nwchemex mokup
+       DEPENDS Catch2 nwchemex
     )
     nwx_pybind11_tests(
         py_nwchemex ${PYTHON_TEST_DIR}/integration_tests/test_nwchemex.py
@@ -158,7 +149,7 @@ if("${BUILD_TESTING}")
        cppyy_make_python_package(
            PACKAGE nwchemex
            NAMESPACES nwchemex
-           DEPPACKAGES integrals scf chemcache mokup
+           DEPPACKAGES integrals scf chemcache
         ) # mp2
     endif()
 endif()
