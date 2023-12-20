@@ -17,9 +17,10 @@ set(VERSION 1.0.0) #TODO: Get from git
 project(nwchemex VERSION "${VERSION}" LANGUAGES CXX)
 
 include(FetchContent)
+enable_language(C)
 FetchContent_Declare(
     nwx_cmake
-    GIT_REPOSITORY https://github.com/NWChemEx-Project/NWXCMake
+    GIT_REPOSITORY https://github.com/NWChemEx/NWXCMake
 )
 FetchContent_MakeAvailable(nwx_cmake)
 list(APPEND CMAKE_MODULE_PATH "${nwx_cmake_SOURCE_DIR}/cmake")
@@ -41,10 +42,11 @@ nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src"
 option(BUILD_TESTING "Should we build the tests?" OFF)
 option(BUILD_PYBIND11_PYBINDINGS "Use pybind11 to build Python3 bindings?" OFF)
 option(BUILD_CPPYY_PYBINDINGS "Use Cppyy to build Python3 bindings?" OFF)
+option(BUILD_FULL_CHEMCACHE "If ChemCache isn't found, build the full version" ON)
 
 cmaize_find_or_build_dependency(
     integrals
-    URL github.com/NWChemEx-Project/Integrals
+    URL github.com/NWChemEx/Integrals
     PRIVATE TRUE
     VERSION ${NWX_INTEGRALS_VERSION}
     BUILD_TARGET integrals
@@ -55,7 +57,7 @@ cmaize_find_or_build_dependency(
 
 cmaize_find_or_build_dependency(
     scf
-    URL github.com/NWChemEx-Project/SCF
+    URL github.com/NWChemEx/SCF
     PRIVATE TRUE
     VERSION ${NWX_SCF_VERSION}
     BUILD_TARGET scf
@@ -67,7 +69,7 @@ cmaize_find_or_build_dependency(
 # Uncomment once MP2 is working again
 # cmaize_find_or_build_dependency(
 #         mp2
-#         URL github.com/NWChemEx-Project/MP2
+#         URL github.com/NWChemEx/MP2
 #         PRIVATE TRUE
 #         VERSION ${NWX_MP2_VERSION}
 #         BUILD_TARGET mp2
@@ -75,14 +77,17 @@ cmaize_find_or_build_dependency(
 #         CMAKE_ARGS BUILD_TESTING=OFF
 # )
 
+if("${BUILD_FULL_CHEMCACHE}")
+    set(NWX_CHEMCACHE_VERSION generated_data)
+endif()
+
 cmaize_find_or_build_dependency(
     chemcache
-    URL github.com/NWChemEx-Project/ChemCache
+    URL github.com/NWChemEx/ChemCache
     PRIVATE TRUE
     VERSION ${NWX_CHEMCACHE_VERSION}
     BUILD_TARGET chemcache
     FIND_TARGET nwx::chemcache
-    VERSION generated_data
     CMAKE_ARGS BUILD_TESTING=OFF
                BUILD_PYBIND11_PYBINDINGS="${BUILD_PYBIND11_PYBINDINGS}"
 )
@@ -113,20 +118,17 @@ if("${BUILD_TESTING}")
         VERSION ${NWX_CATCH2_VERSION}
         FIND_TARGET Catch2::Catch2
     )
-    cmaize_find_or_build_dependency(
-        mokup
-        URL github.com/NWChemEx-Project/mokup
-        PRIVATE TRUE
-        VERSION ${NWX_MOKUP_VERSION}
-        BUILD_TARGET mokup
-        FIND_TARGET nwx::mokup
-        CMAKE_ARGS BUILD_TESTING=OFF
+    cmaize_add_tests(
+       test_unit_nwchemex
+       SOURCE_DIR "${CXX_TEST_DIR}/unit"
+       INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
+       DEPENDS Catch2 nwchemex
     )
     cmaize_add_tests(
-       test_nwchemex
-       SOURCE_DIR "${CXX_TEST_DIR}/unit_tests"
+       test_integration_nwchemex
+       SOURCE_DIR "${CXX_TEST_DIR}/integration"
        INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
-       DEPENDS Catch2 nwchemex mokup
+       DEPENDS Catch2 nwchemex
     )
     nwx_pybind11_tests(
         py_nwchemex ${PYTHON_TEST_DIR}/integration_tests/test_nwchemex.py
@@ -147,7 +149,7 @@ if("${BUILD_TESTING}")
        cppyy_make_python_package(
            PACKAGE nwchemex
            NAMESPACES nwchemex
-           DEPPACKAGES integrals scf chemcache mokup
+           DEPPACKAGES integrals scf chemcache
         ) # mp2
     endif()
 endif()

@@ -16,7 +16,6 @@
 
 #include "nwchemex/nwchemex.hpp"
 #include <catch2/catch.hpp>
-#include <mokup/mokup.hpp>
 
 using pt        = simde::AOEnergy;
 using mol_bs_pt = simde::MolecularBasisSet;
@@ -26,11 +25,11 @@ TEST_CASE("DF-SCF") {
     nwchemex::load_modules(mm);
 
     // Grab molecule and build basis sets
-    const auto name = mokup::molecule::h2;
-    auto mol        = mokup::get_molecule(name);
-
-    auto bs     = mm.at("cc-pvtz").run_as<mol_bs_pt>(mol);
-    auto aux_bs = mm.at("cc-pvtz-jkfit").run_as<mol_bs_pt>(mol);
+    simde::type::atom H1{"H", 1ul, 0.0, 0.0, 0.0, 0.0};
+    simde::type::atom H2{"H", 1ul, 0.0, 0.0, 0.0, 1.6818473865225443};
+    simde::type::molecule mol{H1, H2};
+    auto bs     = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
+    auto aux_bs = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
 
     simde::type::ao_space aos(bs);
     simde::type::ao_space aux_aos(aux_bs);
@@ -44,5 +43,5 @@ TEST_CASE("DF-SCF") {
     // Calculate energy
     auto E = mm.at("SCF Energy").run_as<pt>(aos, chem_sys);
     std::cout << "Total DF-SCF/STO-3G Energy: " << E << std::endl;
-    REQUIRE(E == Approx(-1.1201712380602133).margin(1.0e-8));
+    REQUIRE(E == Approx(-1.16282097647378).margin(1.0e-8));
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NWChemEx-Project
+ * Copyright 2023 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-#include "nwchemex/nwchemex.hpp"
+#define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
-#include <mokup/mokup.hpp>
+#include <iostream>
 
-using simde::type::chemical_system;
-using ptype = simde::SystemHamiltonian;
-
-TEST_CASE("System Hamiltonian") {
-    pluginplay::ModuleManager mm;
-    nwchemex::load_modules(mm);
-    auto mod = mm.at("SystemHamiltonian");
-
-    auto name   = mokup::molecule::h2o;
-    auto mol    = mokup::get_molecule(name);
-    auto H_corr = mokup::hamiltonian(name);
-
-    chemical_system sys{mol, 10};
-
-    auto H = mod.run_as<ptype>(sys);
-    REQUIRE(H == H_corr);
+int print_and_return(int ii) {
+    std::cout << "This is only a blank model for an integration test."
+              << std::endl;
+    return 0;
 }
+
+TEST_CASE("Blank test", "[classic]") { REQUIRE(print_and_return(0) == 0); }

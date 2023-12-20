@@ -1,4 +1,4 @@
-# Copyright 2021 NWChemEx-Project
+# Copyright 2023 NWChemEx-Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-name: Add Licenses
+
+name: .github Pull Request Workflow
 
 on:
   pull_request:
@@ -20,9 +21,12 @@ on:
       - master
 
 jobs:
-  license_files:
-    uses: NWChemEx-Project/.github/.github/workflows/add_licenses_master.yaml@master
+  Common-Pull-Request:
+    uses: NWChemEx/.github/.github/workflows/common_pull_request.yaml@master
     with:
-      config_file: .github/.licenserc.yaml
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
+      config_file: '.github/.licenserc.yaml'
+      source_dir: 'include src tests'
+      compilers: '["gcc-11"]'
+      doc_target: 'nwchemex_cxx_api'
+      repo_toolchain: '.github/nwx_pr_settings.cmake'
+    secrets: inherit
