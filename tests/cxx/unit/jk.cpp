@@ -16,7 +16,6 @@
 
 #include "nwchemex/nwchemex.hpp"
 #include <catch2/catch.hpp>
-#include <mokup/mokup.hpp>
 
 using pt          = simde::AOEnergy;
 using mol_bs_pt   = simde::MolecularBasisSet;
@@ -27,6 +26,7 @@ using ref_dens_pt = simde::SCFGuessDensity;
 using sad_rho_pt  = simde::InitialDensity; // H_e -> rho
 using j_type      = simde::type::el_scf_j;
 using k_type      = simde::type::el_scf_k;
+using molecule_pt = simde::MoleculeFromString;
 
 TEST_CASE("JK mixed") {
     pluginplay::ModuleManager mm;
@@ -43,8 +43,8 @@ TEST_CASE("JK mixed") {
     sad_mod_0.change_submod("Atomic Density", mm.at("6-31g atomic dm"));
 
     // Grab molecule and build a basis set
-    const auto name = mokup::molecule::h2o;
-    auto mol        = mokup::get_molecule(name);
+    std::string name{"water"};
+    auto mol = mm.at("NWX Molecules").run_as<molecule_pt>(name);
 
     auto bs0 = mm.at("6-31g").run_as<mol_bs_pt>(mol);
     auto bs1 = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
@@ -70,8 +70,8 @@ TEST_CASE("JK mixed") {
     auto inputs = canjk_mod.inputs();
     inputs.at("bra").change(aos1);
     inputs.at("ket").change(aos1);
-    inputs.at("(r̂₁₂)⁻¹").change(j0);
-    inputs.at("k̂").change(k0);
+    inputs.at("(r₁₂)⁻¹").change(j0);
+    inputs.at("k").change(k0);
 
     std::cout << "J01 from CanJK: ";
     auto t0             = std::chrono::high_resolution_clock::now();
@@ -108,8 +108,8 @@ TEST_CASE("JK mixed") {
     simde::type::tensor J00_canjk, K00_canjk;
     inputs.at("bra").change(aos0);
     inputs.at("ket").change(aos0);
-    inputs.at("(r̂₁₂)⁻¹").change(j0);
-    inputs.at("k̂").change(k0);
+    inputs.at("(r₁₂)⁻¹").change(j0);
+    inputs.at("k").change(k0);
 
     std::cout << "J00 from CanJK: ";
     t0                  = std::chrono::high_resolution_clock::now();
@@ -158,8 +158,8 @@ TEST_CASE("DFJK mixed") {
     sad_mod_0.change_submod("Atomic Density", mm.at("6-31g atomic dm"));
 
     // Grab molecule and build a basis set
-    const auto name = mokup::molecule::h2o;
-    auto mol        = mokup::get_molecule(name);
+    std::string name{"water"};
+    auto mol = mm.at("NWX Molecules").run_as<molecule_pt>(name);
 
     auto bs0    = mm.at("6-31g").run_as<mol_bs_pt>(mol);
     auto bs1    = mm.at("sto-3g").run_as<mol_bs_pt>(mol);
@@ -193,8 +193,8 @@ TEST_CASE("DFJK mixed") {
     auto inputs = dfjk_mod.inputs();
     inputs.at("bra").change(aos1);
     inputs.at("ket").change(aos1);
-    inputs.at("(r̂₁₂)⁻¹").change(j0);
-    inputs.at("k̂").change(k0);
+    inputs.at("(r₁₂)⁻¹").change(j0);
+    inputs.at("k").change(k0);
     inputs.at("Fitting Basis").change(aux_aos);
 
     std::cout << "J01 from DFJK: \n";
