@@ -197,80 +197,62 @@ TEST_CASE("DFJK mixed") {
     inputs.at("k").change(k0);
     inputs.at("Fitting Basis").change(aux_aos);
 
-    std::cout << "J01 from DFJK: \n";
-    t0                 = std::chrono::high_resolution_clock::now();
+    // J01 from DFJK
     std::tie(J01_dfjk) = j_pt::unwrap_results(dfjk_mod.run(inputs));
-    t1                 = std::chrono::high_resolution_clock::now();
-    dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
-    // std::cout << "J01 from DFJK: " << dt.count() << " ms\n";
-
-    std::cout << "K01 from DFJK: \n";
-    t0                 = std::chrono::high_resolution_clock::now();
+    // K01 from DFJK
     std::tie(K01_dfjk) = k_pt::unwrap_results(dfjk_mod.run(inputs));
-    t1                 = std::chrono::high_resolution_clock::now();
-    dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
-    // std::cout << "K01 from DFJK: " << dt.count() << " ms\n";
-
-    std::cout << "J01 from DFJ: \n";
-    t0           = std::chrono::high_resolution_clock::now();
+    // J01 from DFJ
     auto J01_dfj = dfj_mod.run_as<j_pt>(aos1, j0, aos1);
-    t1           = std::chrono::high_resolution_clock::now();
-    dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
-    // std::cout << "J01 from DFJ: " << dt.count() << " ms\n";
-
-    std::cout << "K01 from DFK: \n";
-    t0           = std::chrono::high_resolution_clock::now();
+    // K01 from DFK
     auto K01_dfk = dfk_mod.run_as<k_pt>(aos1, k0, aos1);
-    t1           = std::chrono::high_resolution_clock::now();
-    dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
-    // std::cout << "K01 from DFK: " << dt.count() << " ms\n";
 
     REQUIRE(tensorwrapper::tensor::allclose(J01_dfjk, J01_dfj));
-    // REQUIRE(tensorwrapper::tensor::allclose(K01_dfjk, K01_dfk));
+    REQUIRE(tensorwrapper::tensor::allclose(K01_dfjk, K01_dfk));
 
-    // // build J/K in aos0 from rho0
-    // simde::type::tensor J00_dfjk, K00_dfjk;
+    // build J/K in aos0 from rho0
+    simde::type::tensor J00_dfjk, K00_dfjk;
+    inputs.at("bra").change(aos0);
+    inputs.at("ket").change(aos0);
+    inputs.at("(r₁₂)⁻¹").change(j0);
+    inputs.at("k").change(k0);
+
+    // J00 from DFJK
+    std::tie(J00_dfjk) = j_pt::unwrap_results(dfjk_mod.run(inputs));
+    // K00 from DFJK
+    std::tie(K00_dfjk) = k_pt::unwrap_results(dfjk_mod.run(inputs));
+    // J00 from DFJ
+    auto J00_dfj = dfj_mod.run_as<j_pt>(aos0, j0, aos0);
+    // K00 from DFK
+    auto K00_dfk = dfk_mod.run_as<k_pt>(aos0, k0, aos0);
+
+    REQUIRE(tensorwrapper::tensor::allclose(J00_dfjk, J00_dfj));
+    REQUIRE(tensorwrapper::tensor::allclose(K00_dfjk, K00_dfk));
+
+    // TODO: this will fail unless eri_mod memoization is fixed
+    // DFJK turns on memoization if density and output space use same basis
+    // above, eri_mod was run with 6-31g for bra/ket/jk_basis, so that result
+    // will be returned if the module is run again with memoization turned on
+
+    // auto sad_mod_1 = sad_mod_0.unlocked_copy();
+    // sad_mod_1.change_submod("Atomic Density", mm.at("sto-3g atomic dm"));
+    // auto rho1 = sad_mod_1.run_as<sad_rho_pt>(H_e);
+    // simde::type::el_scf_j j1(e, rho1);
+    // simde::type::el_scf_k k1(e, rho1);
+    // // build J/K in aos1 from rho1
+    // simde::type::tensor J11_dfjk, K11_dfjk;
     // inputs.at("bra").change(aos1);
     // inputs.at("ket").change(aos1);
-    // inputs.at("(r̂₁₂)⁻¹").change(j0);
-    // inputs.at("k̂").change(k0);
+    // inputs.at("(r₁₂)⁻¹").change(j1);
+    // inputs.at("k").change(k1);
 
-    // std::cout << "J00 from DFJK: \n";
-    // t0                 = std::chrono::high_resolution_clock::now();
-    // std::tie(J00_dfjk) = j_pt::unwrap_results(dfjk_mod.run(inputs));
-    // t1                 = std::chrono::high_resolution_clock::now();
-    // dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
-    // // std::cout << "J00 from DFJK: " << dt.count() << " ms\n";
+    // // J11 from DFJK
+    // std::tie(J11_dfjk) = j_pt::unwrap_results(dfjk_mod.run(inputs));
+    // // K11 from DFJK
+    // std::tie(K11_dfjk) = k_pt::unwrap_results(dfjk_mod.run(inputs));
+    // // J11 from DFJ
+    // auto J11_dfj = dfj_mod.run_as<j_pt>(aos1, j1, aos1);
+    // // K11 from DFK
+    // auto K11_dfk = dfk_mod.run_as<k_pt>(aos1, k1, aos1);
 
-    // std::cout << "K00 from DFJK: \n";
-    // t0                 = std::chrono::high_resolution_clock::now();
-    // std::tie(K00_dfjk) = k_pt::unwrap_results(dfjk_mod.run(inputs));
-    // t1                 = std::chrono::high_resolution_clock::now();
-    // dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
-    // // std::cout << "K00 from DFJK: " << dt.count() << " ms\n";
-
-    // std::cout << "J00 from DFJ: \n";
-    // t0           = std::chrono::high_resolution_clock::now();
-    // auto J00_dfj = dfj_mod.run_as<j_pt>(aos0, j0, aos0);
-    // t1           = std::chrono::high_resolution_clock::now();
-    // dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
-    // // std::cout << "J00 from DFJ: " << dt.count() << " ms\n";
-
-    // std::cout << "K01 from DFK: \n";
-    // t0           = std::chrono::high_resolution_clock::now();
-    // auto K00_dfk = dfk_mod.run_as<k_pt>(aos0, k0, aos0);
-    // t1           = std::chrono::high_resolution_clock::now();
-    // dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
-    // // std::cout << "K01 from DFK: " << dt.count() << " ms\n";
-
-    // REQUIRE(tensorwrapper::tensor::allclose(J00_dfjk, J00_dfj));
-    // REQUIRE(tensorwrapper::tensor::allclose(K00_dfjk, K00_dfk));
-
-    // TODO: remove this before merge
-    // std::cout << "DFJ.profile_info()\n";
-    // std::cout << dfj_mod.profile_info() << std::endl;
-    // std::cout << "DFK.profile_info()\n";
-    // std::cout << dfk_mod.profile_info() << std::endl;
-    // std::cout << "\nDFJK.profile_info()\n";
-    // std::cout << dfjk_mod.profile_info() << std::endl;
-}
+    // REQUIRE(tensorwrapper::tensor::allclose(J11_dfjk, J11_dfj));
+    // REQUIRE(tensorwrapper::tensor::allclose(K11_dfjk, K11_dfk));
