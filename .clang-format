@@ -77,7 +77,6 @@ IndentWrappedFunctionNames: false
 JavaScriptQuotes: Leave
 JavaScriptWrapImports: true
 KeepEmptyLinesAtTheStartOfBlocks: false
-Language: Cpp
 MacroBlockBegin: ''
 MacroBlockEnd:   ''
 MaxEmptyLinesToKeep: 1
