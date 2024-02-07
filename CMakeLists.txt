@@ -37,7 +37,6 @@ nwx_cxx_api_docs("${NWCHEMEX_SOURCE_DIR}" "${NWCHEMEX_INCLUDE_DIR}")
 ### Options ###
 cmaize_option_list(
     BUILD_TESTING OFF "Should we build the tests?"
-    BUILD_PYBIND11_PYBINDINGS ON "Use pybind11 to build Python3 bindings?"
     BUILD_FULL_CHEMCACHE ON "If ChemCache isn't found, build the full version"
 )
 
@@ -52,7 +51,7 @@ cmaize_find_or_build_dependency(
     BUILD_TARGET chemcache
     FIND_TARGET nwx::chemcache
     CMAKE_ARGS BUILD_TESTING=OFF
-               BUILD_PYBIND11_PYBINDINGS="${BUILD_PYBIND11_PYBINDINGS}"
+               BUILD_PYBIND11_PYBINDINGS=ON
 )
 
 cmaize_find_or_build_dependency(
@@ -62,44 +61,25 @@ cmaize_find_or_build_dependency(
     BUILD_TARGET friendzone
     FIND_TARGET nwx::friendzone
     CMAKE_ARGS BUILD_TESTING=OFF
-               BUILD_PYBIND11_PYBINDINGS="${BUILD_PYBIND11_PYBINDINGS}"
+               BUILD_PYBIND11_PYBINDINGS=ON
 )
 
-cmaize_add_library(
-    nwchemex
-    SOURCE_DIR "${NWCHEMEX_SOURCE_DIR}/nwchemex"
-    INCLUDE_DIRS "${NWCHEMEX_INCLUDE_DIR}/nwchemex"
-    DEPENDS chemcache friendzone
-)
-
-include(nwx_pybind11)
-nwx_add_pybind11_module(
-    ${PROJECT_NAME}
-    SOURCE_DIR "${NWCHEMEX_SOURCE_DIR}/python"
-    DEPENDS "${PROJECT_NAME}"
-)
+#TOOD: Replace cmaize_add_library when it supports Python
+add_library(${PROJECT_NAME} INTERFACE)
+target_link_libraries(${PROJECT_NAME} INTERFACE chemcache friendzone)
 
 if("${BUILD_TESTING}")
-    set(CXX_TEST_DIR "${NWCHEMEX_TEST_DIR}/cxx")
-    set(PYTHON_TEST_DIR "${NWCHEMEX_TEST_DIR}/python")
+    include(CTest)
+    include(nwx_pybind11)
+    set(PYTHON_TEST_DIR "${NWCHEMEX_TESTS_DIR}/python")
 
-    cmaize_find_or_build_dependency(
-        Catch2
-        URL github.com/catchorg/Catch2
-        BUILD_TARGET Catch2
-        VERSION ${NWX_CATCH2_VERSION}
-        FIND_TARGET Catch2::Catch2
-    )
-    cmaize_add_tests(
-       test_unit_${PROJECT_NAME}
-       SOURCE_DIR "${CXX_TEST_DIR}/unit_tests"
-       INCLUDE_DIRS "${NWCHEMEX_SOURCE_DIR}/${PROJECT_NAME}"
-       DEPENDS Catch2 ${PROJECT_NAME}
-    )
     nwx_pybind11_tests(
         py_nwchemex ${PYTHON_TEST_DIR}/unit_tests/test_nwchemex.py
         SUBMODULES parallelzone pluginplay chemist simde chemcache friendzone
     )
 endif()
 
-cmaize_add_package(${PROJECT_NAME} NAMESPACE nwx::)
+install(
+    DIRECTORY "${NWCHEMEX_SOURCE_DIR}/python/nwchemex"
+    DESTINATION "${NWX_MODULE_DIRECTORY}"
+)

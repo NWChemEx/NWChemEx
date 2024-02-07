@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-namespace madness {
+#pragma once
+#include <pluginplay/pluginplay.hpp>
 
-class RMI {
-    static thread_local bool is_server_thread;
-    static bool* _cling_is_server_thread();
-};
+namespace nwchemex {
 
-thread_local bool RMI::is_server_thread = false;
+/** @brief Convenience function for loading all of NWChemEx's modules into an
+ *         existing ModuleManager instance.
+ *
+ *  @param[in] mm The ModuleManager instance to load the modules into.
+ *
+ *  @throw std::bad_alloc if there is insufficient memory to create the new
+ *                        modules. Weak throw guarantee.
+ */
+DECLARE_PLUGIN(nwchemex);
 
-bool* RMI::_cling_is_server_thread() { return &is_server_thread; }
-
-} // namespace madness
+} // namespace nwchemex

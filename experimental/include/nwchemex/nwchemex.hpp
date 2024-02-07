@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NWChemEx-Project
+ * Copyright 2022 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-#include <nwchemex/nwchemex.hpp>
-#include <pluginplay/plugin/plugin.hpp>
-#include <pybind11/pybind11.h>
-
-namespace nwchemex {
-
-EXPORT_PLUGIN(nwchemex, m) {}
-
-} // namespace nwchemex
+#pragma once
+#include <nwchemex/load_modules.hpp>
+#include <simde/simde.hpp>
