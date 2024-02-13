@@ -13,18 +13,20 @@
 # limitations under the License.
 
 cmake_minimum_required(VERSION 3.14)
-
+#project(nwchemex VERSION "1.0" LANGUAGES CXX)
 #Downloads common CMake modules used throughout NWChemEx
 include(cmake/get_nwx_cmake.cmake)
 
 #Sets the version to whatever git thinks it is
 include(get_version_from_git)
-get_version_from_git(simde_version "${CMAKE_CURRENT_LIST_DIR}")
-project(nwchemex VERSION "${simde_version}" LANGUAGES CXX)
+get_version_from_git(nwchemex_version "${CMAKE_CURRENT_LIST_DIR}")
+project(nwchemex VERSION "${nwchemex_version}" LANGUAGES CXX)
 
+# Load NWX org helper modules
 include(nwx_versions)
 include(get_cmaize)
-include(nwx_cxx_api_docs)
+
+# Actual build system starts here
 
 ### Paths ###
 set(NWCHEMEX_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
@@ -32,13 +34,18 @@ set(NWCHEMEX_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(NWCHEMEX_TESTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests")
 set(NWCHEMEX_EXP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/experimental")
 
-nwx_cxx_api_docs("${NWCHEMEX_SOURCE_DIR}" "${NWCHEMEX_INCLUDE_DIR}")
-
 ### Options ###
 cmaize_option_list(
     BUILD_TESTING OFF "Should we build the tests?"
     BUILD_FULL_CHEMCACHE ON "If ChemCache isn't found, build the full version"
+    BUILD_PYBIND11_PYBINDINGS ON "Build Python bindings using Pybind11?"
 )
+
+# C++ API docs
+include(nwx_cxx_api_docs)
+nwx_cxx_api_docs("${NWCHEMEX_SOURCE_DIR}" "${NWCHEMEX_INCLUDE_DIR}")
+
+### Plugins ###
 
 if("${BUILD_FULL_CHEMCACHE}")
     set(NWX_CHEMCACHE_VERSION generated_data)
@@ -64,7 +71,7 @@ cmaize_find_or_build_dependency(
                BUILD_PYBIND11_PYBINDINGS=ON
 )
 
-#TOOD: Replace cmaize_add_library when it supports Python
+#TOOD: Replace with cmaize_add_library when it supports Python
 add_library(${PROJECT_NAME} INTERFACE)
 target_link_libraries(${PROJECT_NAME} INTERFACE chemcache friendzone)
 
@@ -74,7 +81,7 @@ if("${BUILD_TESTING}")
     set(PYTHON_TEST_DIR "${NWCHEMEX_TESTS_DIR}/python")
 
     nwx_pybind11_tests(
-        py_nwchemex ${PYTHON_TEST_DIR}/unit_tests/test_nwchemex.py
+        py_${PROJECT_NAME} ${PYTHON_TEST_DIR}/unit_tests/test_nwchemex.py
         SUBMODULES parallelzone pluginplay chemist simde chemcache friendzone
     )
 endif()

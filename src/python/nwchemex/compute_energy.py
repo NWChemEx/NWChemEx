@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from load_modules import load_modules
+from . import load_modules
 import pluginplay
 import chemist
 import simde
