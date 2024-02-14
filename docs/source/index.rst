@@ -25,12 +25,6 @@ the NWChemEx Community's website.
 
    TODO: Add link to the short introduction (and write it)
 
-
-
-If you are looking for
-the homepage of the broader NWChemEx community that can be found
-`here <https://nwchemex.github.io/>`__. If you are ne
-
 At the core of the NWChemEx Community is NWChemEx, a high-performance, modular,
 quantum chemistry software package.
 

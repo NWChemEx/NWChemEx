@@ -84,6 +84,20 @@ if("${BUILD_TESTING}")
         py_${PROJECT_NAME} ${PYTHON_TEST_DIR}/unit_tests/test_nwchemex.py
         SUBMODULES parallelzone pluginplay chemist simde chemcache friendzone
     )
+
+    # Workaround for the FriendZone being pure python (and thus not in the build
+    # dir)
+    get_test_property(
+        py_${PROJECT_NAME}
+        ENVIRONMENT py_path
+    )
+    set(
+        py_path "${py_path}:${CMAKE_BINARY_DIR}/_deps/friendzone-src/src/python"
+    )
+    set_tests_properties(
+        py_${PROJECT_NAME}
+        PROPERTIES ENVIRONMENT "${py_path}"
+    )
 endif()
 
 install(
