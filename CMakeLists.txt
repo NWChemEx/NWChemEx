@@ -25,6 +25,7 @@ project(nwchemex VERSION "${nwchemex_version}" LANGUAGES CXX)
 # Load NWX org helper modules
 include(nwx_versions)
 include(get_cmaize)
+include(nwx_cxx_api_docs)
 
 # Actual build system starts here
 
@@ -34,16 +35,15 @@ set(NWCHEMEX_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(NWCHEMEX_TESTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests")
 set(NWCHEMEX_EXP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/experimental")
 
+# C++ API docs
+nwx_cxx_api_docs("${NWCHEMEX_SOURCE_DIR}" "${NWCHEMEX_INCLUDE_DIR}")
+
 ### Options ###
 cmaize_option_list(
     BUILD_TESTING OFF "Should we build the tests?"
     BUILD_FULL_CHEMCACHE ON "If ChemCache isn't found, build the full version"
     BUILD_PYBIND11_PYBINDINGS ON "Build Python bindings using Pybind11?"
 )
-
-# C++ API docs
-include(nwx_cxx_api_docs)
-nwx_cxx_api_docs("${NWCHEMEX_SOURCE_DIR}" "${NWCHEMEX_INCLUDE_DIR}")
 
 ### Plugins ###
 
