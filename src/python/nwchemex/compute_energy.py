@@ -17,6 +17,7 @@ import pluginplay
 import chemist
 import simde
 
+
 def compute_energy(mol, method, basis, mm=None):
     """ A simplified API for computing the energy of a system more aligned with
     traditional experience.

@@ -16,13 +16,13 @@ import chemcache
 import friendzone
 import pluginplay
 
+
 def load_modules(mm):
     """Loads the NWChemEx plugins
 
     :param mm: The ModuleManager that the all Modules will be loaded into.
     :type mm: pluginplay.ModuleManager
     """
-
 
     chemcache.load_modules(mm)
     friendzone.load_modules(mm)

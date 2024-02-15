@@ -19,8 +19,6 @@ import parallelzone as pz
 import sys
 import unittest
 
-
-
 if __name__ == '__main__':
     rv = pz.runtime.RuntimeView()
 
@@ -30,7 +28,7 @@ if __name__ == '__main__':
     sys.path.append(src_dir)
 
     loader = unittest.TestLoader()
-    tests  = loader.discover(my_dir)
+    tests = loader.discover(my_dir)
     testrunner = unittest.runner.TextTestRunner()
     ret = not testrunner.run(tests).wasSuccessful()
     sys.exit(ret)
