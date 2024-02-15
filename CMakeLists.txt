@@ -13,69 +13,39 @@
 # limitations under the License.
 
 cmake_minimum_required(VERSION 3.14)
-set(VERSION 1.0.0) #TODO: Get from git
-project(nwchemex VERSION "${VERSION}" LANGUAGES CXX)
+#project(nwchemex VERSION "1.0" LANGUAGES CXX)
+#Downloads common CMake modules used throughout NWChemEx
+include(cmake/get_nwx_cmake.cmake)
 
-include(FetchContent)
-enable_language(C)
-FetchContent_Declare(
-    nwx_cmake
-    GIT_REPOSITORY https://github.com/NWChemEx/NWXCMake
-)
-FetchContent_MakeAvailable(nwx_cmake)
-list(APPEND CMAKE_MODULE_PATH "${nwx_cmake_SOURCE_DIR}/cmake")
+#Sets the version to whatever git thinks it is
+include(get_version_from_git)
+get_version_from_git(nwchemex_version "${CMAKE_CURRENT_LIST_DIR}")
+project(nwchemex VERSION "${nwchemex_version}" LANGUAGES CXX)
 
-set(
-    CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake"
-    CACHE STRING "" FORCE
-)
-
-include(get_cmaize)
+# Load NWX org helper modules
 include(nwx_versions)
+include(get_cmaize)
 include(nwx_cxx_api_docs)
 
-nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src"
-                 "${CMAKE_CURRENT_SOURCE_DIR}/include")
+# Actual build system starts here
 
+### Paths ###
+set(NWCHEMEX_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(NWCHEMEX_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(NWCHEMEX_TESTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests")
+set(NWCHEMEX_EXP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/experimental")
+
+# C++ API docs
+nwx_cxx_api_docs("${NWCHEMEX_SOURCE_DIR}" "${NWCHEMEX_INCLUDE_DIR}")
 
 ### Options ###
-option(BUILD_TESTING "Should we build the tests?" OFF)
-option(BUILD_PYBIND11_PYBINDINGS "Use pybind11 to build Python3 bindings?" OFF)
-option(BUILD_CPPYY_PYBINDINGS "Use Cppyy to build Python3 bindings?" OFF)
-option(BUILD_FULL_CHEMCACHE "If ChemCache isn't found, build the full version" ON)
-
-cmaize_find_or_build_dependency(
-    integrals
-    URL github.com/NWChemEx/Integrals
-    PRIVATE TRUE
-    VERSION ${NWX_INTEGRALS_VERSION}
-    BUILD_TARGET integrals
-    FIND_TARGET nwx::integrals
-    CMAKE_ARGS BUILD_TESTING=OFF
-               BUILD_PYBIND11_PYBINDINGS=${BUILD_PYBIND11_PYBINDINGS}
+cmaize_option_list(
+    BUILD_TESTING OFF "Should we build the tests?"
+    BUILD_FULL_CHEMCACHE ON "If ChemCache isn't found, build the full version"
+    BUILD_PYBIND11_PYBINDINGS ON "Build Python bindings using Pybind11?"
 )
 
-cmaize_find_or_build_dependency(
-    scf
-    URL github.com/NWChemEx/SCF
-    PRIVATE TRUE
-    VERSION ${NWX_SCF_VERSION}
-    BUILD_TARGET scf
-    FIND_TARGET nwx::scf
-    CMAKE_ARGS BUILD_TESTING=OFF
-               BUILD_PYBIND11_PYBINDINGS=${BUILD_PYBIND11_PYBINDINGS}
-)
-
-# Uncomment once MP2 is working again
-# cmaize_find_or_build_dependency(
-#         mp2
-#         URL github.com/NWChemEx/MP2
-#         PRIVATE TRUE
-#         VERSION ${NWX_MP2_VERSION}
-#         BUILD_TARGET mp2
-#         FIND_TARGET nwx::mp2
-#         CMAKE_ARGS BUILD_TESTING=OFF
-# )
+### Plugins ###
 
 if("${BUILD_FULL_CHEMCACHE}")
     set(NWX_CHEMCACHE_VERSION generated_data)
@@ -84,82 +54,53 @@ endif()
 cmaize_find_or_build_dependency(
     chemcache
     URL github.com/NWChemEx/ChemCache
-    PRIVATE TRUE
     VERSION ${NWX_CHEMCACHE_VERSION}
     BUILD_TARGET chemcache
     FIND_TARGET nwx::chemcache
     CMAKE_ARGS BUILD_TESTING=OFF
-               BUILD_PYBIND11_PYBINDINGS="${BUILD_PYBIND11_PYBINDINGS}"
+               BUILD_PYBIND11_PYBINDINGS=ON
 )
 
-cmaize_add_library(
-    nwchemex
-    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
-    INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include/nwchemex"
-    DEPENDS scf integrals chemcache # nwx::mp2
+cmaize_find_or_build_dependency(
+    friendzone
+    URL github.com/NWChemEx/FriendZone
+    VERSION ${NWX_FRIENDZONE_VERSION}
+    BUILD_TARGET friendzone
+    FIND_TARGET nwx::friendzone
+    CMAKE_ARGS BUILD_TESTING=OFF
+               BUILD_PYBIND11_PYBINDINGS=ON
 )
 
-include(nwx_pybind11)
-nwx_add_pybind11_module(
-    ${PROJECT_NAME}
-    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/python"
-    DEPENDS "${PROJECT_NAME}"
-)
+#TOOD: Replace with cmaize_add_library when it supports Python
+add_library(${PROJECT_NAME} INTERFACE)
+target_link_libraries(${PROJECT_NAME} INTERFACE chemcache friendzone)
 
-include(nwx_python_mods)
 if("${BUILD_TESTING}")
-    set(CXX_TEST_DIR "${CMAKE_CURRENT_LIST_DIR}/tests/cxx")
-    set(PYTHON_TEST_DIR "${CMAKE_CURRENT_LIST_DIR}/tests/python")
+    include(CTest)
+    include(nwx_pybind11)
+    set(PYTHON_TEST_DIR "${NWCHEMEX_TESTS_DIR}/python")
 
-    cmaize_find_or_build_dependency(
-        Catch2
-        URL github.com/catchorg/Catch2
-        BUILD_TARGET Catch2
-        VERSION ${NWX_CATCH2_VERSION}
-        FIND_TARGET Catch2::Catch2
-    )
-    cmaize_add_tests(
-       test_unit_nwchemex
-       SOURCE_DIR "${CXX_TEST_DIR}/unit"
-       INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
-       DEPENDS Catch2 nwchemex
-    )
-    cmaize_add_tests(
-       test_integration_nwchemex
-       SOURCE_DIR "${CXX_TEST_DIR}/integration"
-       INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/nwchemex"
-       DEPENDS Catch2 nwchemex
-    )
     nwx_pybind11_tests(
-        py_nwchemex ${PYTHON_TEST_DIR}/integration_tests/test_nwchemex.py
-        SUBMODULES parallelzone pluginplay chemist simde integrals scf
+        py_${PROJECT_NAME} ${PYTHON_TEST_DIR}/unit_tests/test_nwchemex.py
+        SUBMODULES parallelzone pluginplay chemist simde chemcache friendzone
     )
-    if(BUILD_CPPYY_PYBINDINGS)
-       set(python_tests test_python dlpno_mp2_python)
-       foreach(py_test ${python_tests})
-         add_test(NAME ${py_test}
-                  COMMAND Python3::Interpreter
-                          ${CMAKE_CURRENT_SOURCE_DIR}/tests/${py_test}.py
-                 )
-       endforeach()
-       set_tests_properties(
-           ${python_tests}
-           PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/Python"
-       )
-       cppyy_make_python_package(
-           PACKAGE nwchemex
-           NAMESPACES nwchemex
-           DEPPACKAGES integrals scf chemcache
-        ) # mp2
-    endif()
+
+    # Workaround for the FriendZone being pure python (and thus not in the build
+    # dir)
+    get_test_property(
+        py_${PROJECT_NAME}
+        ENVIRONMENT py_path
+    )
+    set(
+        py_path "${py_path}:${CMAKE_BINARY_DIR}/_deps/friendzone-src/src/python"
+    )
+    set_tests_properties(
+        py_${PROJECT_NAME}
+        PROPERTIES ENVIRONMENT "${py_path}"
+    )
 endif()
 
-if(BUILD_CPPYY_PYBINDINGS)
-    cppyy_make_python_package(
-        PACKAGE nwchemex
-        NAMESPACES nwchemex
-        DEPPACKAGES integrals scf chemcache
-    ) # mp2
-endif()
-
-cmaize_add_package(${PROJECT_NAME} NAMESPACE nwx::)
+install(
+    DIRECTORY "${NWCHEMEX_SOURCE_DIR}/python/nwchemex"
+    DESTINATION "${NWX_MODULE_DIRECTORY}"
+)

@@ -12,15 +12,27 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
-##################################
-Welcome to the NWChemEx Project!!!
-##################################
+########
+NWChemEx
+########
+
+This is the homepage for the NWChemEx software package. NWChemEx sits at the
+core of the broader NWChemEx Community. If you are new to NWChemEx and the
+NWChemEx community we recommend starting with the short introduction over on
+the NWChemEx Community's website.
+
+.. note::
+
+   TODO: Add link to the short introduction (and write it)
+
+At the core of the NWChemEx Community is NWChemEx, a high-performance, modular,
+quantum chemistry software package.
 
 The https://github.com/NWChemEx/NWChemEx is the top-level, user-centric
 repository for the NWChemEx project. The documentation you are currently reading
-is the top-most documentation page associated with the NWChemEx project. We have 
-attempted to (and continue to attempt to) provide comprehensive documentation of 
-the project, its APIs, and its use cases. If you are new to the project check 
+is the top-most documentation page associated with the NWChemEx project. We have
+attempted to (and continue to attempt to) provide comprehensive documentation of
+the project, its APIs, and its use cases. If you are new to the project check
 out the getting started (TODO: add link) page to orient yourself. Otherwise use
 the table of contents below to help jump to the topic of interest.
 
