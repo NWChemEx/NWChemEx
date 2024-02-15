@@ -22,12 +22,12 @@
 
 import os
 import git
-import datetime
+from datetime import datetime
 
 # -- Project information -----------------------------------------------------
 
 project = u'NWChemEx'
-copyright = u'2020-' + datetime.now().year() + u', NWChemEx Community'
+copyright = u'2020-' + str(datetime.now().year) + u', NWChemEx Community'
 author = u'NWChemEx Community'
 
 ##############################################################################
