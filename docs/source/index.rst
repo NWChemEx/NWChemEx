@@ -50,7 +50,7 @@ the table of contents below to help jump to the topic of interest.
 
 .. toctree::
    :maxdepth: 2
-   :caption: NWX Infrastructure Documentation
+   :caption: Infrastructure Documentation:
 
    PluginPlay <https://nwchemex.github.io/PluginPlay/>
    SimDE <https://nwchemex.github.io/SimDE/>
@@ -60,7 +60,7 @@ the table of contents below to help jump to the topic of interest.
 
 .. toctree::
    :maxdepth: 2
-   :caption: First Party NWX Supermodules
+   :caption: First Party NWX Plugins:
 
    Integrals <https://nwchemex.github.io/Integrals/>
    SCF <https://nwchemex.github.io/SCF/>
