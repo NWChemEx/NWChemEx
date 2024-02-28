@@ -62,6 +62,10 @@ the table of contents below to help jump to the topic of interest.
    :maxdepth: 2
    :caption: First Party NWX Plugins:
 
-   Integrals <https://nwchemex.github.io/Integrals/>
-   SCF <https://nwchemex.github.io/SCF/>
-   MP2 <https://nwchemex.github.io/MP2/>
+   FriendZone <https://nwchemex.github.io/FriendZone/>
+   ChemCache <https://nwchemex.github.io/ChemCache/>
+   
+.. Add these back once the repoes are ready
+..    Integrals <https://nwchemex.github.io/Integrals/>
+..    SCF <https://nwchemex.github.io/SCF/>
+..    MP2 <https://nwchemex.github.io/MP2/>
