@@ -16,12 +16,14 @@
 Advanced PluginPlay Primer
 ***************************
 
-The PluginPlay actually has a lot more functionality than what was showcased in the
-PluginPlay primer (TODO: add link). To take maximum advantage of this functionality it 
-is recommended you read through the SDE tutorials and/or documentation (TODO: 
-add link). On this page we briefly highlight some of the additional 
-functionality that is is most likely to be of interest to collaborators. This 
-is not intended to be exahustive or comprehensive.
+The PluginPlay library actually has a lot more functionality than what was 
+showcased in the :ref:`pluginplay_primer`. To take maximum advantage 
+of this functionality it is recommended you read through the SimDE 
+`tutorials <https://nwchemex.github.io/PluginPlay/tutorials/index.html>`_ and/or
+`documentation <https://nwchemex.github.io/PluginPlay/developer/index.html>`_. 
+On this page we briefly highlight some of the additional functionality that is 
+most likely to be of interest to collaborators. This is not intended to be 
+exhaustive or comprehensive.
 
 Additional Parameters
 ---------------------
