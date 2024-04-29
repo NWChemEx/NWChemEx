@@ -26,7 +26,7 @@ jobs:
     with:
       config_file: '.github/.licenserc.yaml'
       source_dir: ''
-      compilers: '["gcc-11"]'
+      compilers: '["gcc-11", "clang-14"]'
       doc_target: 'nwchemex_cxx_api'
       repo_toolchain: '.github/nwx_pr_settings.cmake'
     secrets: inherit
