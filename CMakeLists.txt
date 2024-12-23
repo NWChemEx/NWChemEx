@@ -71,11 +71,23 @@ cmaize_find_or_build_dependency(
                BUILD_PYBIND11_PYBINDINGS=ON
 )
 
+cmaize_find_or_build_dependency(
+    nux
+    URL github.com/NWChemEx/NUX
+    VERSION master
+    BUILD_TARGET nux
+    FIND_TARGET nwx::nux
+    CMAKE_ARGS BUILD_TESTING=OFF
+               BUILD_PYBIND11_PYBINDINGS=ON
+)
+
 include(get_integrals)
 
 #TOOD: Replace with cmaize_add_library when it supports Python
 add_library(${PROJECT_NAME} INTERFACE)
-target_link_libraries(${PROJECT_NAME} INTERFACE chemcache friendzone integrals)
+target_link_libraries(
+    ${PROJECT_NAME} INTERFACE chemcache friendzone integrals nux
+)
 
 if("${BUILD_TESTING}")
     include(CTest)
@@ -85,7 +97,7 @@ if("${BUILD_TESTING}")
     nwx_pybind11_tests(
         py_${PROJECT_NAME} ${PYTHON_TEST_DIR}/unit_tests/test_nwchemex.py
         SUBMODULES parallelzone pluginplay chemist simde chemcache friendzone 
-                   integrals
+                   integrals nux
     )
 
     # Workaround for the FriendZone being pure python (and thus not in the build
