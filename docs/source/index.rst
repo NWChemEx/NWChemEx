@@ -43,6 +43,7 @@ the table of contents below to help jump to the topic of interest.
    getting_started
    about_nwx
    installation/index
+   full_example/index
    running/index
    collaborator/index
    module_api/index
