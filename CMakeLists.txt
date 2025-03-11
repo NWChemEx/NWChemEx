@@ -52,21 +52,21 @@ if("${BUILD_FULL_CHEMCACHE}")
 endif()
 
 cmaize_find_or_build_dependency(
-    chemcache
-    URL github.com/NWChemEx/ChemCache
-    VERSION ${NWX_CHEMCACHE_VERSION}
-    BUILD_TARGET chemcache
-    FIND_TARGET nwx::chemcache
-    CMAKE_ARGS BUILD_TESTING=OFF
-               BUILD_PYBIND11_PYBINDINGS=ON
-)
-
-cmaize_find_or_build_dependency(
     friendzone
     URL github.com/NWChemEx/FriendZone
     VERSION ${NWX_FRIENDZONE_VERSION}
     BUILD_TARGET friendzone
     FIND_TARGET nwx::friendzone
+    CMAKE_ARGS BUILD_TESTING=OFF
+               BUILD_PYBIND11_PYBINDINGS=ON
+)
+
+cmaize_find_or_build_dependency(
+    scf
+    URL github.com/NWChemEx/SCF
+    VERSION ${NWX_SCF_VERSION}
+    BUILD_TARGET scf
+    FIND_TARGET nwx::scf
     CMAKE_ARGS BUILD_TESTING=OFF
                BUILD_PYBIND11_PYBINDINGS=ON
 )
@@ -80,7 +80,7 @@ cmaize_find_or_build_dependency(
     CMAKE_ARGS BUILD_TESTING=OFF
                BUILD_PYBIND11_PYBINDINGS=ON
 )
-
+include(get_chemcache)
 include(get_integrals)
 
 #TOOD: Replace with cmaize_add_library when it supports Python
@@ -97,7 +97,7 @@ if("${BUILD_TESTING}")
     nwx_pybind11_tests(
         py_${PROJECT_NAME} ${PYTHON_TEST_DIR}/unit_tests/test_nwchemex.py
         SUBMODULES parallelzone pluginplay chemist simde chemcache friendzone 
-                   integrals nux
+                   integrals scf nux
     )
 
     # Workaround for the FriendZone being pure python (and thus not in the build

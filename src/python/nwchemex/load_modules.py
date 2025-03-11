@@ -14,7 +14,9 @@
 
 import chemcache
 import friendzone
+import integrals
 import pluginplay
+import scf
 
 
 def load_modules(mm):
@@ -26,3 +28,5 @@ def load_modules(mm):
 
     chemcache.load_modules(mm)
     friendzone.load_modules(mm)
+    integrals.load_modules(mm)
+    scf.load_modules(mm)
