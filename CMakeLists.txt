@@ -86,7 +86,7 @@ include(get_integrals)
 #TOOD: Replace with cmaize_add_library when it supports Python
 add_library(${PROJECT_NAME} INTERFACE)
 target_link_libraries(
-    ${PROJECT_NAME} INTERFACE chemcache friendzone integrals nux
+    ${PROJECT_NAME} INTERFACE chemcache friendzone integrals scf nux
 )
 
 if("${BUILD_TESTING}")
@@ -97,7 +97,7 @@ if("${BUILD_TESTING}")
     nwx_pybind11_tests(
         py_${PROJECT_NAME} ${PYTHON_TEST_DIR}/unit_tests/test_nwchemex.py
         SUBMODULES parallelzone pluginplay chemist simde chemcache friendzone 
-                   integrals scf nux
+                   integrals scf nux tensorwrapper
     )
 
     # Workaround for the FriendZone being pure python (and thus not in the build
