@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import unittest
+import numpy as np
+import tensorwrapper
 from nwchemex import compute_energy, load_modules
 from pluginplay import ModuleBase, ModuleManager
 from simde import TotalEnergy
@@ -28,14 +30,15 @@ class DummyEnergyModule(ModuleBase):
 
     def run_(self, inputs, submods):
         rv = self.results()
-        return TotalEnergy().wrap_results(rv, -3.14)
+        e = tensorwrapper.Tensor(np.array(-3.14))
+        return TotalEnergy().wrap_results(rv, e)
 
 
 class TestComputeEnergy(unittest.TestCase):
 
     def test_with_string_molecule(self):
         e = compute_energy('water', 'NWChem : SCF', 'sto-3g')
-        self.assertAlmostEqual(e, -74.942080058523, places=5)
+        self.assertAlmostEqual(e, np.array(-74.942080058523), places=5)
 
     def test_with_non_string_molecule(self):
         h2 = Molecule()
@@ -43,7 +46,8 @@ class TestComputeEnergy(unittest.TestCase):
         h2.push_back(Atom('H', 1, 1.0079, 0.0, 0.0, 0.98))
 
         e = compute_energy(ChemicalSystem(h2), 'NWChem : SCF', 'sto-3g')
-        self.assertAlmostEqual(e, -1.058335676822, places=5)
+        e_np = np.array(e)
+        self.assertAlmostEqual(e_np[()], -1.058335676822, places=5)
 
     def test_with_mm(self):
         """ Can use user-supplied ModuleManager
@@ -60,4 +64,5 @@ class TestComputeEnergy(unittest.TestCase):
         mm.add_module("Dummy Energy", DummyEnergyModule())
         mol = ChemicalSystem()
         e = compute_energy(mol, 'Dummy Energy', 'sto-3g', mm)
-        self.assertAlmostEqual(e, -3.14, places=5)
+        e_np = np.array(e)
+        self.assertAlmostEqual(e_np[()], -3.14, places=5)
