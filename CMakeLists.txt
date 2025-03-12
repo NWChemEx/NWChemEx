@@ -61,6 +61,7 @@ cmaize_find_or_build_dependency(
                BUILD_PYBIND11_PYBINDINGS=ON
 )
 
+if(NOT TARGET scf) # Circular dependency band-aid
 cmaize_find_or_build_dependency(
     scf
     URL github.com/NWChemEx/SCF
@@ -70,6 +71,7 @@ cmaize_find_or_build_dependency(
     CMAKE_ARGS BUILD_TESTING=OFF
                BUILD_PYBIND11_PYBINDINGS=ON
 )
+endif()
 
 cmaize_find_or_build_dependency(
     nux
