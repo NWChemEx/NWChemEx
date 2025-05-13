@@ -58,7 +58,7 @@ cmake --build build --target install
 ```
 
 More detailed install instructions can be found
-[here](https://nwchemex.github.io/nwchemex/install.html).
+[here](https://nwchemex.github.io/NWChemEx/installation/building.html).
 
 # Acknowledgments
 
