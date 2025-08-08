@@ -15,7 +15,6 @@
 import chemcache
 import friendzone
 import integrals
-import pluginplay
 import scf
 
 

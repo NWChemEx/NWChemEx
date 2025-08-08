@@ -64,7 +64,7 @@ the table of contents below to help jump to the topic of interest.
 
    FriendZone <https://nwchemex.github.io/FriendZone/>
    ChemCache <https://nwchemex.github.io/ChemCache/>
-   
+
 .. Add these back once the repoes are ready
 ..    Integrals <https://nwchemex.github.io/Integrals/>
 ..    SCF <https://nwchemex.github.io/SCF/>

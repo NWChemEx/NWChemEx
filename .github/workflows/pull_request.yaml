@@ -24,7 +24,7 @@ jobs:
   check_formatting:
     uses: NWChemEx/.github/.github/workflows/check_formatting.yaml@master
     with:
-      license_config: ".github/.licenserc.yaml"
+      license_config: ".licenserc.yaml"
       cpp_source_dirs: ""
 
   test_nwx_docs:
@@ -37,4 +37,3 @@ jobs:
     with:
       compilers: '["gcc-11", "clang-14"]'
       repo_toolchain: '.github/nwx_pr_settings.cmake'
-

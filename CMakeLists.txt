@@ -98,7 +98,7 @@ if("${BUILD_TESTING}")
 
     nwx_pybind11_tests(
         py_${PROJECT_NAME} ${PYTHON_TEST_DIR}/unit_tests/test_nwchemex.py
-        SUBMODULES parallelzone pluginplay chemist simde chemcache friendzone 
+        SUBMODULES parallelzone pluginplay chemist simde chemcache friendzone
                    integrals scf nux tensorwrapper
     )
 
