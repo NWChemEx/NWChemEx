@@ -73,6 +73,7 @@ cmaize_find_or_build_dependency(
 )
 endif()
 
+if(NOT TARGET nux) # Circular dependency band-aid
 cmaize_find_or_build_dependency(
     nux
     URL github.com/NWChemEx/NUX
@@ -82,6 +83,7 @@ cmaize_find_or_build_dependency(
     CMAKE_ARGS BUILD_TESTING=OFF
                BUILD_PYBIND11_PYBINDINGS=ON
 )
+endif()
 include(get_chemcache)
 include(get_integrals)
 
