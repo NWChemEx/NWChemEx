@@ -22,6 +22,7 @@ header:
     - docs/Makefile
     - LICENSE
     - docs/requirements.txt
-    - version.txt 
+    - version.txt
+    - build/
 
   comment: never

@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .load_modules import load_modules
-import pluginplay
 import chemist
+import pluginplay
 import simde
+
+from .load_modules import load_modules
 
 
 def compute_energy(mol, method, basis, mm=None):
-    """ A simplified API for computing the energy of a system more aligned with
+    """A simplified API for computing the energy of a system more aligned with
     traditional experience.
 
     TODO: This should probably use meta modules/driver modules from PluginPlay
@@ -30,11 +31,11 @@ def compute_energy(mol, method, basis, mm=None):
         mm = pluginplay.ModuleManager()
         load_modules(mm)
 
-    if type(mol) == str:
-        mol = mm.run_as(simde.MoleculeFromString(), 'NWX Molecules', mol)
+    if isinstance(mol, str):
+        mol = mm.run_as(simde.MoleculeFromString(), "NWX Molecules", mol)
         mol = chemist.ChemicalSystem(mol)
 
     # Assume TotalEnergy PT for now
-    mm.change_input(method, 'basis set', basis)
+    mm.change_input(method, "basis set", basis)
 
     return mm.run_as(simde.TotalEnergy(), method, mol)

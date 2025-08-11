@@ -15,16 +15,14 @@
 Running NWChemEx
 ================
 
-Although could be made possible, NWChemEx usually does not run in the same 
-way as other conventional quantum chemistry packages do: obtaining all 
+Although could be made possible, NWChemEx usually does not run in the same
+way as other conventional quantum chemistry packages do: obtaining all
 calculation settings from a text input file. To increase the flexibility of
-setting calculation routes and facilitate post-processing of calculation 
-results, we recommend running NWChemEx with Python scripts. Once the NWChemEx 
-package is successfully compiled, the python bindings of all the C++ modules 
-are generated with the tool 
-`cppyy <https://cppyy.readthedocs.io/en/latest/>`_. 
-An example of running an SCF calculation with the Python bindings can be 
-found in ``NWChemEx/tests/test_python.py``. We encourage our users to write 
+setting calculation routes and facilitate post-processing of calculation
+results, we recommend running NWChemEx with Python scripts. Once the NWChemEx
+package is successfully compiled, the python bindings of all the C++ modules
+are generated with the tool
+`cppyy <https://cppyy.readthedocs.io/en/latest/>`_.
+An example of running an SCF calculation with the Python bindings can be
+found in ``NWChemEx/tests/test_python.py``. We encourage our users to write
 their own python scripts for the special needs in their calculations.
-
-

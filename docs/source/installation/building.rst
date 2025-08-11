@@ -20,28 +20,28 @@ Prerequisites
 
 To compile NWChemEx, some packages must be available on your system beforehand:
 
-#. A C++ compiler supporting the C++17 standard, currently we use gcc 9 (10.2 
+#. A C++ compiler supporting the C++17 standard, currently we use gcc 9 (10.2
    on Intel), clang has not been fully tested
-#. CMake (>= 3.17), usually the latest version is the best to use, be aware 
-   that some Linux distributions (Ubuntu for example) are often behind on 
+#. CMake (>= 3.17), usually the latest version is the best to use, be aware
+   that some Linux distributions (Ubuntu for example) are often behind on
    CMake versions in the default build
-#. BLAS/LAPACK/ScaLAPACK or standards equivalent libraries, partially tested 
+#. BLAS/LAPACK/ScaLAPACK or standards equivalent libraries, partially tested
    options include OpenBlas, NetLib, Blis, FLAME, MKL
-#. Boost, currently 1.59 as a minimum; note that bleeding edge Boost often 
+#. Boost, currently 1.59 as a minimum; note that bleeding edge Boost often
    requires bleeding edge compilers, so be careful here
-#. MPI, most of the code requires at least MPI-3 compliance, MPICH 3.4 has 
+#. MPI, most of the code requires at least MPI-3 compliance, MPICH 3.4 has
    been tested
-#. Eigen, minimum of 3.4.0; the build will automatically pull this if you 
+#. Eigen, minimum of 3.4.0; the build will automatically pull this if you
    don't have it available
 #. libint2 - see below for more information
 #. Depending on what type of GPU you have available to you, you will need CUDA
-   11 or higher, SYCL 2.0 (use the latest version of the OneAPI SDK), or HIP 
+   11 or higher, SYCL 2.0 (use the latest version of the OneAPI SDK), or HIP
    4.5 (use the latest ROCm version)
 
 If necessary, more installation details for a package will be provided in the
 subsections below.
 
-NWChemEx also depends on a number of repositories listed below. Please visit 
+NWChemEx also depends on a number of repositories listed below. Please visit
 the repositories and ensure that any additional packages that must be available
 before building are installed.
 
@@ -52,20 +52,20 @@ before building are installed.
 BLAS/LAPACK/ScaLAPACK
 ^^^^^^^^^^^^^^^^^^^^^
 
-**Intel MKL (Intel oneAPI MKL):** Ensure that all required environment 
+**Intel MKL (Intel oneAPI MKL):** Ensure that all required environment
 variables for the Intel MKL are set by executing ``/path/to/intel/mkl/bin/
 mklvars.sh <arch>``, where ``<arch>`` must be either ``ia32`` or ``intel64``.
-The following command can be added to your ``.bashrc`` to set the required 
+The following command can be added to your ``.bashrc`` to set the required
 environment variables automatically for all new terminal sessions:
 
 .. code-block:: bash
 
    . /path/to/intel/mkl/bin/mklvars.sh <arch>
 
-**Other BLAS/LAPACK/ScaLAPACK:** If not using the Intel MKL, ensure that 
+**Other BLAS/LAPACK/ScaLAPACK:** If not using the Intel MKL, ensure that
 environment variables for the packages are set up correctly according to the
-package-specific instructions and that paths to non-standard installation 
-directories are included in the cmake variable ``CMAKE_PREFIX_PATH`` (which 
+package-specific instructions and that paths to non-standard installation
+directories are included in the cmake variable ``CMAKE_PREFIX_PATH`` (which
 should be specified in your ``toolchain.cmake`` file (see below)).
 
 libint2
@@ -77,10 +77,10 @@ libint2
    to using this internal build of Boost have been observed (by Zach Crandall
    as of April 29, 2021).
 
-The libint2 build will take a long time (probably >2 hrs), and should be 
-started well in advance. At the time of writing, libint v2.6.0 can be obtained 
+The libint2 build will take a long time (probably >2 hrs), and should be
+started well in advance. At the time of writing, libint v2.6.0 can be obtained
 from the `libint v2.6.0 release <https://github.com/evaleev/libint/releases/
-tag/v2.6.0>`__ page and built using instructions at `libint Wiki 
+tag/v2.6.0>`__ page and built using instructions at `libint Wiki
 <https://github.com/evaleev/libint/wiki>`__ if a custom library is needed.
 
 The following build script can be used to build and install the libint2
@@ -88,15 +88,15 @@ pre-generated library "lmax=6 library (standard ints only)", which can be
 downloaded from the
 `libint v2.6.0 release <https://github.com/evaleev/libint/releases/tag/
 v2.6.0>`__ page or directly from `here <https://github.com/evaleev/libint/
-releases/download/v2.6.0/libint-2.6.0.tgz>`__. Download and extract the 
-pre-generated libint v2.6.0 library. Inside the newly extracted libint-2.6.0 
-directory, create a file named ``build.sh`` and paste the below contents, 
+releases/download/v2.6.0/libint-2.6.0.tgz>`__. Download and extract the
+pre-generated libint v2.6.0 library. Inside the newly extracted libint-2.6.0
+directory, create a file named ``build.sh`` and paste the below contents,
 modifying everything in angled brackets (<>) to be correct for your system.
 
 .. code-block:: bash
 
    #!/usr/bin/env bash
-    
+
    cmake -H . \
          -B build \
 	 -DCMAKE_INSTALL_PREFIX=<desired_install_location> \
@@ -105,18 +105,18 @@ modifying everything in angled brackets (<>) to be correct for your system.
 	 -DCMAKE_CXX_STANDARD=11 \
 	 -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE \
 	 2>&1 | tee OUTPUT.GEN
-	 
+
    cmake --build build --target install 2>&1 | tee OUTPUT.BUILD
 
 GitHub Personal Access Token
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A GitHub Personal Access Token (PAT) is necessary since, at the moment, 
-NWChemEx and some dependencies are hosted in private repositories. To create a 
+A GitHub Personal Access Token (PAT) is necessary since, at the moment,
+NWChemEx and some dependencies are hosted in private repositories. To create a
 PAT, follow the instructions at GitHub's `Creating a personal access token
 <https://docs.github.com/en/github/authenticating-to-github/
-creating-a-personal-access-token>`_ page. Note: please create a **classical 
-personal access token**, not a fine-grained personal access token. This PAT 
+creating-a-personal-access-token>`_ page. Note: please create a **classical
+personal access token**, not a fine-grained personal access token. This PAT
 will be used when prompted for a password while cloning repositories.
 
 
@@ -129,7 +129,7 @@ assumptions:
 #. You are using a sane Unix-like operating system.
 #. All components will be installed in the same location.
 
-The following two files will be created to build NWChemEx, with instructions 
+The following two files will be created to build NWChemEx, with instructions
 for each in the sections below:
 
 #. CMake Toolchain File: ``toolchain.cmake``
@@ -182,7 +182,7 @@ NWChemEx Build Script
 ^^^^^^^^^^^^^^^^^^^^^
 
 Create a new file named ``build_nwx.sh`` next to ``toolchain.cmake`` and paste
-the script below into it. This script will download, build, and install NWChemEx 
+the script below into it. This script will download, build, and install NWChemEx
 and any remaining dependencies. Logs for the build will be generated beside this
 build script.
 
@@ -191,10 +191,10 @@ build script.
    # Clone the repo
    git clone https://github.com/NWChemEx/NWChemEx.git 2>&1 | tee "OUTPUT.GITCLONE"
    # <Type login information if prompted.>
-   
+
    # Navigate into the newly created NWChemEx subdirectory
    cd NWChemEx
-   
+
    # Generate project buildsystem
    cmake -H. \
          -Bbuild \
@@ -210,35 +210,34 @@ build script.
 
    # Run tests
    cd build && ctest 2>&1 | tee "../../OUTPUT.TEST"
-   
+
    # Back out of the build directory
    cd ..
-   
+
    # Install the project
    cmake --build build --target install 2>&1 | tee "../OUTPUT.INSTALL"
 
    # Return to the top level directory
    cd ..
 
-``CMAKE_BUILD_TYPE`` is currently set to ``"Debug"``, because a ``Release`` 
+``CMAKE_BUILD_TYPE`` is currently set to ``"Debug"``, because a ``Release``
 build may take an extremely long time to finish (a known issue to be resolved).
 
-The toolchain.cmake file and the building script for NWChemEx can also be used 
-(with minor modifications such as repo paths) to compile other packages in the 
+The toolchain.cmake file and the building script for NWChemEx can also be used
+(with minor modifications such as repo paths) to compile other packages in the
 NWChemEx project.
 
-Running the NWChemEx Unit Tests 
+Running the NWChemEx Unit Tests
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Assuming NWChemEx is built with ``BUILD_TESTING`` enabled, then once the NWChemEx package is successfully built the unit tests can be run by running  ``ctest`` in the build directory. For debugging purposes, the log files resulting from running the unit tests can be found in the ``Testing/Temporary``
 subdirectory of the build directory.
 
 .. note::
-   
+
    For finer-grained control over the build, we direct the reader to the more
-   thorough CMaize build instructions located `here 
+   thorough CMaize build instructions located `here
    <https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest>`_
    and note that NWChemEx depends on several other projects:
-       
-   * `Catch2 <https://github.com/catchorg/Catch2>`_ (for testing only)
 
+   * `Catch2 <https://github.com/catchorg/Catch2>`_ (for testing only)
