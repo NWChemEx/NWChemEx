@@ -59,7 +59,7 @@ cmaize_find_or_build_optional_dependency(
     BUILD_TARGET friendzone
     FIND_TARGET nwx::friendzone
     CMAKE_ARGS BUILD_TESTING=OFF
-               BUILD_PYBIND11_PYBINDINGS="${BUILD_PYBIND11_PYBINDINGS}"
+               BUILD_PYBIND11_PYBINDINGS=${BUILD_PYBIND11_PYBINDINGS}
 )
 
 if(NOT TARGET scf) # Circular dependency band-aid
@@ -70,7 +70,7 @@ cmaize_find_or_build_dependency(
     BUILD_TARGET scf
     FIND_TARGET nwx::scf
     CMAKE_ARGS BUILD_TESTING=OFF
-               BUILD_PYBIND11_PYBINDINGS="${BUILD_PYBIND11_PYBINDINGS}"
+               BUILD_PYBIND11_PYBINDINGS=${BUILD_PYBIND11_PYBINDINGS}
 )
 endif()
 
@@ -82,7 +82,7 @@ cmaize_find_or_build_dependency(
     BUILD_TARGET nux
     FIND_TARGET nwx::nux
     CMAKE_ARGS BUILD_TESTING=OFF
-               BUILD_PYBIND11_PYBINDINGS="${BUILD_PYBIND11_PYBINDINGS}"
+               BUILD_PYBIND11_PYBINDINGS=${BUILD_PYBIND11_PYBINDINGS}
 )
 endif()
 include(get_chemcache)
