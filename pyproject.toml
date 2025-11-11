@@ -37,7 +37,7 @@ version_scheme = "no-guess-dev"
 name = "nwchemex"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
-description = "Provides SimDE compatible APIs so that NWChemEx can play nicely with its friends."
+description = "A top-level, user-focused, conglomerate repo for the NWChemEx project."
 readme = "README.md"
 authors = [
     { name = "jwaldrop107", email = "jwaldrop@ameslab.gov" },
