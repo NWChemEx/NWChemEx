@@ -24,5 +24,6 @@ header:
     - docs/requirements.txt
     - version.txt
     - build/
+    - venv/
 
   comment: never

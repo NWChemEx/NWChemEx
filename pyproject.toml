@@ -1,0 +1,87 @@
+# Copyright 2025 NWChemEx-Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This file defines the pip-installable Python package.
+
+[build-system]
+requires = ["setuptools>=46.1.0", "setuptools_scm[toml]>=5"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# For smarter version schemes and other configuration options,
+# check out https://github.com/pypa/setuptools_scm
+version_scheme = "no-guess-dev"
+
+# To create a pip-installable package that uses CMake in the backend,
+# scikit-build-core is used as the build backend, recommended by Pybind11.
+#
+# scikit-build-core: https://scikit-build-core.readthedocs.io/en/latest/
+# Pybind11 scikit-build-core example: https://github.com/pybind/scikit_build_example
+# [build-system]
+# requires = ["scikit-build-core>=0.11", "pybind11>=3.0"]
+# build-backend = "scikit_build_core.build"
+
+
+[project]
+name = "nwchemex"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+description = "A top-level, user-focused, conglomerate repo for the NWChemEx project."
+readme = "README.md"
+authors = [
+    { name = "jwaldrop107", email = "jwaldrop@ameslab.gov" },
+    { name = "zachcran", email = "zachcran@iastate.edu" },
+]
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Private :: Do Not Upload",
+]
+# Dynamic project attributes
+#
+# Set the project version dynamically according to git tags.
+# Git tag version info: https://github.com/pypa/setuptools-scm/blob/fb261332d9b46aa5a258042d85baa5aa7b9f4fa2/README.rst#default-versioning-scheme
+dynamic = ["version"]
+# NOTE: Invisible dependency for now until Python bindings at SimDE are
+# packaged properly and available here
+dependencies = [
+    "friendzone",
+    # "simde"
+]
+
+
+[tool.setuptools]
+# Cannot automatically find the nwchemex namespace so we set it here
+package-dir = { "" = "src/python" }
+
+# Dependency groups are optional dependencies that are not intented to appear
+# after packaging, usually used to help with testing or development
+# Example: pip install . --group dev
+[dependency-groups]
+test = ["pytest"]
+dev = [{ include-group = "test" }]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+log_cli_level = "INFO"
+filterwarnings = ["error", "ignore::pytest.PytestCacheWarning"]
+testpaths = ["tests"]

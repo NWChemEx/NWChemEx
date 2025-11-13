@@ -16,33 +16,64 @@
 *.tmp
 *.autosave
 *.bak
+*~
+*.py[cod]
+*.so
+*.cfg
+!.isort.cfg
+!setup.cfg
+*.orig
+*.log
+*.pot
+__pycache__/*
+.cache/*
+.*.swp
+*/.ipynb_checkpoints/*
+.DS_Store
 
 # These are directories used by IDEs for storing settings
-.idea/
-.vscode/
+.ropeproject
+.project
+.pydevproject
+.settings
+.idea
+.vscode
+tags
 
-# These are common Python virtual enviornment directory names
-venv/
-docs/venv/
+# Package files
+*.egg
+*.eggs/
+.installed.cfg
+*.egg-info
 
-# This is where Jupyter/IPython store backup files
-.ipynb_checkpoints/
+# Unittest and coverage
+htmlcov/*
+.coverage
+.coverage.*
+.tox
+junit*.xml
+coverage.xml
+.pytest_cache/
 
-# Byte-compiled Python
-__pycache__/
+# Build and docs folder/files
+build/*
+dist/*
+sdist/*
+docs/source/api/*
+!docs/source/api/modules.rst
+docs/source/_rst/*
+docs/build/*
+cover/*
+MANIFEST
 
-# These are common build directory names
-_build/
-build/
-build*/
-docs/build
-docs/source/_build
-docs/doxyoutput
-docs/source/api
-*-build-*/
-_build/
-Debug/
-Release/
+# Per-project virtualenvs
+*venv*/
+.conda*/
+.python-version
 
 # Users commonly store their specific CMake settings in a toolchain file
 toolchain.cmake
+
+# These are the default names for the components of the cache
+cache.db
+uuid.db
