@@ -21,6 +21,7 @@ include(cmake/get_nwx_cmake.cmake)
 include(get_version_from_git)
 get_version_from_git(nwchemex_version "${CMAKE_CURRENT_LIST_DIR}")
 project(nwchemex VERSION "${nwchemex_version}" LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 20)
 
 # Load NWX org helper modules
 include(nwx_versions)
