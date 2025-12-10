@@ -16,6 +16,8 @@
 
 ![NWChemEx Logo](https://github.com/NWChemEx/.github/blob/master/assets/logos/banners/Graphic_LogoChemSymbolsLarge.png)
 
+[![Nightly Workflow](https://github.com/NWChemEx/NWChemEx/actions/workflows/nightly.yaml/badge.svg)](https://github.com/NWChemEx/NWChemEx/actions/workflows/nightly.yaml)
+
 [Documentation](https://nwchemex.github.io/NWChemEx)
 
 NWChemEx is an electronic structure package focusing on high-performance
