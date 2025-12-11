@@ -24,7 +24,6 @@ project(nwchemex VERSION "${nwchemex_version}" LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
 # Load NWX org helper modules
-include(nwx_versions)
 include(get_cmaize)
 include(nwx_cxx_api_docs)
 
@@ -55,7 +54,6 @@ cmaize_find_or_build_optional_dependency(
     friendzone
     BUILD_PYBIND11_PYBINDINGS
     URL github.com/NWChemEx/FriendZone
-    VERSION ${NWX_FRIENDZONE_VERSION}
     BUILD_TARGET friendzone
     FIND_TARGET nwx::friendzone
     CMAKE_ARGS BUILD_TESTING=OFF
@@ -66,7 +64,6 @@ if(NOT TARGET scf) # Circular dependency band-aid
 cmaize_find_or_build_dependency(
     scf
     URL github.com/NWChemEx/SCF
-    VERSION ${NWX_SCF_VERSION}
     BUILD_TARGET scf
     FIND_TARGET nwx::scf
     CMAKE_ARGS BUILD_TESTING=OFF
@@ -78,7 +75,6 @@ if(NOT TARGET nux) # Circular dependency band-aid
 cmaize_find_or_build_dependency(
     nux
     URL github.com/NWChemEx/NUX
-    VERSION master
     BUILD_TARGET nux
     FIND_TARGET nwx::nux
     CMAKE_ARGS BUILD_TESTING=OFF
