@@ -16,6 +16,12 @@ function("${has_property}" self has_property property_name)
 
     CMaizeTarget(target "${self}" my_name)
 
+    # Check if the target exists before trying to get properties
+    if(NOT TARGET "${my_name}")
+        set("${has_property}" FALSE)
+        cpp_return("${has_property}")
+    endif()
+
     # Check if the target is an ALIAS and resolve to the actual target
     get_target_property(_aliased_target "${my_name}" ALIASED_TARGET)
     if(_aliased_target)
@@ -42,12 +48,17 @@ endfunction()
 cpp_member(get_property CMaizeTarget desc desc)
 function("${get_property}" self property_value property_name)
 
+    CMaizeTarget(target "${self}" my_name)
+
+    # Check if the target exists before trying to get properties
+    if(NOT TARGET "${my_name}")
+        cpp_raise(PropertyNotFound "Property not found: ${property_name} (target ${my_name} does not exist)")
+    endif()
+
     CMaizeTarget(has_property "${self}" prop_exists "${property_name}")
     if(NOT prop_exists)
         cpp_raise(PropertyNotFound "Property not found: ${property_name}")
     endif()
-
-    CMaizeTarget(target "${self}" my_name)
 
     # Check if the target is an ALIAS and resolve to the actual target
     get_target_property(_aliased_target "${my_name}" ALIASED_TARGET)
