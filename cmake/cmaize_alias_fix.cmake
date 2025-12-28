@@ -148,3 +148,27 @@ function(cmaize_find_or_build_optional_dependency _cfobod_name _cfobod_flag)
     endif()
 
 endfunction()
+
+# Wrap get_target_property to handle ALIAS targets globally
+# This catches any direct calls to get_target_property in CMaize internals
+if(NOT COMMAND _original_get_target_property)
+    # Save the original function
+    macro(_original_get_target_property)
+        _get_target_property(${ARGV})
+    endmacro()
+endif()
+
+macro(get_target_property _var _target _property)
+    # Check if target exists and is an ALIAS
+    if(TARGET "${_target}")
+        get_property(_is_alias TARGET "${_target}" PROPERTY ALIASED_TARGET SET)
+        if(_is_alias)
+            get_property(_aliased_target TARGET "${_target}" PROPERTY ALIASED_TARGET)
+            _original_get_target_property(${_var} "${_aliased_target}" "${_property}")
+        else()
+            _original_get_target_property(${_var} "${_target}" "${_property}")
+        endif()
+    else()
+        _original_get_target_property(${_var} "${_target}" "${_property}")
+    endif()
+endmacro()
