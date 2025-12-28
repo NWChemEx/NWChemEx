@@ -29,6 +29,9 @@ include(get_cmaize)
 # Apply fix for CMaize v1.1.10 ALIAS target bugs
 include(cmake/cmaize_alias_fix.cmake)
 
+# Apply libfort and libxc CMake version patches (must be before dependencies)
+include(cmake/old_cmake_deps_fix.cmake)
+
 include(nwx_cxx_api_docs)
 
 # Actual build system starts here
@@ -73,8 +76,6 @@ cmaize_find_or_build_dependency(
     CMAKE_ARGS BUILD_TESTING=OFF
                BUILD_PYBIND11_PYBINDINGS=${BUILD_PYBIND11_PYBINDINGS}
 )
-# Try to patch libfort if it was fetched as a dependency of scf/pluginplay
-include(cmake/libfort_cmake_fix.cmake)
 endif()
 
 if(NOT TARGET nux) # Circular dependency band-aid
@@ -89,9 +90,6 @@ cmaize_find_or_build_dependency(
 endif()
 include(get_chemcache)
 include(get_integrals)
-
-# Patch libfort's CMakeLists.txt if it was fetched by dependencies
-include(cmake/libfort_cmake_fix.cmake)
 
 #TOOD: Replace with cmaize_add_library when it supports Python
 add_library(${PROJECT_NAME} INTERFACE)
