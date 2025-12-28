@@ -18,7 +18,7 @@ macro(get_nwx_cmake)
     include(FetchContent)
     FetchContent_Declare(
         nwx_cmake
-        GIT_REPOSITORY https://github.com/alphataubio/NWXCMake
+        GIT_REPOSITORY https://github.com/alphataubio/NWXCMake-alphataubio
         GIT_TAG        alphataubio-cmake
     )
     FetchContent_MakeAvailable(nwx_cmake)
