@@ -66,20 +66,23 @@ function("${has_property}" self has_property property_name)
 endfunction()
 
 # Override get_property to handle any lingering ALIAS references
+# IMPORTANT: This must NOT raise an error if target doesn't exist - just return NOTFOUND
 cpp_member(get_property CMaizeTarget desc desc)
 function("${get_property}" self property_value property_name)
     # Get target name using attribute access
     cpp_attr(GET "${self}" my_name _cmt_target)
 
-    # Check if target exists
+    # If target doesn't exist, return NOT-FOUND style value (match CMake behavior)
     if(NOT TARGET "${my_name}")
-        cpp_raise(PropertyNotFound "Property not found: ${property_name} (target ${my_name} does not exist)")
+        set("${property_value}" "${property_name}-NOTFOUND" PARENT_SCOPE)
+        return()
     endif()
 
-    # Check if property exists
+    # Check if property exists first
     CMaizeTarget(has_property "${self}" prop_exists "${property_name}")
     if(NOT prop_exists)
-        cpp_raise(PropertyNotFound "Property not found: ${property_name}")
+        set("${property_value}" "${property_name}-NOTFOUND" PARENT_SCOPE)
+        return()
     endif()
 
     # Resolve any ALIAS
