@@ -13,6 +13,24 @@
 # limitations under the License.
 
 cmake_minimum_required(VERSION 3.14)
+
+# Set CMake policies to eliminate warnings
+if(POLICY CMP0167)
+    cmake_policy(SET CMP0167 NEW) # FindBoost module removed
+endif()
+if(POLICY CMP0177)
+    cmake_policy(SET CMP0177 NEW) # install() paths normalized
+endif()
+if(POLICY CMP0152)
+    cmake_policy(SET CMP0152 NEW) # file(REAL_PATH) resolves symlinks
+endif()
+if(POLICY CMP0148)
+    cmake_policy(SET CMP0148 NEW) # FindPython* modules removed
+endif()
+if(POLICY CMP0169)
+    cmake_policy(SET CMP0169 NEW) # FetchContent_Populate deprecated
+endif()
+
 #project(nwchemex VERSION "1.0" LANGUAGES CXX)
 #Downloads common CMake modules used throughout NWChemEx
 include(cmake/get_nwx_cmake.cmake)
@@ -25,6 +43,13 @@ set(CMAKE_CXX_STANDARD 20)
 
 # Load NWX org helper modules
 include(get_cmaize)
+
+# Apply fix for CMaize v1.1.10 ALIAS target bugs
+include(cmake/cmaize_alias_fix.cmake)
+
+# Apply libfort and libxc CMake version patches (must be before dependencies)
+include(cmake/old_cmake_deps_fix.cmake)
+
 include(nwx_cxx_api_docs)
 
 # Actual build system starts here
