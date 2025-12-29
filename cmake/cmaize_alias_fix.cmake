@@ -6,9 +6,38 @@
 # These function overrides fix issues where CMaize v1.1.10 fails when
 # interacting with ALIAS targets (like Eigen3::Eigen and Libxc::xc).
 # The fix resolves ALIAS targets to their underlying real targets before
-# calling CMake functions that don't support ALIAS targets.
+# CMaize stores them.
 
 include_guard()
+
+# Helper function to resolve ALIAS targets to their real targets
+function(_resolve_alias_target output_var target_name)
+    if(TARGET "${target_name}")
+        # Check if it's an ALIAS using get_property (not get_target_property to avoid recursion)
+        get_property(_is_alias_set TARGET "${target_name}" PROPERTY ALIASED_TARGET SET)
+        if(_is_alias_set)
+            get_property(_aliased TARGET "${target_name}" PROPERTY ALIASED_TARGET)
+            set(${output_var} "${_aliased}" PARENT_SCOPE)
+            message(VERBOSE "Resolved ALIAS ${target_name} -> ${_aliased}")
+        else()
+            set(${output_var} "${target_name}" PARENT_SCOPE)
+        endif()
+    else()
+        set(${output_var} "${target_name}" PARENT_SCOPE)
+    endif()
+endfunction()
+
+# Override CMaizeTarget constructor to resolve ALIAS targets immediately
+cpp_member(ctor CMaizeTarget desc)
+function("${ctor}" self my_target)
+    
+    # Resolve ALIAS to real target before storing
+    _resolve_alias_target(resolved_target "${my_target}")
+    
+    # Store the resolved target name
+    CMaizeTarget(SET "${self}" target "${resolved_target}")
+    
+endfunction()
 
 # Override CMaizeTarget has_property to handle ALIAS targets
 cpp_member(has_property CMaizeTarget desc desc)
@@ -22,14 +51,11 @@ function("${has_property}" self has_property property_name)
         cpp_return("${has_property}")
     endif()
 
-    # Check if the target is an ALIAS and resolve to the actual target
-    get_target_property(_aliased_target "${my_name}" ALIASED_TARGET)
-    if(_aliased_target)
-        set(my_name "${_aliased_target}")
-    endif()
+    # Resolve ALIAS targets to real targets
+    _resolve_alias_target(resolved_name "${my_name}")
 
     # Call CMake's built-in `get_target_property()` method.
-    get_target_property(property_value "${my_name}" "${property_name}")
+    get_target_property(property_value "${resolved_name}" "${property_name}")
 
     # 'get_target_property()' returns either an empty string or the given
     # return variable name with "-NOTFOUND" appended when the property is
@@ -60,14 +86,11 @@ function("${get_property}" self property_value property_name)
         cpp_raise(PropertyNotFound "Property not found: ${property_name}")
     endif()
 
-    # Check if the target is an ALIAS and resolve to the actual target
-    get_target_property(_aliased_target "${my_name}" ALIASED_TARGET)
-    if(_aliased_target)
-        set(my_name "${_aliased_target}")
-    endif()
+    # Resolve ALIAS targets to real targets
+    _resolve_alias_target(resolved_name "${my_name}")
 
     # Call CMake's built-in `get_target_property()` method.
-    get_target_property("${property_value}" "${my_name}" "${property_name}")
+    get_target_property("${property_value}" "${resolved_name}" "${property_name}")
 
     cpp_return("${property_value}")
 
@@ -103,15 +126,8 @@ function(cmaize_find_or_build_optional_dependency _cfobod_name _cfobod_flag)
             )
         endif()
 
-        # Get the target name
+        # Get the target name (already resolved by CMaizeTarget ctor)
         CMaizeTarget(target "${_cfobod_tgt_obj}" _cfobod_tgt_name)
-        
-        # Check if the target is an ALIAS and resolve to the actual target
-        # because target_compile_definitions cannot be used on ALIAS targets
-        get_target_property(_cfobod_aliased_target "${_cfobod_tgt_name}" ALIASED_TARGET)
-        if(_cfobod_aliased_target)
-            set(_cfobod_tgt_name "${_cfobod_aliased_target}")
-        endif()
         
         # Add the compile definition
         target_compile_definitions(
@@ -148,27 +164,3 @@ function(cmaize_find_or_build_optional_dependency _cfobod_name _cfobod_flag)
     endif()
 
 endfunction()
-
-# Wrap get_target_property to handle ALIAS targets globally
-# This catches any direct calls to get_target_property in CMaize internals
-if(NOT COMMAND _original_get_target_property)
-    # Save the original function
-    macro(_original_get_target_property)
-        _get_target_property(${ARGV})
-    endmacro()
-endif()
-
-macro(get_target_property _var _target _property)
-    # Check if target exists and is an ALIAS
-    if(TARGET "${_target}")
-        get_property(_is_alias TARGET "${_target}" PROPERTY ALIASED_TARGET SET)
-        if(_is_alias)
-            get_property(_aliased_target TARGET "${_target}" PROPERTY ALIASED_TARGET)
-            _original_get_target_property(${_var} "${_aliased_target}" "${_property}")
-        else()
-            _original_get_target_property(${_var} "${_target}" "${_property}")
-        endif()
-    else()
-        _original_get_target_property(${_var} "${_target}" "${_property}")
-    endif()
-endmacro()
