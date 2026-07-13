@@ -48,7 +48,7 @@ dependencies = [
     "nwchemex-scf",
     "nwchemex-nux",
     "nwchemex-chemcache",
-    "nwchemex-friendzone",
+    "nwchemex-friendzone[molssi]",
 ]
 
 [project.optional-dependencies]

@@ -74,6 +74,10 @@ jobs:
         uses: ryanmrichard/.github/.github/actions/setup_nwx_dev_env@master
         with:
           compiler: gcc-14
+          needs_nwchem: "true"
+      - name: Sanity-check NWChem Is On PATH
+        shell: bash
+        run: which nwchem
       - name: Install
         shell: bash
         run: |
