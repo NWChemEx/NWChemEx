@@ -52,7 +52,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "numpy"]
 dev  = ["nwchemex[test]", "tox", "pre-commit"]
 
 # Python source lives under python/ (analogous to cxx/ in the C++ repos).
