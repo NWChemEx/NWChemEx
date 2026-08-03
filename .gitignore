@@ -77,3 +77,6 @@ toolchain.cmake
 # These are the default names for the components of the cache
 cache.db
 uuid.db
+
+# Automatically installed in dev mode
+.pre-commit-config.yaml
