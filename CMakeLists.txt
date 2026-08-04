@@ -32,9 +32,21 @@ set(BUILD_TESTING "${_nwchemex_bt_backup}" CACHE BOOL "" FORCE)
 unset(_nwchemex_bt_backup)
 
 ### "Library" (aggregator INTERFACE target) ###
+# GET_DEPENDENCIES_TARGETS (set by get_dependencies() above) is unusable
+# here: every dependencies/*.cmake file's SKBUILD branch names a "nwx::..."
+# ALIAS that is never actually defined anywhere in the ecosystem (get_dependencies
+# always fetches via FetchContent, even under SKBUILD, so that branch is
+# dead/wrong) -- linking against it fails at generate time with "the target
+# was not found". NWX_DEP_TARGET_<name> is the mechanism every other
+# consumer in the ecosystem actually relies on to resolve a dependency's
+# real target name, so use that instead.
 if(NOT TARGET nwchemex)
     add_library(nwchemex INTERFACE)
-    target_link_libraries(nwchemex INTERFACE ${GET_DEPENDENCIES_TARGETS})
+    target_link_libraries(nwchemex INTERFACE
+        ${NWX_DEP_TARGET_integrals}
+        ${NWX_DEP_TARGET_chemcache}
+        ${NWX_DEP_TARGET_nux}
+    )
 endif()
 
 include(install_target)
