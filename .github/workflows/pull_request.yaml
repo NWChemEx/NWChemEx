@@ -24,74 +24,12 @@ jobs:
   check_formatting:
     uses: ryanmrichard/.github/.github/workflows/check_formatting.yaml@master
 
-  # Dry-run of the actual sdist/wheel build (not just an editable install via
-  # test_python below) -- catches e.g. files missing from the sdist manifest
-  # that an editable install wouldn't. Matches FriendZone's own
-  # pull_request.yaml.
-  test_pypi_deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build PyPI Distribution
-        uses: ryanmrichard/.github/.github/actions/build_pypi_dist@master
-        with:
-          extra_index_url: https://test.pypi.org/simple/
-
   test_nwx_docs:
     uses: ryanmrichard/.github/.github/workflows/test_nwx_docs.yaml@master
     with:
       doc_target: "Sphinx"
 
-  # NWChemEx is pure Python (no CMakeLists.txt), so there's nothing to
-  # compile and the compiler axis of the shared dev matrix is meaningless
-  # here -- just a lean OS-only matrix. setup_nwx_dev_env still runs (via its
-  # unconditional MPI/Boost install) because the ecosystem's prebuilt wheels
-  # dynamically link against libmpi at import time, and bare GitHub runners
-  # have no MPI by default.
-  test_python:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Checkout Source
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      # Pinned to 3.12, not "3.x" (whatever's newest, e.g. 3.14 today):
-      # the ecosystem's own dependencies are only published as prebuilt
-      # wheels for cp312 (platform_matrix.yaml's release_matrix). Under a
-      # newer ambient Python, pip falls back to building those from source,
-      # which succeeds (setup_nwx_dev_env provides MPI/Boost/etc.) but
-      # produces a binary missing the rpath-bundled shared libs that
-      # cibuildwheel+delocate/auditwheel normally provide for the real
-      # published wheel, so it fails to import at runtime.
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Setup NWX Dev Environment
-        uses: ryanmrichard/.github/.github/actions/setup_nwx_dev_env@master
-        with:
-          compiler: gcc-14
-          needs_nwchem: "true"
-      - name: Sanity-check NWChem Is On PATH
-        shell: bash
-        run: which nwchem
-      - name: Install
-        shell: bash
-        run: |
-          pip install -e ".[dev]" --extra-index-url https://test.pypi.org/simple/
-      - name: Test Python
-        shell: bash
-        run: |
-          set +e
-          pytest -v
-          pytest_exit=$?
-          set -e
-
-          if [ "$pytest_exit" -eq 5 ]; then
-              echo "::error::zero pytest tests were found."
-              exit 1
-          fi
-          exit "$pytest_exit"
+  # Shared with nightly.yaml -- see that file's comments for why this repo
+  # doesn't use the shared test_nwx_cmake_build/test_nwx_pip_build workflows.
+  test_python_build:
+    uses: ./.github/workflows/test_python_build.yaml

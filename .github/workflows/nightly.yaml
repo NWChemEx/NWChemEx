@@ -14,14 +14,16 @@
 #
 
 name: Nightly Workflow
+# Re-runs the same build/test jobs pull_request.yaml runs, on a schedule, to
+# catch breakage that originates outside the repo (upstream dependency
+# releases, refreshed GitHub runner images) rather than from a code change.
+# Both callers share test_python_build.yaml, so there is nothing to keep in
+# sync by hand.
 
 on:
   schedule:
     - cron: "0 6 * * *" # Every day at 06:00 UTC (00:00 CST)
 
 jobs:
-  test_library:
-    uses: NWChemEx/.github/.github/workflows/test_nwx_library.yaml@master
-    with:
-      compilers: '["gcc-14", "clang-18"]'
-      repo_toolchain: '.github/nwx_pr_settings.cmake'
+  test_python_build:
+    uses: ./.github/workflows/test_python_build.yaml
