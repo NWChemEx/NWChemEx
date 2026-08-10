@@ -18,14 +18,14 @@ name: Pull Request Workflow
 on:
   pull_request:
     branches:
-      - build_overhaul
+      - master
 
 jobs:
   check_formatting:
-    uses: ryanmrichard/.github/.github/workflows/check_formatting.yaml@master
+    uses: NWChemEx/.github/.github/workflows/check_formatting.yaml@master
 
   test_nwx_docs:
-    uses: ryanmrichard/.github/.github/workflows/test_nwx_docs.yaml@master
+    uses: NWChemEx/.github/.github/workflows/test_nwx_docs.yaml@master
     with:
       doc_target: "Sphinx"
 

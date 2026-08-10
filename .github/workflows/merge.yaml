@@ -18,15 +18,15 @@ name: Merge Workflow
 on:
   push:
     branches:
-      - build_overhaul
+      - master
 
 jobs:
   tag-commit:
-    uses: ryanmrichard/.github/.github/workflows/tag.yaml@master
+    uses: NWChemEx/.github/.github/workflows/tag.yaml@master
     secrets: inherit
 
   deploy_nwx_docs:
-    uses: ryanmrichard/.github/.github/workflows/deploy_nwx_docs.yaml@master
+    uses: NWChemEx/.github/.github/workflows/deploy_nwx_docs.yaml@master
     with:
       doc_target: "Sphinx"
     secrets: inherit
@@ -43,12 +43,9 @@ jobs:
       id-token: write
     steps:
       - name: Build PyPI Distribution
-        uses: ryanmrichard/.github/.github/actions/build_pypi_dist@master
-        with:
-          extra_index_url: https://test.pypi.org/simple/
+        uses: NWChemEx/.github/.github/actions/build_pypi_dist@master
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: dist/
-          repository-url: https://test.pypi.org/legacy/

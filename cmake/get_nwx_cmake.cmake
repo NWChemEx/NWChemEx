@@ -22,7 +22,7 @@ include_guard()
 #   1. A pip-installed `nwxcmake` package (query it for its cmake/ dir). An
 #      editable install (`pip install -e /path/to/NWXCMake`) points at a local
 #      working copy, so NWXCMake edits are picked up with no git push.
-#   2. Fallback: FetchContent from github.com/ryanmrichard/NWXCMake.
+#   2. Fallback: FetchContent from github.com/NWChemEx/NWXCMake.
 macro(get_nwx_cmake)
     if(NOT _NWX_CMAKE_MODULE_DIR)
         # find_package(Python) needs no enabled language, so it is safe here,
@@ -57,7 +57,7 @@ macro(get_nwx_cmake)
             include(FetchContent)
             FetchContent_Declare(
                 nwx_cmake
-                GIT_REPOSITORY https://github.com/ryanmrichard/NWXCMake
+                GIT_REPOSITORY https://github.com/NWChemEx/NWXCMake
             )
             FetchContent_MakeAvailable(nwx_cmake)
             set(_gnc_resolved "${nwx_cmake_SOURCE_DIR}/cmake")

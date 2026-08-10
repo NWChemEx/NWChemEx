@@ -43,12 +43,12 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
-    "nwchemex-simde @ git+https://github.com/ryanmrichard/SimDE",
-    "nwchemex-integrals @ git+https://github.com/ryanmrichard/Integrals",
-    "nwchemex-scf @ git+https://github.com/ryanmrichard/SCF",
-    "nwchemex-nux @ git+https://github.com/ryanmrichard/NUX",
-    "nwchemex-chemcache @ git+https://github.com/ryanmrichard/ChemCache",
-    "nwchemex-friendzone[molssi] @ git+https://github.com/ryanmrichard/FriendZone",
+    "nwchemex-simde>=0.0.77",
+    "nwchemex-integrals>=0.0.65",
+    "nwchemex-scf>=0.0.57",
+    "nwchemex-nux>=0.0.21",
+    "nwchemex-chemcache>=1.1.24",
+    "nwchemex-friendzone[molssi]>=1.0.23",
 ]
 
 [project.optional-dependencies]
