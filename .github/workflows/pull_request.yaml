@@ -27,10 +27,9 @@ jobs:
   test_nwx_docs:
     uses: NWChemEx/.github/.github/workflows/test_nwx_docs.yaml@master
     with:
-      doc_target: "nwchemex_cxx_api"
+      doc_target: "Sphinx"
 
-  test_library:
-    uses: NWChemEx/.github/.github/workflows/test_nwx_library.yaml@master
-    with:
-      compilers: '["gcc-14", "clang-18"]'
-      repo_toolchain: '.github/nwx_pr_settings.cmake'
+  # Shared with nightly.yaml -- see that file's comments for why this repo
+  # doesn't use the shared test_nwx_cmake_build/test_nwx_pip_build workflows.
+  test_python_build:
+    uses: ./.github/workflows/test_python_build.yaml

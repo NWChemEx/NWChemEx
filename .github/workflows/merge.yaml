@@ -28,6 +28,24 @@ jobs:
   deploy_nwx_docs:
     uses: NWChemEx/.github/.github/workflows/deploy_nwx_docs.yaml@master
     with:
-      doc_target: "nwchemex_cxx_api"
-      generate_module_docs: true
+      doc_target: "Sphinx"
     secrets: inherit
+
+  # No platform_matrix / cibw_build needed: NWChemEx is pure Python, so
+  # build_pypi_dist's plain path (cibw_build left unset) applies -- a single
+  # platform-independent sdist+wheel, same shape as FriendZone's own working
+  # merge.yaml. Inlined rather than a reusable workflow: PyPI trusted
+  # publishing doesn't support reusable workflows.
+  deploy_to_pypi:
+    needs: tag-commit
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Build PyPI Distribution
+        uses: NWChemEx/.github/.github/actions/build_pypi_dist@master
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
