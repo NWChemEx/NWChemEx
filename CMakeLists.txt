@@ -27,7 +27,7 @@ include(get_dependencies)
 # after (same approach as libint2.cmake).
 set(_nwchemex_bt_backup "${BUILD_TESTING}")
 set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
-get_dependencies(integrals chemcache nux)
+get_dependencies(integrals chemcache nux scf)
 set(BUILD_TESTING "${_nwchemex_bt_backup}" CACHE BOOL "" FORCE)
 unset(_nwchemex_bt_backup)
 
@@ -46,6 +46,7 @@ if(NOT TARGET nwchemex)
         ${NWX_DEP_TARGET_integrals}
         ${NWX_DEP_TARGET_chemcache}
         ${NWX_DEP_TARGET_nux}
+        ${NWX_DEP_TARGET_scf}
     )
 endif()
 
