@@ -18,11 +18,14 @@ name: Test Python Build
 # and nightly.yaml both need exactly these jobs, so they live here instead of
 # being duplicated in each.
 #
-# This is a repo-local reusable workflow rather than one of the shared
-# NWChemEx/.github ones because NWChemEx is pure Python (no CMakeLists.txt):
-# test_nwx_cmake_build/test_nwx_pip_build both drive a scikit-build-core CMake
-# build and don't apply. It isn't a composite action because the duplication
-# includes the job's matrix and runs-on, which an action can't own.
+# This is a repo-local reusable workflow rather than test_nwx_pip_build
+# because test_python below needs a real NWChem install (needs_nwchem) and a
+# PATH sanity check that the shared pip_build action has no input for -- see
+# test_cmake_build below for coverage of the CMake path (get_dependencies
+# (integrals chemcache nux scf), the LANGUAGES NONE superbuild) on its own,
+# via the shared cmake_build action instead. It isn't a composite action
+# because the duplication includes the job's matrix and runs-on, which an
+# action can't own.
 #
 # Callers reference it as `uses: ./.github/workflows/test_python_build.yaml`,
 # which resolves at the caller's own commit -- so a PR that edits this file
@@ -32,28 +35,42 @@ on:
   workflow_call:
 
 jobs:
+  # Exercises CMakeLists.txt's superbuild (get_dependencies(integrals
+  # chemcache nux scf), which transitively pulls in the rest of the
+  # ecosystem) -- the same CMake path every other ecosystem repo's
+  # INTEGRATION_TESTING build depends on via get_dependencies(nwchemex), so
+  # it needs its own coverage rather than riding along on theirs. No unit
+  # tests or Python bindings are wired up in this CMakeLists (it only
+  # defines the "nwchemex" aggregator INTERFACE target), hence both test
+  # inputs are off -- turning either on would trip the shared action's
+  # zero-tests guard.
+  test_cmake_build:
+    uses: NWChemEx/.github/.github/workflows/test_nwx_cmake_build.yaml@master
+    with:
+      run_cmake_tests: "false"
+      run_python_tests: "false"
+
   # Dry-run of the actual sdist/wheel build (not just an editable install via
   # test_python below) -- catches e.g. files missing from the sdist manifest
-  # that an editable install wouldn't. Matches FriendZone's own
-  # test_python_build.yaml.
+  # that an editable install wouldn't. Deliberately doesn't set cibw_build:
+  # this is a smoke build (does it build & install cleanly, is the metadata
+  # right), not a check that the wheel is manylinux/macOS-portable -- that's
+  # what merge.yaml's real, matrixed build_pypi_dist is for.
   test_pypi_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Build PyPI Distribution
         uses: NWChemEx/.github/.github/actions/build_pypi_dist@master
 
-  # NWChemEx is pure Python (no CMakeLists.txt), so there's nothing to
-  # compile and the compiler axis of the shared dev matrix is meaningless
-  # here -- just a lean OS-only matrix. setup_nwx_dev_env still runs (via its
-  # unconditional MPI/Boost install) because the ecosystem's prebuilt wheels
-  # dynamically link against libmpi at import time, and bare GitHub runners
-  # have no MPI by default.
-  #
-  # continue-on-error on macos-latest: nwchemex-scf has a known, tracked,
-  # macOS-only segfault (see scf-macos-pybind11-segfault.md) and only
-  # publishes a Linux wheel for now, so this leg still runs and reports its
-  # real result -- visible signal for the ongoing investigation -- without
-  # blocking this workflow or PR merge readiness. Drop once fixed.
+  # python/nwchemex itself is pure Python, but pip install now drives a real
+  # CMake build (get_dependencies(integrals chemcache nux scf) -- see
+  # pyproject.toml's top comment), so this needs a real compiler too, hence
+  # setup_nwx_dev_env's compiler input below. It's still just an OS-only
+  # matrix (not the full dev_matrix compiler axis) to keep this job's
+  # existing needs_nwchem customization simple; the shared cmake_build
+  # action's dev_matrix already covers both compilers for the CMake path via
+  # test_cmake_build above.
+
   test_python:
     strategy:
       fail-fast: false
@@ -89,7 +106,9 @@ jobs:
       - name: Install
         shell: bash
         run: |
-          pip install -e ".[dev]"
+          pip install -e ".[dev]" \
+            --config-settings=cmake.define.CMAKE_C_COMPILER="${CC}" \
+            --config-settings=cmake.define.CMAKE_CXX_COMPILER="${CXX}"
       - name: Test Python
         shell: bash
         run: |

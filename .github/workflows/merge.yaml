@@ -31,19 +31,50 @@ jobs:
       doc_target: "Sphinx"
     secrets: inherit
 
-  # No platform_matrix / cibw_build needed: NWChemEx is pure Python, so
-  # build_pypi_dist's plain path (cibw_build left unset) applies -- a single
-  # platform-independent sdist+wheel, same shape as FriendZone's own working
-  # merge.yaml. Inlined rather than a reusable workflow: PyPI trusted
-  # publishing doesn't support reusable workflows.
+  platform_matrix:
+    uses: NWChemEx/.github/.github/workflows/platform_matrix.yaml@master
+
+  build_pypi_dist:
+    needs: [tag-commit, platform_matrix]
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.platform_matrix.outputs.release_matrix) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Build PyPI Distribution
+        uses: NWChemEx/.github/.github/actions/build_pypi_dist@master
+        with:
+          cibw_build: ${{ matrix.cibw_build }}
+          build_sdist: ${{ matrix.os == 'ubuntu-latest' && 'true' || 'false' }}
+          needs_mpi: "true"
+          needs_boost: "true"
+          needs_blas: "true"
+          needs_eigen: "true"
+          needs_openmp: "true"
+
+      - name: Upload Distribution Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.os }}
+          path: dist/
+
+  # A separate, ubuntu-only publish job (rather than a publish step per
+  # build_pypi_dist leg) because pypa/gh-action-pypi-publish only runs on
+  # Linux, and because PyPI trusted publishing does not support reusable
+  # workflows (this job must be defined directly here, not delegated).
   deploy_to_pypi:
-    needs: tag-commit
+    needs: build_pypi_dist
     runs-on: ubuntu-latest
     permissions:
       id-token: write
     steps:
-      - name: Build PyPI Distribution
-        uses: NWChemEx/.github/.github/actions/build_pypi_dist@master
+      - name: Download All Distributions
+        uses: actions/download-artifact@v4
+        with:
+          pattern: dist-*
+          path: dist
+          merge-multiple: true
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

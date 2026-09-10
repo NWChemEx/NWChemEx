@@ -12,14 +12,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# NWChemEx is a pure-Python "conglomerate" package: it has no C++ of its own and
-# simply pulls together the ecosystem plugins. Like FriendZone it uses a plain
-# setuptools build (no CMake); the compiled ecosystem arrives via its wheel
-# dependencies.
+# NWChemEx has no compiled extension of its own (CMakeLists.txt is a
+# LANGUAGES NONE aggregator, see the comment there), but it IS built via
+# CMake so that
+# `pip install nwchemex` also installs a real nwchemexConfig.cmake
+# (nwx::nwchemex, an INTERFACE target aggregating nwx::integrals,
+# nwx::chemcache, nwx::nux, nwx::scf). Without that, any downstream repo's
+# `get_dependencies(nwchemex)` (e.g. SCF's own integration tests) could only
+# ever resolve "nwchemex" via git FetchContent, never via the installed
+# ecosystem -- see https://nwchemex.github.io/author/testing/integration/.
+
+#
+# The dependencies list below is deliberately NOT the same as
+# CMakeLists.txt's get_dependencies(integrals chemcache nux scf) call: this
+# is the Python import graph python/nwchemex needs at runtime (simde and
+# friendzone included), while the CMakeLists names only the direct C++ link
+# closure -- the rest of the ecosystem arrives transitively there.
 
 [build-system]
-requires = ["setuptools>=64", "setuptools-scm>=8"]
-build-backend = "setuptools.build_meta"
+requires = [
+    "scikit-build-core>=0.10",
+    "setuptools-scm>=8",
+    # Every FetchContent'd ecosystem dependency builds its own pybind11
+    # module by default (BUILD_PYBIND11_BINDINGS defaults ON, and
+    # get_dependencies() doesn't override it), so pybind11 is needed
+    # whenever any of integrals/chemcache/nux/scf (or something further down
+    # their graph) resolves via git master instead of an installed wheel.
+    "pybind11",
+    # gau2grid (an unconditional private dependency of SCF, fetched
+    # transitively here) invokes a Python codegen script at CMake
+    # configure/build time that imports numpy. Same cap as SCF's own
+    # pyproject.toml, for the same reason: manylinux2014's GCC 10.2.1 can't
+    # build numpy>=2 from source, and pip has no cp312+-compatible numpy<2
+    # wheel for it either, so an unpinned requirement falls back to a source
+    # build that fails outright on Linux. macOS has no such constraint.
+    "numpy<2 ; sys_platform == 'linux'",
+    "numpy ; sys_platform != 'linux'",
+]
+build-backend = "scikit_build_core.build"
 
 [project]
 name = "nwchemex"
@@ -43,6 +73,12 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
+    # Needed by cmake/get_nwx_cmake.cmake's pip-locator fallback (same as
+    # every other CMake-driven ecosystem repo); only actually resolved this
+    # way for an editable, build-isolation-free install -- an isolated
+    # `pip install nwchemex` build re-fetches NWXCMake from git instead,
+    # same as everywhere else in the ecosystem.
+    "nwchemex-nwxcmake>=0.1.0",
     "nwchemex-simde>=0.0.77",
     "nwchemex-integrals>=0.0.65",
     "nwchemex-scf>=0.0.57",
@@ -55,12 +91,26 @@ dependencies = [
 test = ["pytest", "numpy"]
 dev  = ["nwchemex[test]", "tox", "pre-commit"]
 
-# Python source lives under python/ (analogous to cxx/ in the C++ repos).
-[tool.setuptools.packages.find]
-where = ["python"]
+[tool.scikit-build]
+metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
+# Unlike every compiled ecosystem repo (wheel.packages = []), this package's
+# only Python content IS a pure-Python package -- python/nwchemex has no
+# compiled extension of its own for nwx_python_module() to co-install, so it
+# has to be added explicitly here instead.
+wheel.packages = ["python/nwchemex"]
+build-dir = "build"
 
 [tool.setuptools_scm]
 fallback_version = "0.0.0"
+
+# For editable (developer) installs, also wire up local dev tooling
+# (pre-commit). NWChemEx's CMakeLists.txt has no unit/integration tests of
+# its own, so BUILD_TESTING/INTEGRATION_TESTING (also toggled by
+# DEVELOPER_SETUP) are no-ops here -- kept only for consistency with every
+# other repo's editable-install override.
+[[tool.scikit-build.overrides]]
+if.state = "editable"
+cmake.args = ["-DDEVELOPER_SETUP=ON"]
 
 [tool.pytest.ini_options]
 minversion = "8.0"
