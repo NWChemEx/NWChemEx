@@ -18,7 +18,7 @@ nwx_set_version(nwchemex_version "${CMAKE_CURRENT_LIST_DIR}")
 # runs its own get_dependencies(). pyproject.toml instead lists every
 # package python/nwchemex needs importable at runtime (simde and friendzone
 # included), because that closure is a Python import graph, not a C++ link
-# graph. 
+# graph.
 project(nwchemex VERSION "${nwchemex_version}" LANGUAGES NONE)
 
 include(disable_in_source_builds)

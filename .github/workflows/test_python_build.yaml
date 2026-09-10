@@ -56,9 +56,26 @@ jobs:
   # this is a smoke build (does it build & install cleanly, is the metadata
   # right), not a check that the wheel is manylinux/macOS-portable -- that's
   # what merge.yaml's real, matrixed build_pypi_dist is for.
+  #
+  # build_pypi_dist's needs_mpi/needs_boost/needs_blas/needs_eigen/
+  # needs_openmp inputs only take effect on the cibuildwheel path (gated
+  # behind `if: inputs.cibw_build != ''` in that action) -- unset here on
+  # purpose, so they'd be silently ignored. Since the CMake build now
+  # actually compiles the ecosystem (get_dependencies(integrals chemcache
+  # nux scf), which transitively needs Eigen3 for libint2's C++ API, plus
+  # Boost/BLAS/MPI further down the graph), setup_nwx_dev_env has to provide
+  # those on this bare runner instead, the same way test_python below does.
   test_pypi_deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup NWX Dev Environment
+        uses: NWChemEx/.github/.github/actions/setup_nwx_dev_env@master
+        with:
+          compiler: gcc-14
       - name: Build PyPI Distribution
         uses: NWChemEx/.github/.github/actions/build_pypi_dist@master
 
