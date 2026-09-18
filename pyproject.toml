@@ -38,7 +38,10 @@ requires = [
     # get_dependencies() doesn't override it), so pybind11 is needed
     # whenever any of integrals/chemcache/nux/scf (or something further down
     # their graph) resolves via git master instead of an installed wheel.
-    "pybind11",
+    # Must match NWXCMake cmake/dependencies/pybind11.cmake GIT_TAG: a
+    # different PYBIND11_INTERNALS_VERSION gives extensions separate type
+    # registries and breaks cross-module type exchange.
+    "pybind11==3.1.0",
     # gau2grid (an unconditional private dependency of SCF, fetched
     # transitively here) invokes a Python codegen script at CMake
     # configure/build time that imports numpy. Same cap as SCF's own
