@@ -51,6 +51,17 @@ requires = [
     # build that fails outright on Linux. macOS has no such constraint.
     "numpy<2 ; sys_platform == 'linux'",
     "numpy ; sys_platform != 'linux'",
+    # Ecosystem packages this build resolves from installed wheels rather
+    # than fetching from git master, so the wheel links against exactly the
+    # binaries users get at runtime and ships only its own files. Mirror
+    # [project].dependencies; leave the floors unbounded so the newest
+    # release is always resolved.
+    "nwchemex-nwxcmake>=0.1.0",
+    "nwchemex-simde>=0.0.77",
+    "nwchemex-integrals>=0.0.65",
+    "nwchemex-scf>=0.0.57",
+    "nwchemex-nux>=0.0.21",
+    "nwchemex-chemcache>=1.1.24",
 ]
 build-backend = "scikit_build_core.build"
 
@@ -101,6 +112,11 @@ metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
 # compiled extension of its own for nwx_python_module() to co-install, so it
 # has to be added explicitly here instead.
 wheel.packages = ["python/nwchemex"]
+# Ship only this project's own install rules ("nwchemex") plus third-party
+# dependencies this build had to fetch itself ("Unspecified", CMake's default
+# component). Ecosystem dependencies are resolved from their own wheels, and
+# their files belong to those wheels.
+install.components = ["nwchemex", "Unspecified"]
 build-dir = "build"
 
 [tool.setuptools_scm]

@@ -15,6 +15,7 @@
 import chemcache
 import friendzone
 import integrals
+import nux
 import scf
 
 
@@ -28,4 +29,10 @@ def load_modules(mm):
     chemcache.load_modules(mm)
     friendzone.load_modules(mm)
     integrals.load_modules(mm)
+    nux.load_modules(mm)
     scf.load_modules(mm)
+
+    # Wiring between plugins. Each plugin's set_defaults may refer to modules
+    # from the others, so these run only after everything is loaded.
+    integrals.set_defaults(mm)
+    scf.set_defaults(mm)

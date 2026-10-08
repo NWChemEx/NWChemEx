@@ -97,11 +97,20 @@ jobs:
   # action's dev_matrix already covers both compilers for the CMake path via
   # test_cmake_build above.
 
+  # The compiler has to match the C++ standard library the ecosystem wheels
+  # in build-system.requires were built against, or their configs refuse the
+  # build: libstdc++ on Linux (gcc-14), libc++ on macOS (appleclang, the same
+  # compiler cibuildwheel uses). Homebrew GCC on macOS uses libstdc++.
   test_python:
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            compiler: gcc-14
+          - os: macos-latest
+            compiler: appleclang
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.os == 'macos-latest' }}
     steps:
@@ -124,7 +133,7 @@ jobs:
       - name: Setup NWX Dev Environment
         uses: NWChemEx/.github/.github/actions/setup_nwx_dev_env@master
         with:
-          compiler: gcc-14
+          compiler: ${{ matrix.compiler }}
           needs_nwchem: "true"
       - name: Sanity-check NWChem Is On PATH
         shell: bash
