@@ -57,7 +57,7 @@ requires = [
     # [project].dependencies; leave the floors unbounded so the newest
     # release is always resolved.
     "nwchemex-nwxcmake>=0.1.0",
-    "nwchemex-simde>=0.0.77",
+    "nwchemex-simde>=0.0.85",
     "nwchemex-integrals>=0.0.65",
     "nwchemex-scf>=0.0.57",
     "nwchemex-nux>=0.0.21",
@@ -93,7 +93,7 @@ dependencies = [
     # `pip install nwchemex` build re-fetches NWXCMake from git instead,
     # same as everywhere else in the ecosystem.
     "nwchemex-nwxcmake>=0.1.0",
-    "nwchemex-simde>=0.0.77",
+    "nwchemex-simde>=0.0.85",
     "nwchemex-integrals>=0.0.65",
     "nwchemex-scf>=0.0.57",
     "nwchemex-nux>=0.0.21",
