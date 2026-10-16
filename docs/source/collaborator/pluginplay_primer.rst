@@ -61,7 +61,7 @@ the library ``DeepIntegrals``.
    // statements would show up here
 
    // This is the hook NWChemEx uses to enter your library
-   void load_modules(pluginplay::ModuleManager& mm);
+   DECLARE_PLUGIN(DeepIntegrals);
 
    } // namespace deep_integrals
 
@@ -106,8 +106,9 @@ The definition of ``DeepOverlap`` will look something like:
 
    } // namespace your_library_namespace
 
-Finally we need to define the ``load_modules`` function, which we do in its own
-source file:
+Finally we need to define the plugin's constructor, which we do in its own
+source file. The constructor names the plugin and adds the plugin's modules to
+it:
 
 .. code:: c++
 
@@ -115,11 +116,15 @@ source file:
 
    namespace deep_integrals {
 
-   void load_modules(pluginplay::ModuleManager& mm) {
-       mm.add_module<DeepOverlap>("Deep Overlap");
+   PLUGIN_CTOR(DeepIntegrals) {
+       set_name("deep_integrals");
+       add_module<DeepOverlap>("Deep Overlap");
    }
 
    } // namespace deep_integrals
+
+The plugin is then loaded into a ``ModuleManager`` with
+``mm.load_plugin<deep_integrals::DeepIntegrals>()``.
 
 Python
 ------

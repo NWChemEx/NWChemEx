@@ -26,13 +26,12 @@ def load_modules(mm):
     :type mm: pluginplay.ModuleManager
     """
 
-    chemcache.load_modules(mm)
-    friendzone.load_modules(mm)
-    integrals.load_modules(mm)
-    nux.load_modules(mm)
-    scf.load_modules(mm)
+    mm.load_plugin(chemcache.ChemCache())
+    mm.load_plugin(friendzone.FriendZone())
+    mm.load_plugin(integrals.Integrals())
+    mm.load_plugin(nux.NUX())
+    mm.load_plugin(scf.SCF())
 
-    # Wiring between plugins. Each plugin's set_defaults may refer to modules
-    # from the others, so these run only after everything is loaded.
-    integrals.set_defaults(mm)
-    scf.set_defaults(mm)
+    # Wiring between plugins. A plugin's default submodules may come from the
+    # other plugins, so this runs only after everything is loaded.
+    mm.wire_defaults()
