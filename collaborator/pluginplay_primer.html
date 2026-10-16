@@ -142,7 +142,7 @@ the library <code class="docutils literal notranslate"><span class="pre">DeepInt
 <span class="c1">// statements would show up here</span>
 
 <span class="c1">// This is the hook NWChemEx uses to enter your library</span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">load_modules</span><span class="p">(</span><span class="n">pluginplay</span><span class="o">::</span><span class="n">ModuleManager</span><span class="o">&amp;</span><span class="w"> </span><span class="n">mm</span><span class="p">);</span>
+<span class="n">DECLARE_PLUGIN</span><span class="p">(</span><span class="n">DeepIntegrals</span><span class="p">);</span>
 
 <span class="p">}</span><span class="w"> </span><span class="c1">// namespace deep_integrals</span>
 </pre></div>
@@ -185,19 +185,23 @@ The definition of <code class="docutils literal notranslate"><span class="pre">D
 <span class="p">}</span><span class="w"> </span><span class="c1">// namespace your_library_namespace</span>
 </pre></div>
 </div>
-<p>Finally we need to define the <code class="docutils literal notranslate"><span class="pre">load_modules</span></code> function, which we do in its own
-source file:</p>
+<p>Finally we need to define the plugin’s constructor, which we do in its own
+source file. The constructor names the plugin and adds the plugin’s modules to
+it:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;path/to/deep_integrals.hpp&quot;</span>
 
 <span class="k">namespace</span><span class="w"> </span><span class="nn">deep_integrals</span><span class="w"> </span><span class="p">{</span>
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">load_modules</span><span class="p">(</span><span class="n">pluginplay</span><span class="o">::</span><span class="n">ModuleManager</span><span class="o">&amp;</span><span class="w"> </span><span class="n">mm</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">mm</span><span class="p">.</span><span class="n">add_module</span><span class="o">&lt;</span><span class="n">DeepOverlap</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;Deep Overlap&quot;</span><span class="p">);</span>
+<span class="n">PLUGIN_CTOR</span><span class="p">(</span><span class="n">DeepIntegrals</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">set_name</span><span class="p">(</span><span class="s">&quot;deep_integrals&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">add_module</span><span class="o">&lt;</span><span class="n">DeepOverlap</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;Deep Overlap&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="p">}</span><span class="w"> </span><span class="c1">// namespace deep_integrals</span>
 </pre></div>
 </div>
+<p>The plugin is then loaded into a <code class="docutils literal notranslate"><span class="pre">ModuleManager</span></code> with
+<code class="docutils literal notranslate"><span class="pre">mm.load_plugin&lt;deep_integrals::DeepIntegrals&gt;()</span></code>.</p>
 </section>
 <section id="python">
 <h3>Python<a class="headerlink" href="#python" title="Link to this heading"></a></h3>
